@@ -1,0 +1,497 @@
+basePath: /
+definitions:
+  admin.Admin:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - username
+    type: object
+  admin.AdminSwagger:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - username
+    type: object
+  admin.InputAdminToken:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  user.AuthLogin:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  user.Bank:
+    properties:
+      amount:
+        type: integer
+      bankcode:
+        type: string
+      no_rekening:
+        type: string
+    type: object
+  user.DetailTransaction:
+    properties:
+      id:
+        type: integer
+      jenis_transaction:
+        type: string
+      nama_bank:
+        type: string
+      no_rekening:
+        type: integer
+      poin_account:
+        type: integer
+      poin_redeem:
+        type: integer
+    type: object
+  user.History:
+    properties:
+      id:
+        type: integer
+      status:
+        type: string
+      tanggal:
+        type: string
+      tipe_transaksi:
+        type: string
+    type: object
+  user.Login:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      pin:
+        type: integer
+      poin:
+        type: integer
+      token:
+        type: string
+    type: object
+  user.Register:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      no_hp:
+        type: string
+      password:
+        type: string
+      pin:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Berikut API Jasa Pengiriman
+  title: API Jasa Pengiriman
+  version: "1.0"
+paths:
+  /admin:
+    get:
+      consumes:
+      - application/json
+      description: Get all admin with data
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties: true
+              type: object
+            type: array
+      summary: Get All admin
+      tags:
+      - Admin using Token JWT
+    post:
+      consumes:
+      - application/json
+      description: create admin with data
+      parameters:
+      - description: admin
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/admin.AdminSwagger'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/admin.Admin'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create admin
+      tags:
+      - admin
+  /admin/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete data admin
+      parameters:
+      - description: id admin
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: ""
+      summary: Delete Admin
+      tags:
+      - admin
+    get:
+      consumes:
+      - application/json
+      description: Get Admin By ID
+      parameters:
+      - description: anything id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get Admin By ID
+      tags:
+      - admin
+    put:
+      consumes:
+      - application/json
+      description: update data admin
+      parameters:
+      - description: id admin
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: admin
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/admin.AdminSwagger'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: ""
+      summary: Update Admin
+      tags:
+      - Admin using Token JWT
+  /admin/token:
+    post:
+      consumes:
+      - application/json
+      description: Get token for admin
+      parameters:
+      - description: admin
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/admin.InputAdminToken'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: ""
+      summary: Get Token
+      tags:
+      - admin
+  /v1/account:
+    put:
+      consumes:
+      - application/json
+      description: UpdateUser
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.Register'
+      summary: UpdateUser
+      tags:
+      - User
+  /v1/detailhistory/{id}:
+    get:
+      consumes:
+      - application/json
+      description: History/transaction User
+      parameters:
+      - description: id detail history
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.DetailTransaction'
+      summary: Detail History/transaction
+      tags:
+      - User
+  /v1/history/{iduser}:
+    get:
+      consumes:
+      - application/json
+      description: History User
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: id user
+        in: path
+        name: iduser
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.History'
+      summary: History
+      tags:
+      - User
+  /v1/login:
+    post:
+      consumes:
+      - application/json
+      description: Login user
+      parameters:
+      - description: user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.AuthLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.Login'
+      summary: Login
+      tags:
+      - User
+  /v1/order/cashout:
+    post:
+      consumes:
+      - application/json
+      description: Order Cashout
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: inputdatacashout
+        in: body
+        name: InputDataCashout
+        required: true
+        schema:
+          $ref: '#/definitions/user.Bank'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.Bank'
+      summary: Order Cashout
+      tags:
+      - UserOrder
+  /v1/order/emoney:
+    post:
+      consumes:
+      - application/json
+      description: Emoney user
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Order Emoney
+      tags:
+      - UserOrder
+  /v1/order/paketdata:
+    post:
+      consumes:
+      - application/json
+      description: PaketData user
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Order PaketData
+      tags:
+      - UserOrder
+  /v1/order/pulsa:
+    post:
+      consumes:
+      - application/json
+      description: Pulsa user
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Order Pulsa
+      tags:
+      - UserOrder
+  /v1/register:
+    post:
+      consumes:
+      - application/json
+      description: Register user
+      parameters:
+      - description: Register
+        in: body
+        name: RegisterUser
+        required: true
+        schema:
+          $ref: '#/definitions/user.Register'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.Register'
+      summary: Register
+      tags:
+      - User
+swagger: "2.0"
