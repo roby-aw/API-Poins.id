@@ -96,9 +96,9 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *user.InputTransactionBank)
 	}
 	fmt.Println(resp)
 	fmt.Println(inputdata)
-	err = repo.db.Create(&inputdata).Error
-	if err != nil {
-		return nil, err
+	errdb := repo.db.Create(&inputdata).Error
+	if errdb != nil {
+		return nil, errdb
 	}
 	return emoney, nil
 }
