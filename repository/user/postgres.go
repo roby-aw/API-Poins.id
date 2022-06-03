@@ -37,7 +37,7 @@ func (repo *PosgresRepository) FindFoodByName(name string) (foods []user.Food, e
 func (repo *PosgresRepository) TakeCallback(data *user.Disbursement) (*user.Disbursement, error) {
 	var TransactionBank *user.TransactionBank
 	if data.Status == "COMPLETED" {
-		TransactionBank.Status = data.Status
+		TransactionBank.Status = "COMPLETED"
 	}
 
 	err := repo.db.Model(*TransactionBank).Where("ID_Transaction = ?", data.ExternalID).Updates(TransactionBank).Error
