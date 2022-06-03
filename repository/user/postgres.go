@@ -60,13 +60,9 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *user.InputTransactionBank)
 	hasil := string(b)
 	inthasil, _ := strconv.Atoi(hasil)
 	strhasil := strconv.Itoa(inthasil)
-	var databank user.TransactionBank
 
-	repo.db.Where("ID_Transaction = ?", hasil).First(databank)
-	if databank.ID_Transaction != "" {
-		inthasil = inthasil + 1
-		strhasil = strconv.Itoa(inthasil)
-	}
+	var databank *user.TransactionBank
+
 	inputdata := user.TransactionBank{
 		ID_Transaction:    "EM" + strhasil,
 		ID_User:           emoney.ID_User,
@@ -77,7 +73,11 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *user.InputTransactionBank)
 		Amount:            emoney.Amount,
 		Status:            "PENDING",
 	}
-	defer repo.db.Create(&inputdata)
+	repo.db.Where("ID_Transaction = ?", inputdata.ID_Transaction).First(&databank)
+	if databank.ID_Transaction != "" {
+		inthasil = inthasil + 1
+		strhasil = strconv.Itoa(inthasil)
+	}
 	xendit.Opt.SecretKey = "xnd_development_cUiYsYw0nFqaykCMXpl3cqoxlIy7zciDRVaTHemLUUXhh3iKKILDJvbYKo8U9t"
 
 	createData := disbursement.CreateParams{
@@ -94,6 +94,7 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *user.InputTransactionBank)
 	if err != nil {
 		return nil, err
 	}
+	repo.db.Create(&inputdata)
 	fmt.Println(resp)
 	return emoney, nil
 }
