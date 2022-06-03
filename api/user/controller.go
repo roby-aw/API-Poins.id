@@ -181,7 +181,13 @@ func (Controller *Controller) Register(c echo.Context) error {
 func (Controller *Controller) OrderEmoney(c echo.Context) error {
 	emoney := userBussiness.InputTransactionBank{}
 	c.Bind(&emoney)
-	result, _ := Controller.service.ToOrderEmoney(&emoney)
+	result, err := Controller.service.ToOrderEmoney(&emoney)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "failed",
+			"Error":   err.Error(),
+		})
+	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
 		"messages": "success order emoney",
