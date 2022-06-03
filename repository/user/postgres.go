@@ -89,7 +89,7 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *user.InputTransactionBank)
 		Description:       "ID" + strhasil,
 		Amount:            float64(emoney.Amount),
 	}
-
+	fmt.Println(createData)
 	resp, err := disbursement.Create(&createData)
 	if err != nil {
 		return nil, err
