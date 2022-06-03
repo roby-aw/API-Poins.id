@@ -40,5 +40,10 @@ func (s *service) GetCallback(data *Disbursement) (*Disbursement, error) {
 }
 
 func (s *service) ToOrderEmoney(emoney *TransactionBank) (*TransactionBank, error) {
-	return s.repository.GetOrderEmoney(emoney)
+	err := s.validate.Struct(emoney)
+	if err != nil {
+		return nil, err
+	}
+	emoney, err = s.repository.GetOrderEmoney(emoney)
+	return emoney, err
 }
