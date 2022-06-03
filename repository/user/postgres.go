@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/xendit/xendit-go"
+	"github.com/xendit/xendit-go/disbursement"
 	"gorm.io/gorm"
 )
 
@@ -75,23 +77,23 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *user.InputTransactionBank)
 		inthasil = inthasil + 1
 		strhasil = strconv.Itoa(inthasil)
 	}
-	// xendit.Opt.SecretKey = "xnd_development_cUiYsYw0nFqaykCMXpl3cqoxlIy7zciDRVaTHemLUUXhh3iKKILDJvbYKo8U9t"
+	xendit.Opt.SecretKey = "xnd_development_cUiYsYw0nFqaykCMXpl3cqoxlIy7zciDRVaTHemLUUXhh3iKKILDJvbYKo8U9t"
 
-	// createData := disbursement.CreateParams{
-	// 	IdempotencyKey:    "disbursement" + time.Now().String(),
-	// 	ExternalID:        "EM" + strhasil,
-	// 	BankCode:          emoney.Nama_bank,
-	// 	AccountHolderName: emoney.AN_Bank,
-	// 	AccountNumber:     emoney.No_rekening,
-	// 	Description:       "ID" + strhasil,
-	// 	Amount:            float64(emoney.Amount),
-	// }
-	// fmt.Println(createData)
-	// resp, err := disbursement.Create(&createData)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// fmt.Println(resp)
+	createData := disbursement.CreateParams{
+		IdempotencyKey:    "disbursement" + time.Now().String(),
+		ExternalID:        "EM" + strhasil,
+		BankCode:          emoney.Nama_bank,
+		AccountHolderName: emoney.AN_Bank,
+		AccountNumber:     emoney.No_rekening,
+		Description:       "ID" + strhasil,
+		Amount:            float64(emoney.Amount),
+	}
+	fmt.Println(createData)
+	resp, err := disbursement.Create(&createData)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(resp)
 	fmt.Println(inputdata)
 	fmt.Println("------")
 	fmt.Println(emoney)
