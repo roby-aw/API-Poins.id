@@ -108,6 +108,7 @@ type Disbursement struct {
 type TransactionBank struct {
 	ID                uint64 `gorm:"primaryKey"`
 	ID_Transaction    string `json:"id_transaction"`
+	ID_User           string `json:"id_user"`
 	Jenis_transaction string `json:"jenis_transaction"`
 	Nama_bank         string `json:"nama_bank"`
 	AN_Bank           string `json:"AN_Bank"`

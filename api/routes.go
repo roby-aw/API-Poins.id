@@ -25,4 +25,6 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	// admin using jwt
 	g.DELETE("/:id", controller.AdminControlller.DeleteAdmin, auth.SetupAuthenticationJWT())
 	g.GET("", controller.AdminControlller.GetAdmins, auth.SetupAuthenticationJWT())
+	//order
+	c.POST("/order/emoney", controller.UserController.DetailTransaction)
 }

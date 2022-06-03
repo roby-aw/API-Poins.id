@@ -43,10 +43,6 @@ func newPostgres(config *config.AppConfig) *gorm.DB {
 	}
 	data := user.TransactionBank{}
 	db.AutoMigrate(data)
-	data1 := user.TransactionBank{
-		ID_Transaction: "test1",
-	}
-	db.Create(&data1)
 	return db
 }
 
