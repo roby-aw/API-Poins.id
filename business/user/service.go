@@ -9,13 +9,13 @@ import (
 type Repository interface {
 	FindFoodByName(name string) (foods []Food, err error)
 	TakeCallback(data *Disbursement) (*Disbursement, error)
-	GetOrderEmoney(emoney *TransactionBank) (*TransactionBank, error)
+	GetOrderEmoney(emoney *InputTransactionBank) (*InputTransactionBank, error)
 }
 
 type Service interface {
 	GetFoodByName(name string) (foods []Food, err error)
 	GetCallback(data *Disbursement) (*Disbursement, error)
-	ToOrderEmoney(emoney *TransactionBank) (*TransactionBank, error)
+	ToOrderEmoney(emoney *InputTransactionBank) (*InputTransactionBank, error)
 }
 
 type service struct {
@@ -39,7 +39,7 @@ func (s *service) GetCallback(data *Disbursement) (*Disbursement, error) {
 	return s.repository.TakeCallback(data)
 }
 
-func (s *service) ToOrderEmoney(emoney *TransactionBank) (*TransactionBank, error) {
+func (s *service) ToOrderEmoney(emoney *InputTransactionBank) (*InputTransactionBank, error) {
 	err := s.validate.Struct(emoney)
 	if err != nil {
 		return nil, err

@@ -25,6 +25,8 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	// admin using jwt
 	g.DELETE("/:id", controller.AdminControlller.DeleteAdmin, auth.SetupAuthenticationJWT())
 	g.GET("", controller.AdminControlller.GetAdmins, auth.SetupAuthenticationJWT())
+	//callback
+	c.POST("/callback", controller.UserController.CallbackXendit)
 	//order
-	c.POST("/order/emoney", controller.UserController.DetailTransaction)
+	c.POST("/order/emoney", controller.UserController.OrderEmoney)
 }

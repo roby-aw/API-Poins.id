@@ -192,13 +192,23 @@ func (Controller *Controller) OrderCashout(c echo.Context) error {
 // @tags UserOrder
 // @Accept json
 // @Produce json
-// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
+// @Param InputDataCashout body user.InputTransactionBank true "inputdataemoney"
 // @Success 200 {object} map[string]interface{}
 // @Router /v1/order/emoney [post]
 func (Controller *Controller) OrderEmoney(c echo.Context) error {
+	emoney := userBussiness.InputTransactionBank{}
+	c.Bind(&emoney)
+	result, err := Controller.service.ToOrderEmoney(&emoney)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "failed",
+			"Error":   err.Error(),
+		})
+	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
-		"messages": "success register",
+		"messages": "success order emoney",
+		"result":   result,
 	})
 }
 
@@ -266,7 +276,14 @@ func (Controller *Controller) CallbackXendit(c echo.Context) error {
 	responseWriter := c.Response().Writer
 	responseWriter.Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
 	responseWriter.WriteHeader(200)
+	fmt.Println(resbank)
 	databank, err := Controller.service.GetCallback(&resbank)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "failed",
+			"Error":   err.Error(),
+		})
+	}
 	fmt.Println(resbank)
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"data": databank,

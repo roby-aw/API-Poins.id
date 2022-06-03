@@ -116,3 +116,12 @@ type TransactionBank struct {
 	Amount            int    `json:"amount"`
 	Status            string `json:"status"`
 }
+
+type InputTransactionBank struct {
+	ID_User           string `json:"id_user"`
+	Jenis_transaction string `json:"jenis_transaction" validate:"required"`
+	Nama_bank         string `json:"nama_bank" validate:"required"`
+	AN_Bank           string `json:"AN_Bank" validate:"required"`
+	No_rekening       string `json:"no_rekening" validate:"required"`
+	Amount            int    `json:"amount"`
+}
