@@ -25,6 +25,7 @@ import (
 // @BasePath /
 func main() {
 	err := godotenv.Load(".env")
+	port := os.Getenv("PORT")
 
 	if err != nil {
 		log.Fatalf("Error loading .env file")
@@ -49,7 +50,10 @@ func main() {
 	api.RegistrationPath(e, controllers)
 
 	go func() {
-		address := fmt.Sprintf(":%d", config.App.Port)
+		if port == "" {
+			port = "8080"
+		}
+		address := fmt.Sprintf(":%s", port)
 		if err := e.Start(address); err != nil {
 			log.Fatal(err)
 		}
