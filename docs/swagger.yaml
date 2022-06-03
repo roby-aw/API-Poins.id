@@ -51,15 +51,6 @@ definitions:
       password:
         type: string
     type: object
-  user.Bank:
-    properties:
-      amount:
-        type: integer
-      bankcode:
-        type: string
-      no_rekening:
-        type: string
-    type: object
   user.DetailTransaction:
     properties:
       id:
@@ -395,34 +386,6 @@ paths:
       summary: Login
       tags:
       - User
-  /v1/order/cashout:
-    post:
-      consumes:
-      - application/json
-      description: Order Cashout
-      parameters:
-      - default: Bearer <Add access token here>
-        description: Insert your access token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: inputdatacashout
-        in: body
-        name: InputDataCashout
-        required: true
-        schema:
-          $ref: '#/definitions/user.Bank'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/user.Bank'
-      summary: Order Cashout
-      tags:
-      - UserOrder
   /v1/order/emoney:
     post:
       consumes:
@@ -443,7 +406,7 @@ paths:
           schema:
             additionalProperties: true
             type: object
-      summary: Order Emoney
+      summary: Order Emoney/Cashout
       tags:
       - UserOrder
   /v1/order/paketdata:

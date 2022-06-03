@@ -170,24 +170,7 @@ func (Controller *Controller) Register(c echo.Context) error {
 }
 
 // Create godoc
-// @Summary Order Cashout
-// @description Order Cashout
-// @tags UserOrder
-// @Accept json
-// @Produce json
-// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
-// @Param InputDataCashout body user.Bank true "inputdatacashout"
-// @Success 200 {object} user.Bank
-// @Router /v1/order/cashout [post]
-func (Controller *Controller) OrderCashout(c echo.Context) error {
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"code":     200,
-		"messages": "success register",
-	})
-}
-
-// Create godoc
-// @Summary Order Emoney
+// @Summary Order Emoney/Cashout
 // @description Emoney user
 // @tags UserOrder
 // @Accept json

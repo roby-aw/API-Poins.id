@@ -388,48 +388,6 @@
                 }
             }
         },
-        "/v1/order/cashout": {
-            "post": {
-                "description": "Order Cashout",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "UserOrder"
-                ],
-                "summary": "Order Cashout",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "default": "Bearer \u003cAdd access token here\u003e",
-                        "description": "Insert your access token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "inputdatacashout",
-                        "name": "InputDataCashout",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user.Bank"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/user.Bank"
-                        }
-                    }
-                }
-            }
-        },
         "/v1/order/emoney": {
             "post": {
                 "description": "Emoney user",
@@ -442,7 +400,7 @@
                 "tags": [
                     "UserOrder"
                 ],
-                "summary": "Order Emoney",
+                "summary": "Order Emoney/Cashout",
                 "parameters": [
                     {
                         "description": "inputdataemoney",
@@ -640,20 +598,6 @@
                     "type": "string"
                 },
                 "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "user.Bank": {
-            "type": "object",
-            "properties": {
-                "amount": {
-                    "type": "integer"
-                },
-                "bankcode": {
-                    "type": "string"
-                },
-                "no_rekening": {
                     "type": "string"
                 }
             }
