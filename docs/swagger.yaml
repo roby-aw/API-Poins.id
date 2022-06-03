@@ -134,7 +134,7 @@ definitions:
       pin:
         type: integer
     type: object
-host: localhost:8080
+host: api-dummy.herokuapp.com
 info:
   contact: {}
   description: Berikut API Jasa Pengiriman

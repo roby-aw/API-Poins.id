@@ -21,7 +21,7 @@ import (
 // @title API Jasa Pengiriman
 // @version 1.0
 // @description Berikut API Jasa Pengiriman
-// @host localhost:8080
+// @host api-dummy.herokuapp.com
 // @BasePath /
 func main() {
 	err := godotenv.Load(".env")
