@@ -452,12 +452,13 @@ const docTemplate = `{
                 "summary": "Order Emoney",
                 "parameters": [
                     {
-                        "type": "string",
-                        "default": "Bearer \u003cAdd access token here\u003e",
-                        "description": "Insert your access token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
+                        "description": "inputdataemoney",
+                        "name": "InputDataCashout",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.InputTransactionBank"
+                        }
                     }
                 ],
                 "responses": {
@@ -700,6 +701,35 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "tipe_transaksi": {
+                    "type": "string"
+                }
+            }
+        },
+        "user.InputTransactionBank": {
+            "type": "object",
+            "required": [
+                "AN_Bank",
+                "jenis_transaction",
+                "nama_bank",
+                "no_rekening"
+            ],
+            "properties": {
+                "AN_Bank": {
+                    "type": "string"
+                },
+                "amount": {
+                    "type": "integer"
+                },
+                "id_user": {
+                    "type": "string"
+                },
+                "jenis_transaction": {
+                    "type": "string"
+                },
+                "nama_bank": {
+                    "type": "string"
+                },
+                "no_rekening": {
                     "type": "string"
                 }
             }

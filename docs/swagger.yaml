@@ -86,6 +86,26 @@ definitions:
       tipe_transaksi:
         type: string
     type: object
+  user.InputTransactionBank:
+    properties:
+      AN_Bank:
+        type: string
+      amount:
+        type: integer
+      id_user:
+        type: string
+      jenis_transaction:
+        type: string
+      nama_bank:
+        type: string
+      no_rekening:
+        type: string
+    required:
+    - AN_Bank
+    - jenis_transaction
+    - nama_bank
+    - no_rekening
+    type: object
   user.Login:
     properties:
       email:
@@ -409,12 +429,12 @@ paths:
       - application/json
       description: Emoney user
       parameters:
-      - default: Bearer <Add access token here>
-        description: Insert your access token
-        in: header
-        name: Authorization
+      - description: inputdataemoney
+        in: body
+        name: InputDataCashout
         required: true
-        type: string
+        schema:
+          $ref: '#/definitions/user.InputTransactionBank'
       produces:
       - application/json
       responses:
