@@ -40,7 +40,7 @@ func (repo *PosgresRepository) TakeCallback(data *user.Disbursement) (*user.Disb
 		TransactionBank.Status = data.Status
 	}
 
-	err := repo.db.Model(TransactionBank).Where("ID_Transaction = ?", data.ExternalID).Updates(TransactionBank).Error
+	err := repo.db.Model(*TransactionBank).Where("ID_Transaction = ?", data.ExternalID).Updates(TransactionBank).Error
 	if err != nil {
 		return nil, err
 	}
