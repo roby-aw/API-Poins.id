@@ -138,16 +138,7 @@ type TransactionBank struct {
 	Status            string `json:"status"`
 }
 
-type InputTransactionEmoney struct {
-	Customer_id   int    `json:"customer_id" validate:"required"`
-	Bank_Provider string `json:"bank_provider" validate:"required"`
-	Nomor         string `json:"nomor" validate:"required"`
-	Amount        int    `json:"amount" validate:"required"`
-	Poin_account  int    `json:"poin_account" validate:"required"`
-	Poin_redeem   int    `json:"poin_redeem" validate:"required"`
-}
-
-type InputTransactionBank struct {
+type InputTransactionBankEmoney struct {
 	Customer_id   int    `json:"customer_id" validate:"required"`
 	Bank_Provider string `json:"bank_provider" validate:"required"`
 	AN_Rekening   string `json:"an_rekening" validate:"required"`

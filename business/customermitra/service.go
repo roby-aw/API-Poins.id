@@ -10,9 +10,9 @@ type Repository interface {
 	UpdateCustomer(Data *UpdateCustomer) (*UpdateCustomer, error)
 	ClaimPulsa(Data *RedeemPulsaData) error
 	ClaimPaketData(Data *RedeemPulsaData) error
-	ClaimBank(emoney *InputTransactionBank) (*InputTransactionBank, error)
+	ClaimBank(emoney *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
 	TakeCallback(data *Disbursement) (*Disbursement, error)
-	GetOrderEmoney(emoney *InputTransactionEmoney) (*InputTransactionEmoney, error)
+	GetOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
 }
 
 type Service interface {
@@ -21,9 +21,9 @@ type Service interface {
 	UpdateCustomer(Data *UpdateCustomer) (*UpdateCustomer, error)
 	RedeemPulsa(Data *RedeemPulsaData) error
 	RedeemPaketData(Data *RedeemPulsaData) error
-	RedeemBank(Data *InputTransactionBank) (*InputTransactionBank, error)
+	RedeemBank(Data *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
 	GetCallback(data *Disbursement) (*Disbursement, error)
-	ToOrderEmoney(emoney *InputTransactionEmoney) (*InputTransactionEmoney, error)
+	ToOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
 }
 
 type service struct {
@@ -79,7 +79,7 @@ func (s *service) RedeemPaketData(Data *RedeemPulsaData) error {
 	return s.repository.ClaimPaketData(Data)
 }
 
-func (s *service) RedeemBank(Data *InputTransactionBank) (*InputTransactionBank, error) {
+func (s *service) RedeemBank(Data *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error) {
 	err := s.validate.Struct(Data)
 	if err != nil {
 		return nil, err
@@ -92,7 +92,7 @@ func (s *service) GetCallback(data *Disbursement) (*Disbursement, error) {
 	return s.repository.TakeCallback(data)
 }
 
-func (s *service) ToOrderEmoney(emoney *InputTransactionEmoney) (*InputTransactionEmoney, error) {
+func (s *service) ToOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error) {
 	err := s.validate.Struct(emoney)
 	if err != nil {
 		return nil, err
