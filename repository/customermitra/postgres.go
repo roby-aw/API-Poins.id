@@ -168,6 +168,8 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 		Bank_Provider:      emoney.Bank_Provider,
 		Nomor:              emoney.Nomor,
 		Amount:             emoney.Amount,
+		Poin_Account:       emoney.Poin_account,
+		Poin_Redeem:        emoney.Poin_redeem,
 		Description:        emoney.Bank_Provider + " - " + emoney.AN_Rekening,
 		Status_Transaction: "PENDING",
 		Status_Poin:        "OUT",
