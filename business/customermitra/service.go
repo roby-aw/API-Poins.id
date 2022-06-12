@@ -10,6 +10,7 @@ type Repository interface {
 	UpdateCustomer(Data *UpdateCustomer) (*UpdateCustomer, error)
 	ClaimPulsa(Data *RedeemPulsaData) error
 	ClaimPaketData(Data *RedeemPulsaData) error
+	ClaimBank(emoney *InputTransactionBank) (*InputTransactionBank, error)
 	TakeCallback(data *Disbursement) (*Disbursement, error)
 	GetOrderEmoney(emoney *InputTransactionBank) (*InputTransactionBank, error)
 }
@@ -20,6 +21,7 @@ type Service interface {
 	UpdateCustomer(Data *UpdateCustomer) (*UpdateCustomer, error)
 	RedeemPulsa(Data *RedeemPulsaData) error
 	RedeemPaketData(Data *RedeemPulsaData) error
+	RedeemBank(Data *InputTransactionBank) (*InputTransactionBank, error)
 	GetCallback(data *Disbursement) (*Disbursement, error)
 	ToOrderEmoney(emoney *InputTransactionBank) (*InputTransactionBank, error)
 }
@@ -75,6 +77,15 @@ func (s *service) RedeemPaketData(Data *RedeemPulsaData) error {
 		return err
 	}
 	return s.repository.ClaimPaketData(Data)
+}
+
+func (s *service) RedeemBank(Data *InputTransactionBank) (*InputTransactionBank, error) {
+	err := s.validate.Struct(Data)
+	if err != nil {
+		return nil, err
+	}
+	Data, err = s.repository.ClaimBank(Data)
+	return Data, nil
 }
 
 func (s *service) GetCallback(data *Disbursement) (*Disbursement, error) {

@@ -21,6 +21,7 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	c.PUT("/customer", controller.CustomerMitraController.UpdateCustomer)
 	c.POST("/pulsa", controller.CustomerMitraController.OrderPulsa)
 	c.POST("/paketdata", controller.CustomerMitraController.OrderPaketData)
+	c.POST("/cashout", controller.CustomerMitraController.OrderCashout)
 	c.POST("/emoney", controller.CustomerMitraController.OrderEmoney)
 	c.POST("/callback", controller.CustomerMitraController.CallbackXendit)
 	//admin

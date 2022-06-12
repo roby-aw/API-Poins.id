@@ -198,6 +198,45 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 	return emoney, nil
 }
 
+func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionBank) (*customermitra.InputTransactionBank, error) {
+	random := randomstring()
+	inputdata := customermitra.History_Transaction{
+		ID_Transaction:     "EM" + random,
+		Transaction_type:   "Redeem Bank",
+		Customer_id:        emoney.Customer_id,
+		Bank_Provider:      emoney.Bank_Provider,
+		Nomor:              emoney.Nomor,
+		Amount:             emoney.Amount,
+		Poin_Account:       emoney.Poin_account,
+		Poin_Redeem:        emoney.Poin_redeem,
+		Description:        emoney.Bank_Provider + " - " + emoney.AN_Rekening,
+		Status_Transaction: "PENDING",
+		Status_Poin:        "OUT",
+	}
+	xendit.Opt.SecretKey = "xnd_development_cUiYsYw0nFqaykCMXpl3cqoxlIy7zciDRVaTHemLUUXhh3iKKILDJvbYKo8U9t"
+
+	createData := disbursement.CreateParams{
+		IdempotencyKey:    "disbursement" + time.Now().String(),
+		ExternalID:        inputdata.ID_Transaction,
+		BankCode:          inputdata.Bank_Provider,
+		AccountHolderName: emoney.AN_Rekening,
+		AccountNumber:     inputdata.Nomor,
+		Description:       "Redeem Emoney" + " - " + inputdata.ID_Transaction,
+		Amount:            float64(emoney.Amount),
+	}
+	fmt.Println(createData)
+	resp, err := disbursement.Create(&createData)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(resp)
+	errdb := repo.db.Create(&inputdata).Error
+	if errdb != nil {
+		return nil, errdb
+	}
+	return emoney, nil
+}
+
 func randomstring() string {
 	rand.Seed(time.Now().UTC().UnixNano())
 	random := rand.Int()

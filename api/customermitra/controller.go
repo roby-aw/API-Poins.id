@@ -176,6 +176,32 @@ func (Controller *Controller) OrderEmoney(c echo.Context) error {
 }
 
 // Create godoc
+// @Summary Order Emoney/Cashout
+// @description Emoney customer
+// @tags customerOrder
+// @Accept json
+// @Produce json
+// @Param InputDataCashout body customermitra.InputTransactionBank true "inputdataemoney"
+// @Success 200 {object} map[string]interface{}
+// @Router /v1/order/emoney [post]
+func (Controller *Controller) OrderCashout(c echo.Context) error {
+	req := customermitraBussiness.InputTransactionBank{}
+	c.Bind(&req)
+	result, err := Controller.service.RedeemBank(&req)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "failed",
+			"Error":   err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success order cashout",
+		"result":   result,
+	})
+}
+
+// Create godoc
 // @Summary Order Pulsa
 // @description Pulsa customer
 // @tags customerOrder
