@@ -3,12 +3,12 @@ package modules
 import (
 	"api-redeem-point/api"
 	adminApi "api-redeem-point/api/admin"
-	userApi "api-redeem-point/api/user"
+	customermitraApi "api-redeem-point/api/customermitra"
 	adminBusiness "api-redeem-point/business/admin"
-	userBusiness "api-redeem-point/business/user"
+	customermitraBusiness "api-redeem-point/business/customermitra"
 	"api-redeem-point/config"
 	adminRepo "api-redeem-point/repository/admin"
-	userRepo "api-redeem-point/repository/user"
+	customermitraRepo "api-redeem-point/repository/customermitra"
 	"api-redeem-point/utils"
 )
 
@@ -18,13 +18,13 @@ func RegistrationModules(dbCon *utils.DatabaseConnection, config *config.AppConf
 	adminPermitService := adminBusiness.NewService(adminPermitRepository)
 	adminPermitController := adminApi.NewController(adminPermitService)
 
-	userPermitRepository := userRepo.RepositoryFactory(dbCon)
-	userPermitService := userBusiness.NewService(userPermitRepository)
-	userPermitController := userApi.NewController(userPermitService)
+	customermitraPermitRepository := customermitraRepo.RepositoryFactory(dbCon)
+	customermitraPermitService := customermitraBusiness.NewService(customermitraPermitRepository)
+	customermitraPermitController := customermitraApi.NewController(customermitraPermitService)
 
 	controller := api.Controller{
-		AdminControlller: adminPermitController,
-		UserController:   userPermitController,
+		AdminControlller:        adminPermitController,
+		CustomerMitraController: customermitraPermitController,
 	}
 	return controller
 }

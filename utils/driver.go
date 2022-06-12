@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"api-redeem-point/business/user"
+	"api-redeem-point/business/customermitra"
 	"api-redeem-point/config"
 	"fmt"
 	"os"
@@ -36,13 +36,18 @@ func newPostgres(config *config.AppConfig) *gorm.DB {
 	dbPass := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME")
 	dbPort := os.Getenv("DB_PORT")
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=require TimeZone=Asia/Jakarta", dbHost, dbUser, dbPass, dbName, dbPort)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Jakarta", dbHost, dbUser, dbPass, dbName, dbPort)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
-	data := user.TransactionBank{}
+	// db.Migrator().DropTable(customermitra.Customer{})
+	data := customermitra.History_Transaction{}
 	db.AutoMigrate(data)
+	db.AutoMigrate(customermitra.Store{})
+	db.AutoMigrate(customermitra.Customer{})
+	db.AutoMigrate(customermitra.StockProduct{})
+	db.AutoMigrate(customermitra.Admin{})
 	return db
 }
 

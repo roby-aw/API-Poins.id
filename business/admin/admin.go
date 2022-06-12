@@ -1,6 +1,9 @@
 package admin
 
-import "github.com/golang-jwt/jwt/v4"
+import (
+	"github.com/golang-jwt/jwt/v4"
+	"gorm.io/gorm"
+)
 
 type AdminSwagger struct {
 	Username string `json:"username" validate:"required"`
@@ -12,6 +15,14 @@ type AdminSwagger struct {
 type InputAdminToken struct {
 	Username string `json:"username" validate:"required"`
 	Password string `json:"password" validate:"required"`
+}
+
+type RegisterAdmin struct {
+	gorm.Model
+	Email    string `json:"email" gorm:"size:255"`
+	Fullname string `json:"fullname" gorm:"size:255"`
+	Password string `json:"password" gorm:"size:255"`
+	No_hp    string `json:"no_hp" gorm:"size:80"`
 }
 
 type Admin struct {
@@ -45,9 +56,4 @@ type Auth struct {
 type Claims struct {
 	Username string
 	jwt.StandardClaims
-}
-
-type GetCityById struct {
-	Nama_kota string `json:"nama_kota"`
-	Tipe_kota string `json:"tipe_kota"`
 }
