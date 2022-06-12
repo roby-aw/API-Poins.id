@@ -149,10 +149,10 @@ func (repo *PosgresRepository) ClaimPaketData(Data *customermitra.RedeemPulsaDat
 }
 
 func (repo *PosgresRepository) TakeCallback(data *customermitra.Disbursement) (*customermitra.Disbursement, error) {
-	var TransactionBank *customermitra.History_Transaction
+	var TransactionBank customermitra.History_Transaction
 	TransactionBank.Status_Transaction = data.Status
 
-	err := repo.db.Model(*TransactionBank).Where("ID_Transaction = ?", data.ExternalID).Updates(TransactionBank).Error
+	err := repo.db.Model(TransactionBank).Where("ID_Transaction = ?", data.ExternalID).Updates(TransactionBank).Error
 	if err != nil {
 		return nil, err
 	}
