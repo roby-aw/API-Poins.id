@@ -159,7 +159,7 @@ func (repo *PosgresRepository) TakeCallback(data *customermitra.Disbursement) (*
 	return data, nil
 }
 
-func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransactionBank) (*customermitra.InputTransactionBank, error) {
+func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransactionEmoney) (*customermitra.InputTransactionEmoney, error) {
 	random := randomstring()
 	inputdata := customermitra.History_Transaction{
 		ID_Transaction:     "EM" + random,
@@ -170,20 +170,19 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 		Amount:             emoney.Amount,
 		Poin_Account:       emoney.Poin_account,
 		Poin_Redeem:        emoney.Poin_redeem,
-		Description:        emoney.Bank_Provider + " - " + emoney.AN_Rekening,
+		Description:        emoney.Bank_Provider + " - " + strconv.Itoa(emoney.Amount),
 		Status_Transaction: "PENDING",
 		Status_Poin:        "OUT",
 	}
 	xendit.Opt.SecretKey = "xnd_development_cUiYsYw0nFqaykCMXpl3cqoxlIy7zciDRVaTHemLUUXhh3iKKILDJvbYKo8U9t"
 
 	createData := disbursement.CreateParams{
-		IdempotencyKey:    "disbursement" + time.Now().String(),
-		ExternalID:        inputdata.ID_Transaction,
-		BankCode:          inputdata.Bank_Provider,
-		AccountHolderName: emoney.AN_Rekening,
-		AccountNumber:     inputdata.Nomor,
-		Description:       "Redeem Emoney" + " - " + inputdata.ID_Transaction,
-		Amount:            float64(emoney.Amount),
+		IdempotencyKey: "disbursement" + time.Now().String(),
+		ExternalID:     inputdata.ID_Transaction,
+		BankCode:       inputdata.Bank_Provider,
+		AccountNumber:  inputdata.Nomor,
+		Description:    "Redeem Emoney" + " - " + inputdata.ID_Transaction,
+		Amount:         float64(emoney.Amount),
 	}
 	fmt.Println(createData)
 	resp, err := disbursement.Create(&createData)
