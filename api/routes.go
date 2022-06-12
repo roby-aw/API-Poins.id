@@ -22,6 +22,7 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	c.POST("/pulsa", controller.CustomerMitraController.OrderPulsa)
 	c.POST("/paketdata", controller.CustomerMitraController.OrderPaketData)
 	c.POST("/emoney", controller.CustomerMitraController.OrderEmoney)
+	c.POST("/callback", controller.CustomerMitraController.CallbackXendit)
 	//admin
 	// g := e.Group("/admin")
 	// g.POST("", controller.AdminControlller.CreateAdmin)
@@ -32,5 +33,4 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	// g.DELETE("/:id", controller.AdminControlller.DeleteAdmin, auth.SetupAuthenticationJWT())
 	// g.GET("", controller.AdminControlller.GetAdmins, auth.SetupAuthenticationJWT())
 	//callback
-	// c.POST("/callback", controller.CustomerMitraController.CallbackXendit)
 }
