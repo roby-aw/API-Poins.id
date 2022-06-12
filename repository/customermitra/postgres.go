@@ -177,12 +177,13 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 	xendit.Opt.SecretKey = "xnd_development_cUiYsYw0nFqaykCMXpl3cqoxlIy7zciDRVaTHemLUUXhh3iKKILDJvbYKo8U9t"
 
 	createData := disbursement.CreateParams{
-		IdempotencyKey: "disbursement" + time.Now().String(),
-		ExternalID:     inputdata.ID_Transaction,
-		BankCode:       inputdata.Bank_Provider,
-		AccountNumber:  inputdata.Nomor,
-		Description:    "Redeem Emoney" + " - " + inputdata.ID_Transaction,
-		Amount:         float64(emoney.Amount),
+		IdempotencyKey:    "disbursement" + time.Now().String(),
+		ExternalID:        inputdata.ID_Transaction,
+		BankCode:          inputdata.Bank_Provider,
+		AccountHolderName: "",
+		AccountNumber:     inputdata.Nomor,
+		Description:       "Redeem Emoney" + " - " + inputdata.ID_Transaction,
+		Amount:            float64(emoney.Amount),
 	}
 	fmt.Println(createData)
 	resp, err := disbursement.Create(&createData)
