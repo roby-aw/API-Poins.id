@@ -159,7 +159,7 @@ func (Controller *Controller) UpdateCustomer(c echo.Context) error {
 // @Success 200 {object} map[string]interface{}
 // @Router /v1/order/emoney [post]
 func (Controller *Controller) OrderEmoney(c echo.Context) error {
-	emoney := customermitraBussiness.InputTransactionBank{}
+	emoney := customermitraBussiness.InputTransactionEmoney{}
 	c.Bind(&emoney)
 	result, err := Controller.service.ToOrderEmoney(&emoney)
 	if err != nil {

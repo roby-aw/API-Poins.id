@@ -12,7 +12,7 @@ type Repository interface {
 	ClaimPaketData(Data *RedeemPulsaData) error
 	ClaimBank(emoney *InputTransactionBank) (*InputTransactionBank, error)
 	TakeCallback(data *Disbursement) (*Disbursement, error)
-	GetOrderEmoney(emoney *InputTransactionBank) (*InputTransactionBank, error)
+	GetOrderEmoney(emoney *InputTransactionEmoney) (*InputTransactionEmoney, error)
 }
 
 type Service interface {
@@ -23,7 +23,7 @@ type Service interface {
 	RedeemPaketData(Data *RedeemPulsaData) error
 	RedeemBank(Data *InputTransactionBank) (*InputTransactionBank, error)
 	GetCallback(data *Disbursement) (*Disbursement, error)
-	ToOrderEmoney(emoney *InputTransactionBank) (*InputTransactionBank, error)
+	ToOrderEmoney(emoney *InputTransactionEmoney) (*InputTransactionEmoney, error)
 }
 
 type service struct {
@@ -92,7 +92,7 @@ func (s *service) GetCallback(data *Disbursement) (*Disbursement, error) {
 	return s.repository.TakeCallback(data)
 }
 
-func (s *service) ToOrderEmoney(emoney *InputTransactionBank) (*InputTransactionBank, error) {
+func (s *service) ToOrderEmoney(emoney *InputTransactionEmoney) (*InputTransactionEmoney, error) {
 	err := s.validate.Struct(emoney)
 	if err != nil {
 		return nil, err
