@@ -150,9 +150,7 @@ func (repo *PosgresRepository) ClaimPaketData(Data *customermitra.RedeemPulsaDat
 
 func (repo *PosgresRepository) TakeCallback(data *customermitra.Disbursement) (*customermitra.Disbursement, error) {
 	var TransactionBank *customermitra.History_Transaction
-	if data.Status == "COMPLETED" {
-		TransactionBank.Status_Transaction = "COMPLETED"
-	}
+	TransactionBank.Status_Transaction = data.Status
 
 	err := repo.db.Model(*TransactionBank).Where("ID_Transaction = ?", data.ExternalID).Updates(TransactionBank).Error
 	if err != nil {

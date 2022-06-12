@@ -33,6 +33,4 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	// g.GET("", controller.AdminControlller.GetAdmins, auth.SetupAuthenticationJWT())
 	//callback
 	// c.POST("/callback", controller.CustomerMitraController.CallbackXendit)
-	// //order
-	// c.POST("/order/emoney", controller.CustomerMitraController.OrderEmoney)
 }

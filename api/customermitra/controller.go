@@ -2,6 +2,7 @@ package customermitra
 
 import (
 	customermitraBussiness "api-redeem-point/business/customermitra"
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -225,32 +226,32 @@ func (Controller *Controller) OrderPaketData(c echo.Context) error {
 	})
 }
 
-// func (Controller *Controller) CallbackXendit(c echo.Context) error {
-// 	req := c.Request()
-// 	decoder := json.NewDecoder(req.Body)
-// 	disbursermentData := customermitraBussiness.Disbursement{}
-// 	err := decoder.Decode(&disbursermentData)
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, err.Error())
-// 	}
+func (Controller *Controller) CallbackXendit(c echo.Context) error {
+	req := c.Request()
+	decoder := json.NewDecoder(req.Body)
+	disbursermentData := customermitraBussiness.Disbursement{}
+	err := decoder.Decode(&disbursermentData)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
 
-// 	defer req.Body.Close()
-// 	disbursement, _ := json.Marshal(disbursermentData)
-// 	var resbank customermitraBussiness.Disbursement
-// 	json.Unmarshal(disbursement, &resbank)
-// 	responseWriter := c.Response().Writer
-// 	responseWriter.Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-// 	responseWriter.WriteHeader(200)
-// 	fmt.Println(resbank)
-// 	databank, err := Controller.service.GetCallback(&resbank)
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": "failed",
-// 			"Error":   err.Error(),
-// 		})
-// 	}
-// 	fmt.Println(resbank)
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"data": databank,
-// 	})
-// }
+	defer req.Body.Close()
+	disbursement, _ := json.Marshal(disbursermentData)
+	var resbank customermitraBussiness.Disbursement
+	json.Unmarshal(disbursement, &resbank)
+	responseWriter := c.Response().Writer
+	responseWriter.Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
+	responseWriter.WriteHeader(200)
+	fmt.Println(resbank)
+	databank, err := Controller.service.GetCallback(&resbank)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "failed",
+			"Error":   err.Error(),
+		})
+	}
+	fmt.Println(resbank)
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"data": databank,
+	})
+}
