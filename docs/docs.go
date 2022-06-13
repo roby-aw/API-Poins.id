@@ -256,9 +256,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/account": {
-            "put": {
-                "description": "UpdateUser",
+        "/register": {
+            "post": {
+                "description": "Register customer",
                 "consumes": [
                     "application/json"
                 ],
@@ -266,96 +266,25 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "customer"
                 ],
-                "summary": "UpdateUser",
+                "summary": "Register",
                 "parameters": [
                     {
-                        "type": "string",
-                        "default": "Bearer \u003cAdd access token here\u003e",
-                        "description": "Insert your access token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
+                        "description": "Register",
+                        "name": "Registercustomer",
+                        "in": "body",
+                        "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user.Register"
+                            "$ref": "#/definitions/customermitra.RegisterCustomer"
                         }
                     }
-                }
-            }
-        },
-        "/v1/detailhistory/{id}": {
-            "get": {
-                "description": "History/transaction User",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "Detail History/transaction",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "id detail history",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/user.DetailTransaction"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/history/{iduser}": {
-            "get": {
-                "description": "History User",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "History",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "default": "Bearer \u003cAdd access token here\u003e",
-                        "description": "Insert your access token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "id user",
-                        "name": "iduser",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/user.History"
+                            "$ref": "#/definitions/customermitra.RegisterCustomer"
                         }
                     }
                 }
@@ -363,7 +292,7 @@ const docTemplate = `{
         },
         "/v1/login": {
             "post": {
-                "description": "Login user",
+                "description": "Login Customer",
                 "consumes": [
                     "application/json"
                 ],
@@ -371,17 +300,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Customer"
                 ],
                 "summary": "Login",
                 "parameters": [
                     {
-                        "description": "user",
-                        "name": "user",
+                        "description": "Customer",
+                        "name": "Customer",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user.AuthLogin"
+                            "$ref": "#/definitions/customermitra.AuthLogin"
                         }
                     }
                 ],
@@ -389,15 +318,15 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/user.Login"
+                            "$ref": "#/definitions/response.Login"
                         }
                     }
                 }
             }
         },
-        "/v1/order/emoney": {
+        "/v1/order/cashout": {
             "post": {
-                "description": "Emoney user",
+                "description": "Emoney customer",
                 "consumes": [
                     "application/json"
                 ],
@@ -405,7 +334,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "UserOrder"
+                    "customerOrder"
                 ],
                 "summary": "Order Emoney/Cashout",
                 "parameters": [
@@ -415,7 +344,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/user.InputTransactionBank"
+                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
                         }
                     }
                 ],
@@ -423,16 +352,15 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
                         }
                     }
                 }
             }
         },
-        "/v1/order/paketdata": {
+        "/v1/order/emoney": {
             "post": {
-                "description": "PaketData user",
+                "description": "Emoney customer",
                 "consumes": [
                     "application/json"
                 ],
@@ -440,7 +368,41 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "UserOrder"
+                    "customerOrder"
+                ],
+                "summary": "Order Emoney/Cashout",
+                "parameters": [
+                    {
+                        "description": "inputdataemoney",
+                        "name": "InputDataCashout",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/order/paketdata": {
+            "post": {
+                "description": "PaketData customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customerOrder"
                 ],
                 "summary": "Order PaketData",
                 "parameters": [
@@ -466,7 +428,7 @@ const docTemplate = `{
         },
         "/v1/order/pulsa": {
             "post": {
-                "description": "Pulsa user",
+                "description": "Pulsa customer",
                 "consumes": [
                     "application/json"
                 ],
@@ -474,7 +436,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "UserOrder"
+                    "customerOrder"
                 ],
                 "summary": "Order Pulsa",
                 "parameters": [
@@ -493,40 +455,6 @@ const docTemplate = `{
                         "schema": {
                             "type": "object",
                             "additionalProperties": true
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/register": {
-            "post": {
-                "description": "Register user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "Register",
-                "parameters": [
-                    {
-                        "description": "Register",
-                        "name": "RegisterUser",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/user.Register"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/user.Register"
                         }
                     }
                 }
@@ -598,8 +526,12 @@ const docTemplate = `{
                 }
             }
         },
-        "user.AuthLogin": {
+        "customermitra.AuthLogin": {
             "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
             "properties": {
                 "email": {
                     "type": "string"
@@ -609,20 +541,32 @@ const docTemplate = `{
                 }
             }
         },
-        "user.DetailTransaction": {
+        "customermitra.InputTransactionBankEmoney": {
             "type": "object",
+            "required": [
+                "amount",
+                "an_rekening",
+                "bank_provider",
+                "customer_id",
+                "nomor",
+                "poin_account",
+                "poin_redeem"
+            ],
             "properties": {
-                "id": {
+                "amount": {
                     "type": "integer"
                 },
-                "jenis_transaction": {
+                "an_rekening": {
                     "type": "string"
                 },
-                "nama_bank": {
+                "bank_provider": {
                     "type": "string"
                 },
-                "no_rekening": {
+                "customer_id": {
                     "type": "integer"
+                },
+                "nomor": {
+                    "type": "string"
                 },
                 "poin_account": {
                     "type": "integer"
@@ -632,53 +576,34 @@ const docTemplate = `{
                 }
             }
         },
-        "user.History": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "status": {
-                    "type": "string"
-                },
-                "tanggal": {
-                    "type": "string"
-                },
-                "tipe_transaksi": {
-                    "type": "string"
-                }
-            }
-        },
-        "user.InputTransactionBank": {
+        "customermitra.RegisterCustomer": {
             "type": "object",
             "required": [
-                "AN_Bank",
-                "jenis_transaction",
-                "nama_bank",
-                "no_rekening"
+                "email",
+                "fullname",
+                "no_hp",
+                "password",
+                "pin"
             ],
             "properties": {
-                "AN_Bank": {
+                "email": {
                     "type": "string"
                 },
-                "amount": {
+                "fullname": {
+                    "type": "string"
+                },
+                "no_hp": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "pin": {
                     "type": "integer"
-                },
-                "id_user": {
-                    "type": "string"
-                },
-                "jenis_transaction": {
-                    "type": "string"
-                },
-                "nama_bank": {
-                    "type": "string"
-                },
-                "no_rekening": {
-                    "type": "string"
                 }
             }
         },
-        "user.Login": {
+        "customermitra.ResponseLogin": {
             "type": "object",
             "properties": {
                 "email": {
@@ -701,23 +626,37 @@ const docTemplate = `{
                 }
             }
         },
-        "user.Register": {
+        "customermitra.UpdateCustomer": {
             "type": "object",
+            "required": [
+                "id"
+            ],
             "properties": {
                 "email": {
                     "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "name": {
                     "type": "string"
                 },
                 "no_hp": {
                     "type": "string"
-                },
-                "password": {
+                }
+            }
+        },
+        "response.Login": {
+            "type": "object",
+            "properties": {
+                "code": {
                     "type": "string"
                 },
-                "pin": {
-                    "type": "integer"
+                "messages": {
+                    "type": "string"
+                },
+                "results": {
+                    "$ref": "#/definitions/customermitra.ResponseLogin"
                 }
             }
         }
@@ -727,7 +666,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "api-poins-id.herokuapp.com",
+	Host:             "api-poins-id.herokuapp.com/v1",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "API Jasa Pengiriman",

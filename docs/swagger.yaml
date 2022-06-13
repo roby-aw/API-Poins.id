@@ -44,60 +44,61 @@ definitions:
     - password
     - username
     type: object
-  user.AuthLogin:
+  customermitra.AuthLogin:
     properties:
       email:
         type: string
       password:
         type: string
+    required:
+    - email
+    - password
     type: object
-  user.DetailTransaction:
+  customermitra.InputTransactionBankEmoney:
     properties:
-      id:
+      amount:
         type: integer
-      jenis_transaction:
+      an_rekening:
         type: string
-      nama_bank:
+      bank_provider:
         type: string
-      no_rekening:
+      customer_id:
         type: integer
+      nomor:
+        type: string
       poin_account:
         type: integer
       poin_redeem:
         type: integer
-    type: object
-  user.History:
-    properties:
-      id:
-        type: integer
-      status:
-        type: string
-      tanggal:
-        type: string
-      tipe_transaksi:
-        type: string
-    type: object
-  user.InputTransactionBank:
-    properties:
-      AN_Bank:
-        type: string
-      amount:
-        type: integer
-      id_user:
-        type: string
-      jenis_transaction:
-        type: string
-      nama_bank:
-        type: string
-      no_rekening:
-        type: string
     required:
-    - AN_Bank
-    - jenis_transaction
-    - nama_bank
-    - no_rekening
+    - amount
+    - an_rekening
+    - bank_provider
+    - customer_id
+    - nomor
+    - poin_account
+    - poin_redeem
     type: object
-  user.Login:
+  customermitra.RegisterCustomer:
+    properties:
+      email:
+        type: string
+      fullname:
+        type: string
+      no_hp:
+        type: string
+      password:
+        type: string
+      pin:
+        type: integer
+    required:
+    - email
+    - fullname
+    - no_hp
+    - password
+    - pin
+    type: object
+  customermitra.ResponseLogin:
     properties:
       email:
         type: string
@@ -112,20 +113,29 @@ definitions:
       token:
         type: string
     type: object
-  user.Register:
+  customermitra.UpdateCustomer:
     properties:
       email:
         type: string
+      id:
+        type: integer
       name:
         type: string
       no_hp:
         type: string
-      password:
-        type: string
-      pin:
-        type: integer
+    required:
+    - id
     type: object
-host: api-poins-id.herokuapp.com
+  response.Login:
+    properties:
+      code:
+        type: string
+      messages:
+        type: string
+      results:
+        $ref: '#/definitions/customermitra.ResponseLogin'
+    type: object
+host: api-poins-id.herokuapp.com/v1
 info:
   contact: {}
   description: Berikut API Jasa Pengiriman
@@ -294,126 +304,99 @@ paths:
       summary: Get Token
       tags:
       - admin
-  /v1/account:
-    put:
+  /register:
+    post:
       consumes:
       - application/json
-      description: UpdateUser
+      description: Register customer
       parameters:
-      - default: Bearer <Add access token here>
-        description: Insert your access token
-        in: header
-        name: Authorization
+      - description: Register
+        in: body
+        name: Registercustomer
         required: true
-        type: string
+        schema:
+          $ref: '#/definitions/customermitra.RegisterCustomer'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/user.Register'
-      summary: UpdateUser
+            $ref: '#/definitions/customermitra.RegisterCustomer'
+      summary: Register
       tags:
-      - User
-  /v1/detailhistory/{id}:
-    get:
-      consumes:
-      - application/json
-      description: History/transaction User
-      parameters:
-      - description: id detail history
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/user.DetailTransaction'
-      summary: Detail History/transaction
-      tags:
-      - User
-  /v1/history/{iduser}:
-    get:
-      consumes:
-      - application/json
-      description: History User
-      parameters:
-      - default: Bearer <Add access token here>
-        description: Insert your access token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: id user
-        in: path
-        name: iduser
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/user.History'
-      summary: History
-      tags:
-      - User
+      - customer
   /v1/login:
     post:
       consumes:
       - application/json
-      description: Login user
+      description: Login Customer
       parameters:
-      - description: user
+      - description: Customer
         in: body
-        name: user
+        name: Customer
         required: true
         schema:
-          $ref: '#/definitions/user.AuthLogin'
+          $ref: '#/definitions/customermitra.AuthLogin'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/user.Login'
+            $ref: '#/definitions/response.Login'
       summary: Login
       tags:
-      - User
-  /v1/order/emoney:
+      - Customer
+  /v1/order/cashout:
     post:
       consumes:
       - application/json
-      description: Emoney user
+      description: Emoney customer
       parameters:
       - description: inputdataemoney
         in: body
         name: InputDataCashout
         required: true
         schema:
-          $ref: '#/definitions/user.InputTransactionBank'
+          $ref: '#/definitions/customermitra.InputTransactionBankEmoney'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/customermitra.InputTransactionBankEmoney'
       summary: Order Emoney/Cashout
       tags:
-      - UserOrder
+      - customerOrder
+  /v1/order/emoney:
+    post:
+      consumes:
+      - application/json
+      description: Emoney customer
+      parameters:
+      - description: inputdataemoney
+        in: body
+        name: InputDataCashout
+        required: true
+        schema:
+          $ref: '#/definitions/customermitra.InputTransactionBankEmoney'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customermitra.InputTransactionBankEmoney'
+      summary: Order Emoney/Cashout
+      tags:
+      - customerOrder
   /v1/order/paketdata:
     post:
       consumes:
       - application/json
-      description: PaketData user
+      description: PaketData customer
       parameters:
       - default: Bearer <Add access token here>
         description: Insert your access token
@@ -431,12 +414,12 @@ paths:
             type: object
       summary: Order PaketData
       tags:
-      - UserOrder
+      - customerOrder
   /v1/order/pulsa:
     post:
       consumes:
       - application/json
-      description: Pulsa user
+      description: Pulsa customer
       parameters:
       - default: Bearer <Add access token here>
         description: Insert your access token
@@ -454,27 +437,5 @@ paths:
             type: object
       summary: Order Pulsa
       tags:
-      - UserOrder
-  /v1/register:
-    post:
-      consumes:
-      - application/json
-      description: Register user
-      parameters:
-      - description: Register
-        in: body
-        name: RegisterUser
-        required: true
-        schema:
-          $ref: '#/definitions/user.Register'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/user.Register'
-      summary: Register
-      tags:
-      - User
+      - customerOrder
 swagger: "2.0"
