@@ -134,6 +134,7 @@ func (repo *PosgresRepository) DetailHistoryCustomer(idtransaction string) (*cus
 		Amount:             transaction.Amount,
 		Poin_account:       transaction.Poin_Account,
 		Poin_redeem:        transaction.Poin_Redeem,
+		Description:        transaction.Description,
 		Status_Transaction: transaction.Status_Transaction,
 	}
 	return &DetailHistory, nil

@@ -99,6 +99,7 @@ type DetailHistory struct {
 	Amount             int       `json:"amount"`
 	Poin_account       int       `json:"poin_account"`
 	Poin_redeem        int       `json:"poin_redeem"`
+	Description        string    `json:"description"`
 	Status_Transaction string    `json:"status_transaction"`
 }
 type History struct {
