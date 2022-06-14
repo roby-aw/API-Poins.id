@@ -36,9 +36,14 @@ func VerifyPassword(hashedPassword, password string) error {
 
 func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*customermitra.ResponseLogin, error) {
 	var Customer *customermitra.Customer
-	err := repo.db.Where("email = ? AND password = ?", login.Email, login.Password).First(&Customer).Error
+	err := repo.db.Where("email = ?", login.Email).First(&Customer).Error
 	if Customer.Email == "" {
-		err = errors.New("email atau password salah")
+		err = errors.New("email salah")
+		return nil, err
+	}
+	err = VerifyPassword(login.Password, Customer.Password)
+	if err != nil {
+		err = errors.New("Password salah")
 		return nil, err
 	}
 	expirationTime := time.Now().Add(24 * time.Hour)
