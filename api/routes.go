@@ -3,6 +3,7 @@ package api
 import (
 	"api-redeem-point/api/admin"
 	"api-redeem-point/api/customermitra"
+	"api-redeem-point/api/middleware"
 
 	//auth "api-redeem-point/api/middleware"
 
@@ -19,12 +20,12 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	c.POST("/customer/register", controller.CustomerMitraController.Register)
 	c.POST("/customer", controller.CustomerMitraController.Login)
 	c.PUT("/customer", controller.CustomerMitraController.UpdateCustomer)
-	c.GET("/history/:idcustomer", controller.CustomerMitraController.HistoryCustomer)
-	c.GET("/dethistory/:idtransaction", controller.CustomerMitraController.DetailHistoryCustomer)
-	c.POST("/pulsa", controller.CustomerMitraController.OrderPulsa)
-	c.POST("/paketdata", controller.CustomerMitraController.OrderPaketData)
-	c.POST("/cashout", controller.CustomerMitraController.OrderCashout)
-	c.POST("/emoney", controller.CustomerMitraController.OrderEmoney)
+	c.GET("/history/:idcustomer", controller.CustomerMitraController.HistoryCustomer, middleware.CustomerSetupAuthenticationJWT())
+	c.GET("/dethistory/:idtransaction", controller.CustomerMitraController.DetailHistoryCustomer, middleware.CustomerSetupAuthenticationJWT())
+	c.POST("/pulsa", controller.CustomerMitraController.OrderPulsa, middleware.CustomerSetupAuthenticationJWT())
+	c.POST("/paketdata", controller.CustomerMitraController.OrderPaketData, middleware.CustomerSetupAuthenticationJWT())
+	c.POST("/cashout", controller.CustomerMitraController.OrderCashout, middleware.CustomerSetupAuthenticationJWT())
+	c.POST("/emoney", controller.CustomerMitraController.OrderEmoney, middleware.CustomerSetupAuthenticationJWT())
 	c.POST("/callback", controller.CustomerMitraController.CallbackXendit)
 	//admin
 	// g := e.Group("/admin")
