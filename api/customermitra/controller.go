@@ -111,7 +111,7 @@ func (Controller *Controller) HistoryCustomer(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
-		"messages": "success update customer",
+		"messages": "success get history customer",
 		"result":   result,
 	})
 }
