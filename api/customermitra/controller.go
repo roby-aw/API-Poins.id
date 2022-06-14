@@ -84,8 +84,9 @@ func (Controller *Controller) Register(c echo.Context) error {
 // // @Success 200 {object} customermitra.UpdateCustomer
 // // @Router /v1/account [put]
 func (Controller *Controller) UpdateCustomer(c echo.Context) error {
-	idcustomer, _ := strconv.Atoi(c.Param("idcustomer"))
-	result, err := Controller.service.HistoryCustomer(idcustomer)
+	var req customermitraBussiness.UpdateCustomer
+	c.Bind(&req)
+	result, err := Controller.service.UpdateCustomer(&req)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"code":     400,
@@ -100,9 +101,8 @@ func (Controller *Controller) UpdateCustomer(c echo.Context) error {
 }
 
 func (Controller *Controller) HistoryCustomer(c echo.Context) error {
-	var req customermitraBussiness.UpdateCustomer
-	c.Bind(&req)
-	result, err := Controller.service.UpdateCustomer(&req)
+	idcustomer, _ := strconv.Atoi(c.Param("idcustomer"))
+	result, err := Controller.service.HistoryCustomer(idcustomer)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"code":     400,
