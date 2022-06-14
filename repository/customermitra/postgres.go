@@ -113,7 +113,7 @@ func (repo *PosgresRepository) HistoryCustomer(id int) ([]customermitra.History,
 		tmpHistory.ID_Transaction = v.ID_Transaction
 		tmpHistory.CreatedAt = v.CreatedAt
 		tmpHistory.Transaction_type = v.Transaction_type
-		tmpHistory.Status_Transaction = v.Description
+		tmpHistory.Status_Transaction = v.Status_Transaction
 		History = append(History, tmpHistory)
 	}
 	return History, nil
