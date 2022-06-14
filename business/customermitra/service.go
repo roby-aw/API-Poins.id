@@ -8,6 +8,7 @@ type Repository interface {
 	SignCustomer(login *AuthLogin) (*ResponseLogin, error)
 	InsertCustomer(Data *RegisterCustomer) (*RegisterCustomer, error)
 	UpdateCustomer(Data *UpdateCustomer) (*UpdateCustomer, error)
+	HistoryCustomer(id int) ([]History, error)
 	ClaimPulsa(Data *RedeemPulsaData) error
 	ClaimPaketData(Data *RedeemPulsaData) error
 	ClaimBank(emoney *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
@@ -19,6 +20,7 @@ type Service interface {
 	LoginCustomer(login *AuthLogin) (*ResponseLogin, error)
 	CreateCustomer(Data *RegisterCustomer) (*RegisterCustomer, error)
 	UpdateCustomer(Data *UpdateCustomer) (*UpdateCustomer, error)
+	HistoryCustomer(id int) ([]History, error)
 	RedeemPulsa(Data *RedeemPulsaData) error
 	RedeemPaketData(Data *RedeemPulsaData) error
 	RedeemBank(Data *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
@@ -61,6 +63,10 @@ func (s *service) UpdateCustomer(Data *UpdateCustomer) (*UpdateCustomer, error) 
 		return nil, err
 	}
 	return s.repository.UpdateCustomer(Data)
+}
+
+func (s *service) HistoryCustomer(id int) ([]History, error) {
+	return s.repository.HistoryCustomer(id)
 }
 
 func (s *service) RedeemPulsa(Data *RedeemPulsaData) error {

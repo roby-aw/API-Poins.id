@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -83,6 +84,22 @@ func (Controller *Controller) Register(c echo.Context) error {
 // // @Success 200 {object} customermitra.UpdateCustomer
 // // @Router /v1/account [put]
 func (Controller *Controller) UpdateCustomer(c echo.Context) error {
+	idcustomer, _ := strconv.Atoi(c.Param("idcustomer"))
+	result, err := Controller.service.HistoryCustomer(idcustomer)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success update customer",
+		"result":   result,
+	})
+}
+
+func (Controller *Controller) HistoryCustomer(c echo.Context) error {
 	var req customermitraBussiness.UpdateCustomer
 	c.Bind(&req)
 	result, err := Controller.service.UpdateCustomer(&req)

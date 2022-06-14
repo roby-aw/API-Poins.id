@@ -100,6 +100,25 @@ func (repo *PosgresRepository) UpdateCustomer(Data *customermitra.UpdateCustomer
 	return Data, nil
 }
 
+func (repo *PosgresRepository) HistoryCustomer(id int) ([]customermitra.History, error) {
+	var DataHistory []customermitra.History_Transaction
+	err := repo.db.Where("Customer_id = ? AND Status_Poin", id, "OUT").Find(&DataHistory).Error
+	if err != nil {
+		return nil, err
+	}
+	var History []customermitra.History
+	for _, v := range DataHistory {
+		var tmpHistory customermitra.History
+		tmpHistory.ID = int(v.ID)
+		tmpHistory.ID_Transaction = v.ID_Transaction
+		tmpHistory.CreatedAt = v.CreatedAt
+		tmpHistory.Description = v.Description
+		tmpHistory.Status_Transaction = v.Description
+		History = append(History, tmpHistory)
+	}
+	return History, nil
+}
+
 func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) error {
 	var tmpCustomer customermitra.Customer
 	err := repo.db.Where("ID = ?", Data.Customer_id).First(&tmpCustomer).Error

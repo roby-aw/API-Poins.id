@@ -91,10 +91,11 @@ type AuthLogin struct {
 }
 
 type History struct {
-	ID             int       `json:"id"`
-	Tipe_transaksi string    `json:"tipe_transaksi"`
-	Tanggal        time.Time `json:"tanggal"`
-	Status         string    `json:"status"`
+	ID                 int       `json:"id"`
+	ID_Transaction     string    `json:"id_transaction"`
+	Description        string    `json:"description"`
+	CreatedAt          time.Time `json:"createdat"`
+	Status_Transaction string    `json:"status_transaction"`
 }
 
 type RedeemPulsaData struct {
