@@ -20,7 +20,7 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	c.POST("/customer", controller.CustomerMitraController.Login)
 	c.PUT("/customer", controller.CustomerMitraController.UpdateCustomer)
 	c.GET("/history/:idcustomer", controller.CustomerMitraController.HistoryCustomer)
-	c.GET("/history/:idtransaction", controller.CustomerMitraController.DetailHistoryCustomer)
+	c.GET("/dethistory/:idtransaction", controller.CustomerMitraController.DetailHistoryCustomer)
 	c.POST("/pulsa", controller.CustomerMitraController.OrderPulsa)
 	c.POST("/paketdata", controller.CustomerMitraController.OrderPaketData)
 	c.POST("/cashout", controller.CustomerMitraController.OrderCashout)
