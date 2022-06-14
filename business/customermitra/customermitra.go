@@ -4,55 +4,59 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
-	"gorm.io/gorm"
 )
 
 type History_Transaction struct {
-	gorm.Model
-	ID_Transaction     string `json:"transaction_id" gorm:"primaryKey;autoIncrement:false"`
+	ID                 uint `json:"id"`
+	CreatedAt          time.Time
+	ID_Transaction     string `json:"transaction_id"`
 	Customer_id        int    `json:"customer_id"`
 	Mitra_id           int    `json:"mitra_id"`
 	Transaction_type   string `json:"transaction_type"`
-	Bank_Provider      string `json:"bank_provider" gorm:"size:255"`
-	Nomor              string `json:"nomor" gorm:"size:20"`
+	Bank_Provider      string `json:"bank_provider"`
+	Nomor              string `json:"nomor" gorm:""`
 	Poin_Account       int    `json:"poin_account"`
 	Poin_Redeem        int    `json:"poin_redeem"`
 	Amount             int    `json:"amount"`
-	Description        string `json:"description" gorm:"size:255"`
-	Status_Transaction string `json:"status_transaction" gorm:"size:255"`
-	Status_Poin        string `json:"status_poin" gorm:"size:10"`
+	Description        string `json:"description" gorm:""`
+	Status_Transaction string `json:"status_transaction"`
+	Status_Poin        string `json:"status_poin"`
 }
 
 type Store struct {
-	gorm.Model
-	Email    string `json:"email" gorm:"size:255"`
-	Password string `json:"password" gorm:"size:255"`
-	Store    string `json:"store" gorm:"size:255"`
-	Alamat   string `json:"alamat" gorm:"size:255"`
+	ID        uint `json:"id"`
+	CreatedAt time.Time
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	Store     string `json:"store"`
+	Alamat    string `json:"alamat"`
 }
 
 type Customer struct {
-	gorm.Model
-	Email    string `json:"email" gorm:"primaryKey;autoIncrement:false"`
-	Fullname string `json:"fullname" gorm:"size:255"`
-	Password string `json:"password" gorm:"size:255"`
-	No_hp    string `json:"no_hp" gorm:"size:80"`
-	Poin     int    `json:"poin" gorm:"size:50"`
-	Pin      int    `json:"pin" gorm:"size:50"`
+	ID        uint `json:"id"`
+	CreatedAt time.Time
+	Email     string `json:"email"`
+	Fullname  string `json:"fullname"`
+	Password  string `json:"password"`
+	No_hp     string `json:"no_hp"`
+	Poin      int    `json:"poin"`
+	Pin       int    `json:"pin"`
 }
 
 type StockProduct struct {
-	gorm.Model
-	Product string `json:"product" gorm:"size:100"`
-	Balance int    `json:"balance" gorm:"size:100"`
+	ID        uint `json:"id"`
+	CreatedAt time.Time
+	Product   string `json:"product" gorm:"size:100"`
+	Balance   int    `json:"balance" gorm:"size:100"`
 }
 
 type Admin struct {
-	gorm.Model
-	Email    string `json:"email" gorm:"size:255"`
-	Fullname string `json:"fullname" gorm:"size:255"`
-	Password string `json:"password" gorm:"size:255"`
-	No_hp    string `json:"no_hp" gorm:"size:80"`
+	ID        uint `json:"id"`
+	CreatedAt time.Time
+	Email     string `json:"email" gorm:"size:255"`
+	Fullname  string `json:"fullname" gorm:"size:255"`
+	Password  string `json:"password" gorm:"size:255"`
+	No_hp     string `json:"no_hp" gorm:"size:80"`
 }
 
 type RegisterCustomer struct {

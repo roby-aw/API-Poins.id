@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"api-redeem-point/business/customermitra"
 	"api-redeem-point/config"
 	"fmt"
 	"os"
@@ -42,12 +41,12 @@ func newPostgres(config *config.AppConfig) *gorm.DB {
 		panic(err)
 	}
 	// db.Migrator().DropTable(customermitra.Customer{})
-	data := customermitra.History_Transaction{}
+	data := History_Transaction{}
 	db.AutoMigrate(data)
-	db.AutoMigrate(customermitra.Store{})
-	db.AutoMigrate(customermitra.Customer{})
-	db.AutoMigrate(customermitra.StockProduct{})
-	db.AutoMigrate(customermitra.Admin{})
+	db.AutoMigrate(Store{})
+	db.AutoMigrate(Customer{})
+	db.AutoMigrate(StockProduct{})
+	db.AutoMigrate(Admin{})
 	return db
 }
 

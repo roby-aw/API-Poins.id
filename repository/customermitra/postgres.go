@@ -2,9 +2,9 @@ package customermitra
 
 import (
 	"api-redeem-point/business/customermitra"
+	"api-redeem-point/utils"
 	"errors"
 	"fmt"
-	"math/rand"
 	"os"
 	"strconv"
 	"time"
@@ -90,7 +90,7 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 	if err != nil {
 		return err
 	}
-	random := randomstring()
+	random := utils.Randomstring()
 	var tmpHistory customermitra.History_Transaction
 	repo.db.Where("ID_Transaction = ?", "P"+random).First(&tmpHistory)
 	if tmpHistory.ID_Transaction != "" {
@@ -122,7 +122,7 @@ func (repo *PosgresRepository) ClaimPaketData(Data *customermitra.RedeemPulsaDat
 	if err != nil {
 		return err
 	}
-	random := randomstring()
+	random := utils.Randomstring()
 	var tmpHistory customermitra.History_Transaction
 	repo.db.Where("ID_Transaction = ?", "P"+random).First(&tmpHistory)
 	if tmpHistory.ID_Transaction != "" {
@@ -160,7 +160,7 @@ func (repo *PosgresRepository) TakeCallback(data *customermitra.Disbursement) (*
 }
 
 func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransactionBankEmoney) (*customermitra.InputTransactionBankEmoney, error) {
-	random := randomstring()
+	random := utils.Randomstring()
 	inputdata := customermitra.History_Transaction{
 		ID_Transaction:     "EM" + random,
 		Transaction_type:   "Redeem Emoney",
@@ -185,12 +185,10 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 		Description:       "Redeem Emoney" + " - " + inputdata.ID_Transaction,
 		Amount:            float64(emoney.Amount),
 	}
-	fmt.Println(createData)
-	resp, err := disbursement.Create(&createData)
+	_, err := disbursement.Create(&createData)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(resp)
 	errdb := repo.db.Create(&inputdata).Error
 	if errdb != nil {
 		return nil, errdb
@@ -199,7 +197,7 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 }
 
 func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionBankEmoney) (*customermitra.InputTransactionBankEmoney, error) {
-	random := randomstring()
+	random := utils.Randomstring()
 	inputdata := customermitra.History_Transaction{
 		ID_Transaction:     "EM" + random,
 		Transaction_type:   "Redeem Bank",
@@ -235,18 +233,4 @@ func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionB
 		return nil, errdb
 	}
 	return emoney, nil
-}
-
-func randomstring() string {
-	rand.Seed(time.Now().UTC().UnixNano())
-	random := rand.Int()
-	angka := []rune(fmt.Sprintf("%d", random))
-	b := make([]rune, 8)
-	for i := range b {
-		b[i] = angka[rand.Intn(len(angka))]
-	}
-	hasil := string(b)
-	inthasil, _ := strconv.Atoi(hasil)
-	strhasil := strconv.Itoa(inthasil)
-	return strhasil
 }
