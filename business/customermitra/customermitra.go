@@ -7,29 +7,29 @@ import (
 )
 
 type History_Transaction struct {
-	ID                 uint `json:"id"`
-	CreatedAt          time.Time
-	ID_Transaction     string `json:"transaction_id"`
-	Customer_id        int    `json:"customer_id"`
-	Mitra_id           int    `json:"mitra_id"`
-	Transaction_type   string `json:"transaction_type"`
-	Bank_Provider      string `json:"bank_provider"`
-	Nomor              string `json:"nomor" gorm:""`
-	Poin_Account       int    `json:"poin_account"`
-	Poin_Redeem        int    `json:"poin_redeem"`
-	Amount             int    `json:"amount"`
-	Description        string `json:"description" gorm:""`
-	Status_Transaction string `json:"status_transaction"`
-	Status_Poin        string `json:"status_poin"`
+	ID                 uint      `json:"id"`
+	CreatedAt          time.Time `json:"createdat"`
+	ID_Transaction     string    `json:"transaction_id"`
+	Customer_id        int       `json:"customer_id"`
+	Mitra_id           int       `json:"mitra_id"`
+	Transaction_type   string    `json:"transaction_type"`
+	Bank_Provider      string    `json:"bank_provider"`
+	Nomor              string    `json:"nomor" gorm:""`
+	Poin_Account       int       `json:"poin_account"`
+	Poin_Redeem        int       `json:"poin_redeem"`
+	Amount             int       `json:"amount"`
+	Description        string    `json:"description"`
+	Status_Transaction string    `json:"status_transaction"`
+	Status_Poin        string    `json:"status_poin"`
 }
 
 type Store struct {
-	ID        uint `json:"id"`
-	CreatedAt time.Time
-	Email     string `json:"email"`
-	Password  string `json:"password"`
-	Store     string `json:"store"`
-	Alamat    string `json:"alamat"`
+	ID        uint      `json:"id"`
+	CreatedAt time.Time `json:"createdat"`
+	Email     string    `json:"email"`
+	Password  string    `json:"password"`
+	Store     string    `json:"store"`
+	Alamat    string    `json:"alamat"`
 }
 
 type Customer struct {
@@ -44,19 +44,19 @@ type Customer struct {
 }
 
 type StockProduct struct {
-	ID        uint `json:"id"`
-	CreatedAt time.Time
-	Product   string `json:"product" gorm:"size:100"`
-	Balance   int    `json:"balance" gorm:"size:100"`
+	ID        uint      `json:"id"`
+	CreatedAt time.Time `json:"createdat"`
+	Product   string    `json:"product" gorm:"size:100"`
+	Balance   int       `json:"balance" gorm:"size:100"`
 }
 
 type Admin struct {
-	ID        uint `json:"id"`
-	CreatedAt time.Time
-	Email     string `json:"email" gorm:"size:255"`
-	Fullname  string `json:"fullname" gorm:"size:255"`
-	Password  string `json:"password" gorm:"size:255"`
-	No_hp     string `json:"no_hp" gorm:"size:80"`
+	ID        uint      `json:"id"`
+	CreatedAt time.Time `json:"createdat"`
+	Email     string    `json:"email" gorm:"size:255"`
+	Fullname  string    `json:"fullname" gorm:"size:255"`
+	Password  string    `json:"password" gorm:"size:255"`
+	No_hp     string    `json:"no_hp" gorm:"size:80"`
 }
 
 type RegisterCustomer struct {

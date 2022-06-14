@@ -12,6 +12,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/xendit/xendit-go"
 	"github.com/xendit/xendit-go/disbursement"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -23,6 +24,14 @@ func NewPostgresRepository(db *gorm.DB) *PosgresRepository {
 	return &PosgresRepository{
 		db: db,
 	}
+}
+
+func Hash(password string) ([]byte, error) {
+	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+}
+
+func VerifyPassword(hashedPassword, password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
 
 func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*customermitra.ResponseLogin, error) {
@@ -59,13 +68,14 @@ func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*cu
 }
 
 func (repo *PosgresRepository) InsertCustomer(Data *customermitra.RegisterCustomer) (*customermitra.RegisterCustomer, error) {
+	password, err := Hash(Data.Password)
 	var Customer customermitra.Customer
 	Customer.Email = Data.Email
 	Customer.Fullname = Data.Fullname
-	Customer.Password = Data.Password
+	Customer.Password = string(password)
 	Customer.No_hp = Data.No_hp
 	Customer.Pin = Data.Pin
-	err := repo.db.Where("email = ?", Data.Email).First(&Customer).Error
+	err = repo.db.Where("email = ?", Data.Email).First(&Customer).Error
 	if err == nil {
 		err = errors.New("email sudah digunakan")
 		return nil, err
