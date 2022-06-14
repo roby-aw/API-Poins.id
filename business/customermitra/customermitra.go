@@ -93,7 +93,7 @@ type AuthLogin struct {
 type History struct {
 	ID                 int       `json:"id"`
 	ID_Transaction     string    `json:"id_transaction"`
-	Description        string    `json:"description"`
+	Transaction_type   string    `json:"transaction_type"`
 	CreatedAt          time.Time `json:"createdat"`
 	Status_Transaction string    `json:"status_transaction"`
 }
