@@ -10,14 +10,14 @@ type Repository interface {
 	InsertAdmin(admin *customermitra.Admin) (*customermitra.Admin, error)
 	RemoveAdmin(id int) error
 	RenewAdmin(id int, admin *Admin) (*Admin, error)
-	CreateToken(admins *Admin) (string, error)
+	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 }
 
 type Service interface {
 	CreateAdmin(admin *customermitra.Admin) (*customermitra.Admin, error)
 	DeleteAdmin(id int) error
 	UpdateAdmin(id int, admin *Admin) (*Admin, error)
-	GetToken(admins *Admin) (string, error)
+	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 }
 
 type service struct {
@@ -49,7 +49,7 @@ func (s *service) UpdateAdmin(id int, admin *Admin) (*Admin, error) {
 	return s.repository.RenewAdmin(id, admin)
 }
 
-func (s *service) GetToken(admins *Admin) (string, error) {
-	tokens, err := s.repository.CreateToken(admins)
+func (s *service) LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error) {
+	tokens, err := s.repository.LoginAdmin(Auth)
 	return tokens, err
 }

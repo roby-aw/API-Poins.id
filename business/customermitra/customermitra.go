@@ -51,10 +51,10 @@ type StockProduct struct {
 }
 
 type Admin struct {
-	Email    string `json:"email"`
-	Fullname string `json:"fullname"`
-	Password string `json:"password"`
-	No_hp    string `json:"no_hp"`
+	Email    string `json:"email" validate:"required,email"`
+	Fullname string `json:"fullname" validate:"required"`
+	Password string `json:"password" validate:"required"`
+	No_hp    string `json:"no_hp" validate:"required"`
 }
 
 type RegisterCustomer struct {

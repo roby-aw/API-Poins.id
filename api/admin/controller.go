@@ -57,11 +57,10 @@ func (Controller *Controller) CreateAdmin(c echo.Context) error {
 // @Success 200 {object} map[string]interface{}
 // @Failure 400
 // @Router /admin/token [post]
-func (Controller *Controller) GetToken(c echo.Context) error {
-	var request adminBusiness.Admin
-
+func (Controller *Controller) LoginAdmin(c echo.Context) error {
+	var request adminBusiness.AuthLogin
 	c.Bind(&request)
-	token, err := Controller.service.GetToken(&request)
+	token, err := Controller.service.LoginAdmin(&request)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())

@@ -42,15 +42,17 @@ func (repo *PosgresRepository) InsertAdmin(Admins *customermitra.Admin) (*custom
 	return Admins, nil
 }
 
-func (repo *PosgresRepository) CreateToken(Admins *admin.Admin) (string, error) {
-	err := repo.db.Where("username =? AND password = ?", Admins.Username, Admins.Password).First(&Admins).Error
+func (repo *PosgresRepository) LoginAdmin(Auth *admin.AuthLogin) (*admin.ResponseLogin, error) {
+	var Admin admin.Admin
+	err := repo.db.Where("email =? AND password = ?", Auth.Email, Auth.Password).First(&Admin).Error
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	expirationTime := time.Now().Add(5 * time.Minute)
+	expirationTime := time.Now().Add(5 * time.Hour)
 
 	claims := &admin.Claims{
-		Username: Admins.Username,
+		ID:    Admin.ID,
+		Email: Admin.Email,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
@@ -60,9 +62,18 @@ func (repo *PosgresRepository) CreateToken(Admins *admin.Admin) (string, error) 
 	SECRET_KEY := config.GetConfig().Secrettoken.Token
 	token_jwt, err := token.SignedString([]byte(SECRET_KEY))
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return token_jwt, err
+	response := admin.ResponseLogin{
+		ID:       Admin.ID,
+		Email:    Admin.Email,
+		Fullname: Admin.Fullname,
+		Password: Admin.Password,
+		No_hp:    Admin.No_hp,
+		Token:    token_jwt,
+	}
+
+	return &response, nil
 }
 
 func (repo PosgresRepository) RenewAdmin(id int, admin *admin.Admin) (*admin.Admin, error) {
