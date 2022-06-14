@@ -30,7 +30,7 @@ type Customer struct {
 	gorm.Model
 	Email    string `json:"email" gorm:"primaryKey;autoIncrement:false"`
 	Fullname string `json:"fullname" gorm:"size:255"`
-	Password string `json:"password" gorm:"size:255"`
+	Password string `json:"password" gorm:"size:50"`
 	No_hp    string `json:"no_hp" gorm:"size:80"`
 	Poin     int    `json:"poin" gorm:"size:50"`
 	Pin      int    `json:"pin" gorm:"size:50"`
