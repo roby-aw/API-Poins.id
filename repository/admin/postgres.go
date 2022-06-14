@@ -21,23 +21,6 @@ func NewPosgresRepository(db *gorm.DB) *PosgresRepository {
 	}
 }
 
-func (repo *PosgresRepository) FindAdmins() (Admins []admin.Admin, err error) {
-	result := repo.db.Find(&Admins)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-	return Admins, nil
-}
-
-func (repo *PosgresRepository) FindAdminByID(id int) (*admin.Admin, error) {
-	var admin *admin.Admin
-	err := repo.db.Where("ID = ? ", id).First(&admin).Error
-	if err != nil {
-		return nil, err
-	}
-	return admin, nil
-}
-
 func (repo *PosgresRepository) RemoveAdmin(id int) error {
 	var admin *admin.Admin
 	err := repo.db.Where("ID = ?", id).First(&admin).Error

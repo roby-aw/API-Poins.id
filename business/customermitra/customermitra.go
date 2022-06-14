@@ -51,10 +51,10 @@ type StockProduct struct {
 }
 
 type Admin struct {
-	Email    string `json:"email" gorm:"size:255"`
-	Fullname string `json:"fullname" gorm:"size:255"`
-	Password string `json:"password" gorm:"size:255"`
-	No_hp    string `json:"no_hp" gorm:"size:80"`
+	Email    string `json:"email"`
+	Fullname string `json:"fullname"`
+	Password string `json:"password"`
+	No_hp    string `json:"no_hp"`
 }
 
 type RegisterCustomer struct {
