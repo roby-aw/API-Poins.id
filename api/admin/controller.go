@@ -3,6 +3,7 @@ package admin
 import (
 	"api-redeem-point/business/admin"
 	adminBusiness "api-redeem-point/business/admin"
+	"api-redeem-point/business/customermitra"
 	"net/http"
 	"strconv"
 
@@ -20,49 +21,6 @@ func NewController(service adminBusiness.Service) *Controller {
 }
 
 // Create godoc
-// @Summary Get All admin
-// @description Get all admin with data
-// @tags Admin using Token JWT
-// @Accept json
-// @Produce json
-// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
-// @Success 200 {object} []map[string]interface{}
-// @Router /admin [get]
-func (Controller *Controller) GetAdmins(c echo.Context) error {
-	admins, err := Controller.service.GetAdmins()
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"code":     200,
-		"messages": "success get all admin",
-		"data":     admins,
-	})
-}
-
-// Create godoc
-// @Summary Get Admin By ID
-// @description Get Admin By ID
-// @tags admin
-// @Accept json
-// @Produce json
-// @Param id path int true "anything id"
-// @Success 200 {object} map[string]interface{}
-// @Router /admin/{id} [get]
-func (Controller *Controller) GetAdminByID(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
-	admin, err := Controller.service.GetAdminByID(id)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, err.Error())
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"code":     200,
-		"messages": "success get data admin",
-		"data":     admin,
-	})
-}
-
-// Create godoc
 // @Summary Create admin
 // @description create admin with data
 // @tags admin
@@ -73,7 +31,7 @@ func (Controller *Controller) GetAdminByID(c echo.Context) error {
 // @Failure 400 {object} map[string]interface{}
 // @Router /admin [post]
 func (Controller *Controller) CreateAdmin(c echo.Context) error {
-	admin := admin.Admin{}
+	admin := customermitra.Admin{}
 	c.Bind(&admin)
 	admins, err := Controller.service.CreateAdmin(&admin)
 	if err != nil {
@@ -82,8 +40,8 @@ func (Controller *Controller) CreateAdmin(c echo.Context) error {
 			"Error":   err.Error(),
 		})
 	}
-	return c.JSON(http.StatusCreated, map[string]interface{}{
-		"code":     201,
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
 		"messages": "success create data",
 		"data":     admins,
 	})

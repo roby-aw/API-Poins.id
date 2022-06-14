@@ -2,6 +2,7 @@ package admin
 
 import (
 	"api-redeem-point/business/admin"
+	"api-redeem-point/business/customermitra"
 	"api-redeem-point/config"
 	"fmt"
 	"time"
@@ -50,7 +51,7 @@ func (repo *PosgresRepository) RemoveAdmin(id int) error {
 	}
 	return err
 }
-func (repo *PosgresRepository) InsertAdmin(Admins *admin.Admin) (*admin.Admin, error) {
+func (repo *PosgresRepository) InsertAdmin(Admins *customermitra.Admin) (*customermitra.Admin, error) {
 	err := repo.db.Create(&Admins).Error
 	if err != nil {
 		return nil, fmt.Errorf("failed insert data")

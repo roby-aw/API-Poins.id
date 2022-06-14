@@ -1,22 +1,20 @@
 package admin
 
 import (
+	"api-redeem-point/business/customermitra"
+
 	"github.com/go-playground/validator/v10"
 )
 
 type Repository interface {
-	FindAdmins() (admins []Admin, err error)
-	FindAdminByID(id int) (*Admin, error)
-	InsertAdmin(admin *Admin) (*Admin, error)
+	InsertAdmin(admin *customermitra.Admin) (*customermitra.Admin, error)
 	RemoveAdmin(id int) error
 	RenewAdmin(id int, admin *Admin) (*Admin, error)
 	CreateToken(admins *Admin) (string, error)
 }
 
 type Service interface {
-	GetAdmins() (Admins []Admin, err error)
-	GetAdminByID(id int) (*Admin, error)
-	CreateAdmin(admin *Admin) (*Admin, error)
+	CreateAdmin(admin *customermitra.Admin) (*customermitra.Admin, error)
 	DeleteAdmin(id int) error
 	UpdateAdmin(id int, admin *Admin) (*Admin, error)
 	GetToken(admins *Admin) (string, error)
@@ -34,19 +32,7 @@ func NewService(repository Repository) Service {
 	}
 }
 
-func (s *service) GetAdmins() (admins []Admin, err error) {
-	admins, err = s.repository.FindAdmins()
-	if err != nil {
-		return nil, err
-	}
-	return admins, nil
-}
-
-func (s *service) GetAdminByID(id int) (*Admin, error) {
-	return s.repository.FindAdminByID(id)
-}
-
-func (s *service) CreateAdmin(admin *Admin) (*Admin, error) {
+func (s *service) CreateAdmin(admin *customermitra.Admin) (*customermitra.Admin, error) {
 	err := s.validate.Struct(admin)
 	if err != nil {
 		return nil, err
