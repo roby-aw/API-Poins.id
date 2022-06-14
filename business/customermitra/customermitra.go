@@ -9,7 +9,7 @@ import (
 type History_Transaction struct {
 	ID                 uint      `json:"id"`
 	CreatedAt          time.Time `json:"createdat"`
-	ID_Transaction     string    `json:"transaction_id"`
+	ID_Transaction     string    `json:"id_transaction"`
 	Customer_id        int       `json:"customer_id"`
 	Mitra_id           int       `json:"mitra_id"`
 	Transaction_type   string    `json:"transaction_type"`
@@ -90,6 +90,17 @@ type AuthLogin struct {
 	Password string `json:"password" validate:"required"`
 }
 
+type DetailHistory struct {
+	ID_Transaction     string    `json:"transaction_id"`
+	Transaction_type   string    `json:"transaction_type"`
+	CreatedAt          time.Time `json:"createdat"`
+	Bank_Provider      string    `json:"bank_provider"`
+	Nomor              string    `json:"nomor"`
+	Amount             int       `json:"amount"`
+	Poin_account       int       `json:"poin_account"`
+	Poin_redeem        int       `json:"poin_redeem"`
+	Status_Transaction string    `json:"status_transaction"`
+}
 type History struct {
 	ID                 int       `json:"id"`
 	ID_Transaction     string    `json:"id_transaction"`

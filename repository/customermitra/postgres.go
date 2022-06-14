@@ -119,6 +119,26 @@ func (repo *PosgresRepository) HistoryCustomer(id int) ([]customermitra.History,
 	return History, nil
 }
 
+func (repo *PosgresRepository) DetailHistoryCustomer(idtransaction string) (*customermitra.DetailHistory, error) {
+	var transaction customermitra.History_Transaction
+	err := repo.db.Where("ID_Transaction = ?", idtransaction).First(&transaction).Error
+	if err != nil {
+		return nil, err
+	}
+	DetailHistory := customermitra.DetailHistory{
+		ID_Transaction:     transaction.ID_Transaction,
+		Transaction_type:   transaction.Transaction_type,
+		CreatedAt:          transaction.CreatedAt,
+		Bank_Provider:      transaction.Bank_Provider,
+		Nomor:              transaction.Nomor,
+		Amount:             transaction.Amount,
+		Poin_account:       transaction.Poin_Account,
+		Poin_redeem:        transaction.Poin_Redeem,
+		Status_Transaction: transaction.Status_Transaction,
+	}
+	return &DetailHistory, nil
+}
+
 func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) error {
 	var tmpCustomer customermitra.Customer
 	err := repo.db.Where("ID = ?", Data.Customer_id).First(&tmpCustomer).Error
