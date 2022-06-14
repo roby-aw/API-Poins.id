@@ -116,6 +116,22 @@ func (Controller *Controller) HistoryCustomer(c echo.Context) error {
 	})
 }
 
+func (Controller *Controller) DetailHistoryCustomer(c echo.Context) error {
+	idcustomer := c.Param("idtransaction")
+	result, err := Controller.service.DetailHistoryCustomer(idcustomer)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success get history customer",
+		"result":   result,
+	})
+}
+
 // Create godoc
 // @Summary Order Emoney/Cashout
 // @description Emoney customer
