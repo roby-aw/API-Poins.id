@@ -43,8 +43,7 @@ func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*cu
 	}
 	err = VerifyPassword(login.Password, Customer.Password)
 	fmt.Println(err)
-	if err != nil {
-		err = errors.New("Password salah")
+	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
 		return nil, err
 	}
 	expirationTime := time.Now().Add(24 * time.Hour)
