@@ -67,10 +67,10 @@ func (Controller *Controller) CreateAdmin(c echo.Context) error {
 // @tags admin
 // @Accept json
 // @Produce json
-// @Param admin body admin.InputAdminToken true "admin"
+// @Param admin body admin.AuthLogin true "admin"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400
-// @Router /admin/token [post]
+// @Router /admin/login [post]
 func (Controller *Controller) LoginAdmin(c echo.Context) error {
 	var request adminBusiness.AuthLogin
 	c.Bind(&request)
@@ -86,18 +86,6 @@ func (Controller *Controller) LoginAdmin(c echo.Context) error {
 	})
 }
 
-// Create godoc
-// @Summary Update Admin
-// @description update data admin
-// @tags Admin using Token JWT
-// @Accept json
-// @Produce json
-// @Param id path int true "id admin"
-// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
-// @Param admin body admin.AdminSwagger true "admin"
-// @Success 200 {object} map[string]interface{}
-// @Failure 400
-// @Router /admin/{id} [PUT]
 func (Controller *Controller) UpdateAdmin(c echo.Context) error {
 	var admin *admin.Admin
 	id, _ := strconv.Atoi(c.Param("id"))
