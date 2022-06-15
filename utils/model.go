@@ -4,18 +4,19 @@ import "gorm.io/gorm"
 
 type History_Transaction struct {
 	gorm.Model
-	ID_Transaction     string `json:"transaction_id" gorm:"primaryKey;autoIncrement:false"`
-	Customer_id        int    `json:"customer_id"`
-	Mitra_id           int    `json:"mitra_id"`
-	Transaction_type   string `json:"transaction_type"`
-	Bank_Provider      string `json:"bank_provider" gorm:"size:255"`
-	Nomor              string `json:"nomor" gorm:"size:20"`
-	Poin_Account       int    `json:"poin_account"`
-	Poin_Redeem        int    `json:"poin_redeem"`
-	Amount             int    `json:"amount"`
-	Description        string `json:"description" gorm:"size:255"`
-	Status_Transaction string `json:"status_transaction" gorm:"size:255"`
-	Status_Poin        string `json:"status_poin" gorm:"size:10"`
+	ID_Transaction     string   `gorm:"primaryKey;autoIncrement:false"`
+	Customer_id        int      `json:"customer_id"`
+	Customers          Customer `json:"customers" gorm:"foreignkey:ID;references:Customer_id"`
+	Mitra_id           int      `json:"mitra_id"`
+	Transaction_type   string   `json:"transaction_type"`
+	Bank_Provider      string   `json:"bank_provider" gorm:"size:255"`
+	Nomor              string   `json:"nomor" gorm:"size:20"`
+	Poin_Account       int      `json:"poin_account"`
+	Poin_Redeem        int      `json:"poin_redeem"`
+	Amount             int      `json:"amount"`
+	Description        string   `json:"description" gorm:"size:255"`
+	Status_Transaction string   `json:"status_transaction" gorm:"size:255"`
+	Status_Poin        string   `json:"status_poin" gorm:"size:10"`
 }
 
 type Store struct {
