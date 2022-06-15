@@ -153,6 +153,7 @@ func (repo *PosgresRepository) GetHistoryCustomers() ([]admin.CustomerHistory, e
 		var tmpHistory admin.CustomerHistory
 		tmpHistory.Customer_id = v.Customer_id
 		tmpHistory.Customers.ID = v.Customers.ID
+		tmpHistory.Customers.Email = v.Customers.Email
 		tmpHistory.Customers.Fullname = v.Customers.Fullname
 		tmpHistory.Description = v.Description
 		tmpHistory.Nomor = v.Nomor
