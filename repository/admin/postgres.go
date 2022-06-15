@@ -24,24 +24,24 @@ func NewPosgresRepository(db *gorm.DB) *PosgresRepository {
 func (repo *PosgresRepository) Dashboard() ([]*admin.Dashboard, error) {
 	var History []customermitra.History_Transaction
 	var Dashboard []*admin.Dashboard
-	err := repo.db.Where("Status_transaction = ?", "PENDING").Preload("Customers").Find(&History).Error
+	err := repo.db.Model(&customermitra.History_Transaction{}).Where("Status_transaction = ?", "PENDING").Preload("Customers").Find(&Dashboard).Error
 	fmt.Println(History)
 	if err != nil {
 		return nil, err
 	}
-	for _, v := range History {
-		var tmpDashboard admin.Dashboard
-		tmpDashboard.ID_Transaction = v.ID_Transaction
-		tmpDashboard.Nomor = v.Nomor
-		tmpDashboard.Customer_id = v.Customer_id
-		tmpDashboard.Customer.ID = v.Customers.ID
-		tmpDashboard.Customer.Email = v.Customers.Email
-		tmpDashboard.Customer.Fullname = v.Customers.Fullname
-		tmpDashboard.Description = v.Description
-		tmpDashboard.Status_transaction = v.Status_Transaction
+	// for _, v := range History {
+	// 	var tmpDashboard admin.Dashboard
+	// 	tmpDashboard.ID_Transaction = v.ID_Transaction
+	// 	tmpDashboard.Nomor = v.Nomor
+	// 	tmpDashboard.Customer_id = v.Customer_id
+	// 	tmpDashboard.Customer.ID = v.Customers.ID
+	// 	tmpDashboard.Customer.Email = v.Customers.Email
+	// 	tmpDashboard.Customer.Fullname = v.Customers.Fullname
+	// 	tmpDashboard.Description = v.Description
+	// 	tmpDashboard.Status_transaction = v.Status_Transaction
 
-		Dashboard = append(Dashboard, &tmpDashboard)
-	}
+	// 	Dashboard = append(Dashboard, &tmpDashboard)
+	// }
 	return Dashboard, nil
 }
 
