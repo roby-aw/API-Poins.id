@@ -116,7 +116,10 @@ func (repo *PosgresRepository) AcceptTransaction(idtransaction string) error {
 	var transaction *customermitra.History_Transaction
 	err := repo.db.Where("ID_Transaction = ?", idtransaction).First(&transaction).Error
 	if err != nil {
-		return err
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = errors.New("wrong id transaction")
+			return err
+		}
 	}
 	if transaction.Status_Transaction == "COMPLETED" {
 		err = errors.New("Transaction already completed")
