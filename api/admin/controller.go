@@ -118,7 +118,7 @@ func (Controller *Controller) UpdateAdmin(c echo.Context) error {
 // @Produce json
 // @Param transactionid path string true "transaction_id"
 // @Success 200
-// @Router /v1/admin/approve/{transactionid} [post]
+// @Router /admin/approve/{transactionid} [post]
 func (Controller *Controller) ApproveTransaction(c echo.Context) error {
 	transactionid := c.Param("idtransaction")
 	err := Controller.service.ApproveTransaction(transactionid)

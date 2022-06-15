@@ -191,6 +191,7 @@ func (Controller *Controller) OrderCashout(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
+// @Param InputDataCashout body customermitra.RedeemPulsaData true "inputdataemoney"
 // @Success 200 {object} map[string]interface{}
 // @Router /pulsa [post]
 func (Controller *Controller) OrderPulsa(c echo.Context) error {

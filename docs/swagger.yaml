@@ -61,6 +61,28 @@ definitions:
     - poin_account
     - poin_redeem
     type: object
+  customermitra.RedeemPulsaData:
+    properties:
+      amount:
+        type: integer
+      bank_provider:
+        type: string
+      customer_id:
+        type: integer
+      nomor:
+        type: string
+      poin_account:
+        type: integer
+      poin_redeem:
+        type: integer
+    required:
+    - amount
+    - bank_provider
+    - customer_id
+    - nomor
+    - poin_account
+    - poin_redeem
+    type: object
   customermitra.RegisterCustomer:
     properties:
       email:
@@ -179,6 +201,25 @@ paths:
       summary: Create admin
       tags:
       - admin
+  /admin/approve/{transactionid}:
+    post:
+      consumes:
+      - application/json
+      description: Approve Transaction
+      parameters:
+      - description: transaction_id
+        in: path
+        name: transactionid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: Approve Transaction
+      tags:
+      - Admin
   /admin/login:
     post:
       consumes:
@@ -305,6 +346,12 @@ paths:
         name: Authorization
         required: true
         type: string
+      - description: inputdataemoney
+        in: body
+        name: InputDataCashout
+        required: true
+        schema:
+          $ref: '#/definitions/customermitra.RedeemPulsaData'
       produces:
       - application/json
       responses:
@@ -338,23 +385,4 @@ paths:
       summary: Register
       tags:
       - Customer
-  /v1/admin/approve/{transactionid}:
-    post:
-      consumes:
-      - application/json
-      description: Approve Transaction
-      parameters:
-      - description: transaction_id
-        in: path
-        name: transactionid
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: ""
-      summary: Approve Transaction
-      tags:
-      - Admin
 swagger: "2.0"

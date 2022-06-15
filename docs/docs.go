@@ -99,6 +99,35 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/approve/{transactionid}": {
+            "post": {
+                "description": "Approve Transaction",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Approve Transaction",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "transaction_id",
+                        "name": "transactionid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/admin/login": {
             "post": {
                 "description": "Get token for admin",
@@ -294,6 +323,15 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "description": "inputdataemoney",
+                        "name": "InputDataCashout",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.RedeemPulsaData"
+                        }
                     }
                 ],
                 "responses": {
@@ -337,35 +375,6 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/customermitra.RegisterCustomer"
                         }
-                    }
-                }
-            }
-        },
-        "/v1/admin/approve/{transactionid}": {
-            "post": {
-                "description": "Approve Transaction",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Admin"
-                ],
-                "summary": "Approve Transaction",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "transaction_id",
-                        "name": "transactionid",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": ""
                     }
                 }
             }
@@ -442,6 +451,37 @@ const docTemplate = `{
                 },
                 "an_rekening": {
                     "type": "string"
+                },
+                "bank_provider": {
+                    "type": "string"
+                },
+                "customer_id": {
+                    "type": "integer"
+                },
+                "nomor": {
+                    "type": "string"
+                },
+                "poin_account": {
+                    "type": "integer"
+                },
+                "poin_redeem": {
+                    "type": "integer"
+                }
+            }
+        },
+        "customermitra.RedeemPulsaData": {
+            "type": "object",
+            "required": [
+                "amount",
+                "bank_provider",
+                "customer_id",
+                "nomor",
+                "poin_account",
+                "poin_redeem"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "integer"
                 },
                 "bank_provider": {
                     "type": "string"
