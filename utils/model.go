@@ -5,7 +5,7 @@ import "gorm.io/gorm"
 type History_Transaction struct {
 	gorm.Model
 	ID_Transaction     string   `gorm:"primaryKey;autoIncrement:false"`
-	Customer_id        int      `json:"customer_id"`
+	Customer_id        int      `gorm:"uniqueIndex"`
 	Customers          Customer `json:"customers" gorm:"foreignkey:ID;references:Customer_id"`
 	Mitra_id           int      `json:"mitra_id"`
 	Transaction_type   string   `json:"transaction_type"`
