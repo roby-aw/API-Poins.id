@@ -34,9 +34,9 @@ func (repo *PosgresRepository) Dashboard() ([]*admin.Dashboard, error) {
 		tmpDashboard.ID_Transaction = v.ID_Transaction
 		tmpDashboard.Nomor = v.Nomor
 		tmpDashboard.Customer_id = v.Customer_id
-		tmpDashboard.Customer.ID = v.Customer.ID
-		tmpDashboard.Customer.Email = v.Customer.Email
-		tmpDashboard.Customer.Fullname = v.Customer.Fullname
+		tmpDashboard.Customer.ID = v.Customers.ID
+		tmpDashboard.Customer.Email = v.Customers.Email
+		tmpDashboard.Customer.Fullname = v.Customers.Fullname
 		tmpDashboard.Status_transaction = v.Status_Transaction
 
 		Dashboard = append(Dashboard, &tmpDashboard)
