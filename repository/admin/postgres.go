@@ -59,12 +59,18 @@ func (repo *PosgresRepository) InsertAdmin(Admins *admin.RegisterAdmin) (*admin.
 
 func (repo *PosgresRepository) LoginAdmin(Auth *admin.AuthLogin) (*admin.ResponseLogin, error) {
 	var Admin admin.Admin
-	err := repo.db.Where("email =? AND password = ?", Auth.Email, Auth.Password).First(&Admin).Error
+	err := repo.db.Where("email = ?", Auth.Email, Auth.Password).First(&Admin).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("Email atau password salah")
 			return nil, err
 		}
+	}
+
+	err = VerifyPassword(Admin.Password, Auth.Password)
+	if err != nil {
+		err = errors.New("Password salah")
+		return nil, err
 	}
 	expirationTime := time.Now().Add(5 * time.Hour)
 

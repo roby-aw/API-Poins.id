@@ -42,7 +42,6 @@ func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*cu
 		return nil, err
 	}
 	err = VerifyPassword(Customer.Password, login.Password)
-	fmt.Println(err)
 	if err != nil {
 		err = errors.New("Password salah")
 		return nil, err
