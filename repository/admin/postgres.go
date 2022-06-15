@@ -114,7 +114,7 @@ func (repo PosgresRepository) RenewAdmin(id int, admin *admin.Admin) (*admin.Adm
 
 func (repo *PosgresRepository) AcceptTransaction(idtransaction string) error {
 	var transaction *customermitra.History_Transaction
-	err := repo.db.Where("ID_Transaction = ?", idtransaction).First(&transaction).Error
+	err := repo.db.Where("ID_Transaction = ?", idtransaction).Take(&transaction).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("wrong id transaction")
