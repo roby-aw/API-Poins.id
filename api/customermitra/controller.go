@@ -28,7 +28,7 @@ func NewController(service customermitraBussiness.Service) *Controller {
 // @Produce json
 // @Param Customer body customermitra.AuthLogin true "Customer"
 // @Success 200 {object} response.Login
-// @Router /login [post]
+// @Router /customer [post]
 func (Controller *Controller) Login(c echo.Context) error {
 	var req customermitraBussiness.AuthLogin
 	var err error
@@ -127,7 +127,7 @@ func (Controller *Controller) HistoryCustomer(c echo.Context) error {
 }
 
 // Create godoc
-// @Summary Updatecustomer
+// @Summary Detail history customer
 // @description Updatecustomer
 // @tags Customer
 // @Accept json

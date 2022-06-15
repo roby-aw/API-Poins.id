@@ -267,6 +267,28 @@ paths:
       summary: Redeem Cashout
       tags:
       - Redeem
+  /customer:
+    post:
+      consumes:
+      - application/json
+      description: Login Customer
+      parameters:
+      - description: Customer
+        in: body
+        name: Customer
+        required: true
+        schema:
+          $ref: '#/definitions/customermitra.AuthLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Login'
+      summary: Login
+      tags:
+      - Customer
   /dethistory/{idtransaction}:
     get:
       consumes:
@@ -291,7 +313,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/customermitra.UpdateCustomer'
-      summary: Updatecustomer
+      summary: Detail history customer
       tags:
       - Customer
   /emoney:
@@ -341,28 +363,6 @@ paths:
           schema:
             $ref: '#/definitions/customermitra.UpdateCustomer'
       summary: Updatecustomer
-      tags:
-      - Customer
-  /login:
-    post:
-      consumes:
-      - application/json
-      description: Login Customer
-      parameters:
-      - description: Customer
-        in: body
-        name: Customer
-        required: true
-        schema:
-          $ref: '#/definitions/customermitra.AuthLogin'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Login'
-      summary: Login
       tags:
       - Customer
   /paketdata:

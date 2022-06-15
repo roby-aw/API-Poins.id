@@ -200,6 +200,40 @@ const docTemplate = `{
                 }
             }
         },
+        "/customer": {
+            "post": {
+                "description": "Login Customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Login",
+                "parameters": [
+                    {
+                        "description": "Customer",
+                        "name": "Customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.AuthLogin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Login"
+                        }
+                    }
+                }
+            }
+        },
         "/dethistory/{idtransaction}": {
             "get": {
                 "description": "Updatecustomer",
@@ -212,7 +246,7 @@ const docTemplate = `{
                 "tags": [
                     "Customer"
                 ],
-                "summary": "Updatecustomer",
+                "summary": "Detail history customer",
                 "parameters": [
                     {
                         "type": "string",
@@ -309,40 +343,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/customermitra.UpdateCustomer"
-                        }
-                    }
-                }
-            }
-        },
-        "/login": {
-            "post": {
-                "description": "Login Customer",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Customer"
-                ],
-                "summary": "Login",
-                "parameters": [
-                    {
-                        "description": "Customer",
-                        "name": "Customer",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/customermitra.AuthLogin"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Login"
                         }
                     }
                 }
