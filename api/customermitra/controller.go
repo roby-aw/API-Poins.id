@@ -50,7 +50,7 @@ func (Controller *Controller) Login(c echo.Context) error {
 // Create godoc
 // @Summary Register
 // @description Register customer
-// @tags customer
+// @tags Customer
 // @Accept json
 // @Produce json
 // @Param Registercustomer body customermitra.RegisterCustomer true "Register"
@@ -73,16 +73,16 @@ func (Controller *Controller) Register(c echo.Context) error {
 	})
 }
 
-// // Create godoc
-// // @Summary Updatecustomer
-// // @description Updatecustomer
-// // @tags customer
-// // @Accept json
-// // @Produce json
-// // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
+// Create godoc
+// @Summary Updatecustomer
+// @description Updatecustomer
+// @tags Customer
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
 // @Param Registercustomer body customermitra.UpdateCustomer true "Register"
-// // @Success 200 {object} customermitra.UpdateCustomer
-// // @Router /v1/account [put]
+// @Success 200 {object} customermitra.UpdateCustomer
+// @Router /v1/account [put]
 func (Controller *Controller) UpdateCustomer(c echo.Context) error {
 	var req customermitraBussiness.UpdateCustomer
 	c.Bind(&req)
@@ -133,14 +133,14 @@ func (Controller *Controller) DetailHistoryCustomer(c echo.Context) error {
 }
 
 // Create godoc
-// @Summary Order Emoney/Cashout
-// @description Emoney customer
-// @tags customerOrder
+// @Summary Redeem Emoney
+// @description Redeem Emoney customer
+// @tags Redeem
 // @Accept json
 // @Produce json
 // @Param InputDataCashout body customermitra.InputTransactionBankEmoney true "inputdataemoney"
 // @Success 200 {object} customermitra.InputTransactionBankEmoney
-// @Router /v1/order/emoney [post]
+// @Router /v1/emoney [post]
 func (Controller *Controller) OrderEmoney(c echo.Context) error {
 	emoney := customermitraBussiness.InputTransactionBankEmoney{}
 	c.Bind(&emoney)
@@ -159,9 +159,9 @@ func (Controller *Controller) OrderEmoney(c echo.Context) error {
 }
 
 // Create godoc
-// @Summary Order Emoney/Cashout
-// @description Emoney customer
-// @tags customerOrder
+// @Summary Redeem Cashout
+// @description Redeem Emoney customer
+// @tags Redeem
 // @Accept json
 // @Produce json
 // @Param InputDataCashout body customermitra.InputTransactionBankEmoney true "inputdataemoney"
@@ -185,9 +185,9 @@ func (Controller *Controller) OrderCashout(c echo.Context) error {
 }
 
 // Create godoc
-// @Summary Order Pulsa
-// @description Pulsa customer
-// @tags customerOrder
+// @Summary Redeem Pulsa
+// @description Redeem Pulsa customer
+// @tags Redeem
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
@@ -210,9 +210,9 @@ func (Controller *Controller) OrderPulsa(c echo.Context) error {
 }
 
 // Create godoc
-// @Summary Order PaketData
-// @description PaketData customer
-// @tags customerOrder
+// @Summary Redeem PaketData
+// @description Redeem PaketData customer
+// @tags Redeem
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)

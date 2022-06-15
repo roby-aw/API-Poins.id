@@ -105,7 +105,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "customer"
+                    "Customer"
                 ],
                 "summary": "Register",
                 "parameters": [
@@ -124,6 +124,48 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/customermitra.RegisterCustomer"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/account": {
+            "put": {
+                "description": "Updatecustomer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Updatecustomer",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Register",
+                        "name": "Registercustomer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.UpdateCustomer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.UpdateCustomer"
                         }
                     }
                 }
@@ -154,6 +196,40 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": ""
+                    }
+                }
+            }
+        },
+        "/v1/emoney": {
+            "post": {
+                "description": "Redeem Emoney customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Redeem"
+                ],
+                "summary": "Redeem Emoney",
+                "parameters": [
+                    {
+                        "description": "inputdataemoney",
+                        "name": "InputDataCashout",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
+                        }
                     }
                 }
             }
@@ -194,7 +270,7 @@ const docTemplate = `{
         },
         "/v1/order/cashout": {
             "post": {
-                "description": "Emoney customer",
+                "description": "Redeem Emoney customer",
                 "consumes": [
                     "application/json"
                 ],
@@ -202,43 +278,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "customerOrder"
+                    "Redeem"
                 ],
-                "summary": "Order Emoney/Cashout",
-                "parameters": [
-                    {
-                        "description": "inputdataemoney",
-                        "name": "InputDataCashout",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/order/emoney": {
-            "post": {
-                "description": "Emoney customer",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "customerOrder"
-                ],
-                "summary": "Order Emoney/Cashout",
+                "summary": "Redeem Cashout",
                 "parameters": [
                     {
                         "description": "inputdataemoney",
@@ -262,7 +304,7 @@ const docTemplate = `{
         },
         "/v1/order/paketdata": {
             "post": {
-                "description": "PaketData customer",
+                "description": "Redeem PaketData customer",
                 "consumes": [
                     "application/json"
                 ],
@@ -270,9 +312,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "customerOrder"
+                    "Redeem"
                 ],
-                "summary": "Order PaketData",
+                "summary": "Redeem PaketData",
                 "parameters": [
                     {
                         "type": "string",
@@ -296,7 +338,7 @@ const docTemplate = `{
         },
         "/v1/order/pulsa": {
             "post": {
-                "description": "Pulsa customer",
+                "description": "Redeem Pulsa customer",
                 "consumes": [
                     "application/json"
                 ],
@@ -304,9 +346,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "customerOrder"
+                    "Redeem"
                 ],
-                "summary": "Order Pulsa",
+                "summary": "Redeem Pulsa",
                 "parameters": [
                     {
                         "type": "string",

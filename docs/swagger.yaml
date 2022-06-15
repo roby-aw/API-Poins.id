@@ -197,7 +197,35 @@ paths:
             $ref: '#/definitions/customermitra.RegisterCustomer'
       summary: Register
       tags:
-      - customer
+      - Customer
+  /v1/account:
+    put:
+      consumes:
+      - application/json
+      description: Updatecustomer
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Register
+        in: body
+        name: Registercustomer
+        required: true
+        schema:
+          $ref: '#/definitions/customermitra.UpdateCustomer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customermitra.UpdateCustomer'
+      summary: Updatecustomer
+      tags:
+      - Customer
   /v1/admin/approve/{transactionid}:
     post:
       consumes:
@@ -217,6 +245,28 @@ paths:
       summary: Approve Transaction
       tags:
       - Admin
+  /v1/emoney:
+    post:
+      consumes:
+      - application/json
+      description: Redeem Emoney customer
+      parameters:
+      - description: inputdataemoney
+        in: body
+        name: InputDataCashout
+        required: true
+        schema:
+          $ref: '#/definitions/customermitra.InputTransactionBankEmoney'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customermitra.InputTransactionBankEmoney'
+      summary: Redeem Emoney
+      tags:
+      - Redeem
   /v1/login:
     post:
       consumes:
@@ -243,7 +293,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Emoney customer
+      description: Redeem Emoney customer
       parameters:
       - description: inputdataemoney
         in: body
@@ -258,36 +308,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/customermitra.InputTransactionBankEmoney'
-      summary: Order Emoney/Cashout
+      summary: Redeem Cashout
       tags:
-      - customerOrder
-  /v1/order/emoney:
-    post:
-      consumes:
-      - application/json
-      description: Emoney customer
-      parameters:
-      - description: inputdataemoney
-        in: body
-        name: InputDataCashout
-        required: true
-        schema:
-          $ref: '#/definitions/customermitra.InputTransactionBankEmoney'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/customermitra.InputTransactionBankEmoney'
-      summary: Order Emoney/Cashout
-      tags:
-      - customerOrder
+      - Redeem
   /v1/order/paketdata:
     post:
       consumes:
       - application/json
-      description: PaketData customer
+      description: Redeem PaketData customer
       parameters:
       - default: Bearer <Add access token here>
         description: Insert your access token
@@ -303,14 +331,14 @@ paths:
           schema:
             additionalProperties: true
             type: object
-      summary: Order PaketData
+      summary: Redeem PaketData
       tags:
-      - customerOrder
+      - Redeem
   /v1/order/pulsa:
     post:
       consumes:
       - application/json
-      description: Pulsa customer
+      description: Redeem Pulsa customer
       parameters:
       - default: Bearer <Add access token here>
         description: Insert your access token
@@ -326,7 +354,7 @@ paths:
           schema:
             additionalProperties: true
             type: object
-      summary: Order Pulsa
+      summary: Redeem Pulsa
       tags:
-      - customerOrder
+      - Redeem
 swagger: "2.0"
