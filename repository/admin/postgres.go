@@ -60,6 +60,7 @@ func (repo *PosgresRepository) LoginAdmin(Auth *admin.AuthLogin) (*admin.Respons
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("Email atau password salah")
+			return nil, err
 		}
 	}
 	expirationTime := time.Now().Add(5 * time.Hour)
