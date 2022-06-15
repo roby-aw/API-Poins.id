@@ -21,6 +21,28 @@ func NewPosgresRepository(db *gorm.DB) *PosgresRepository {
 	}
 }
 
+func (repo *PosgresRepository) Dashboard() ([]*admin.Dashboard, error) {
+	var History []customermitra.History_Transaction
+	var Dashboard []*admin.Dashboard
+	err := repo.db.Where("Status_transaction = ?", "PENDING").Find(&History).Error
+	if err != nil {
+		return nil, err
+	}
+	for _, v := range History {
+		var tmpDashboard admin.Dashboard
+		tmpDashboard.ID_Transaction = v.ID_Transaction
+		tmpDashboard.Nomor = v.Nomor
+		tmpDashboard.Customer_id = v.Customer_id
+		tmpDashboard.Customer.ID = v.Customer.ID
+		tmpDashboard.Customer.Email = v.Customer.Email
+		tmpDashboard.Customer.Fullname = v.Customer.Fullname
+		tmpDashboard.Status_transaction = v.Status_Transaction
+
+		Dashboard = append(Dashboard, &tmpDashboard)
+	}
+	return Dashboard, nil
+}
+
 func (repo *PosgresRepository) RemoveAdmin(id int) error {
 	var admin *admin.Admin
 	err := repo.db.Where("ID = ?", id).First(&admin).Error

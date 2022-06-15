@@ -7,15 +7,15 @@ import (
 )
 
 type Repository interface {
+	Dashboard() ([]*Dashboard, error)
 	InsertAdmin(admin *customermitra.Admin) (*customermitra.Admin, error)
-	RemoveAdmin(id int) error
 	RenewAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 }
 
 type Service interface {
+	Dashboard() ([]*Dashboard, error)
 	CreateAdmin(admin *customermitra.Admin) (*customermitra.Admin, error)
-	DeleteAdmin(id int) error
 	UpdateAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 }
@@ -32,6 +32,10 @@ func NewService(repository Repository) Service {
 	}
 }
 
+func (s *service) Dashboard() ([]*Dashboard, error) {
+	return s.repository.Dashboard()
+}
+
 func (s *service) CreateAdmin(admin *customermitra.Admin) (*customermitra.Admin, error) {
 	err := s.validate.Struct(admin)
 	if err != nil {
@@ -39,10 +43,6 @@ func (s *service) CreateAdmin(admin *customermitra.Admin) (*customermitra.Admin,
 	}
 	admin, err = s.repository.InsertAdmin(admin)
 	return admin, err
-}
-
-func (s *service) DeleteAdmin(id int) error {
-	return s.repository.RemoveAdmin(id)
 }
 
 func (s *service) UpdateAdmin(id int, admin *Admin) (*Admin, error) {

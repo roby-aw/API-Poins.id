@@ -20,6 +20,21 @@ func NewController(service adminBusiness.Service) *Controller {
 	}
 }
 
+func (Controller *Controller) Dashboard(c echo.Context) error {
+	result, err := Controller.service.Dashboard()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "failed",
+			"Error":   err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success get dashboard",
+		"result":   result,
+	})
+}
+
 // Create godoc
 // @Summary Create admin
 // @description create admin with data
@@ -69,30 +84,6 @@ func (Controller *Controller) LoginAdmin(c echo.Context) error {
 		"code":    200,
 		"message": "success login",
 		"token":   token,
-	})
-}
-
-// Create godoc
-// @Summary Delete Admin
-// @description delete data admin
-// @tags admin
-// @Accept json
-// @Produce json
-// @Param id path int true "id admin"
-// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
-// @Success 200 {object} map[string]interface{}
-// @Failure 400
-// @Router /admin/{id} [delete]
-func (Controller *Controller) DeleteAdmin(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
-	err := Controller.service.DeleteAdmin(id)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"code":     200,
-		"messages": "success delete admin",
-		"data id ": id,
 	})
 }
 
