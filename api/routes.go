@@ -29,6 +29,7 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	c.POST("/callback", controller.CustomerMitraController.CallbackXendit)
 	//admin
 	g := c.Group("/admin")
+	g.POST("/login", controller.AdminControlller.LoginAdmin)
 	g.POST("", controller.AdminControlller.CreateAdmin)
 	g.GET("", controller.AdminControlller.Dashboard)
 	// g.POST("/token", controller.AdminControlller.GetToken)
