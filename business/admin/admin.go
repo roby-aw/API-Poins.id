@@ -17,18 +17,19 @@ type AuthLogin struct {
 }
 
 type Dashboard struct {
-	ID_Transaction     string             `json:"id_transaction"`
-	Nomor              string             `json:"nomor"`
-	Customer_id        int                `json:"customer_id"`
-	Customers          CustomersDashboard `json:"customer" gorm:"foreignkey:ID;references:Customer_id"`
-	Description        string             `json:"description"`
-	Status_transaction string             `json:"status_transaction"`
+	ID_Transaction     string    `json:"id_transaction"`
+	Nomor              string    `json:"nomor"`
+	Customer_id        int       `json:"customer_id"`
+	Customers          Customers `json:"customer" gorm:"foreignkey:ID;references:Customer_id"`
+	Description        string    `json:"description"`
+	Status_transaction string    `json:"status_transaction"`
 }
 
-type CustomersDashboard struct {
+type Customers struct {
 	ID       uint   `json:"id"`
 	Email    string `json:"email"`
 	Fullname string `json:"fullname"`
+	Password string `json:"password"`
 }
 
 type ResponseLogin struct {
