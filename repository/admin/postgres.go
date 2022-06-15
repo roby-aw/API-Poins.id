@@ -48,10 +48,9 @@ func (repo *PosgresRepository) RemoveAdmin(id int) error {
 	return err
 }
 func (repo *PosgresRepository) InsertAdmin(Admins *admin.RegisterAdmin) (*admin.RegisterAdmin, error) {
-	var admin admin.Admin
 	password, _ := Hash(Admins.Password)
-	Admins.Password = string(password)
-	err := repo.db.Model(&admin).Create(&Admins).Error
+	var admin = admin.Admin{Email: Admins.Email, Password: string(password), Fullname: Admins.Fullname, No_hp: Admins.No_hp}
+	err := repo.db.Create(&admin).Error
 	if err != nil {
 		return nil, fmt.Errorf("failed insert data")
 	}
