@@ -62,7 +62,7 @@ func (repo *PosgresRepository) LoginAdmin(Auth *admin.AuthLogin) (*admin.Respons
 	err := repo.db.Where("email = ?", Auth.Email, Auth.Password).First(&Admin).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			err = errors.New("Email atau password salah")
+			err = errors.New("Email salah")
 			return nil, err
 		}
 	}
