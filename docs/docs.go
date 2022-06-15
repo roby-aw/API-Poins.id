@@ -68,7 +68,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "admin"
+                    "Admin"
                 ],
                 "summary": "Create admin",
                 "parameters": [
@@ -130,7 +130,7 @@ const docTemplate = `{
         },
         "/admin/login": {
             "post": {
-                "description": "Get token for admin",
+                "description": "Login admin",
                 "consumes": [
                     "application/json"
                 ],
@@ -138,9 +138,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "admin"
+                    "Admin"
                 ],
-                "summary": "Get Token",
+                "summary": "Login admin",
                 "parameters": [
                     {
                         "description": "admin",

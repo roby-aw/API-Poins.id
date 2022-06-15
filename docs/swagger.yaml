@@ -200,7 +200,7 @@ paths:
             type: object
       summary: Create admin
       tags:
-      - admin
+      - Admin
   /admin/approve/{transactionid}:
     post:
       consumes:
@@ -224,7 +224,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Get token for admin
+      description: Login admin
       parameters:
       - description: admin
         in: body
@@ -242,9 +242,9 @@ paths:
             type: object
         "400":
           description: ""
-      summary: Get Token
+      summary: Login admin
       tags:
-      - admin
+      - Admin
   /cashout:
     post:
       consumes:

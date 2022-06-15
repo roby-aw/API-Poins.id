@@ -22,7 +22,7 @@ func NewController(service adminBusiness.Service) *Controller {
 // Create godoc
 // @Summary Create admin
 // @description create admin with data
-// @tags admin
+// @tags Admin
 // @Accept json
 // @Produce json
 // @Success 200
@@ -46,7 +46,7 @@ func (Controller *Controller) Dashboard(c echo.Context) error {
 // Create godoc
 // @Summary Create admin
 // @description create admin with data
-// @tags admin
+// @tags Admin
 // @Accept json
 // @Produce json
 // @Param admin body admin.RegisterAdmin true "admin"
@@ -71,9 +71,9 @@ func (Controller *Controller) CreateAdmin(c echo.Context) error {
 }
 
 // Create godoc
-// @Summary Get Token
-// @description Get token for admin
-// @tags admin
+// @Summary Login admin
+// @description Login admin
+// @tags Admin
 // @Accept json
 // @Produce json
 // @Param admin body admin.AuthLogin true "admin"
