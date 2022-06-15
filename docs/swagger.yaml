@@ -2,21 +2,25 @@ basePath: /
 definitions:
   admin.Admin:
     properties:
+      createdat:
+        type: string
       email:
+        type: string
+      fullname:
         type: string
       id:
         type: integer
-      name:
+      no_hp:
         type: string
       password:
         type: string
-      username:
+      updatedat:
         type: string
     required:
     - email
-    - name
+    - fullname
+    - no_hp
     - password
-    - username
     type: object
   admin.AdminSwagger:
     properties:
@@ -34,15 +38,15 @@ definitions:
     - password
     - username
     type: object
-  admin.InputAdminToken:
+  admin.AuthLogin:
     properties:
+      email:
+        type: string
       password:
         type: string
-      username:
-        type: string
     required:
+    - email
     - password
-    - username
     type: object
   customermitra.AuthLogin:
     properties:
@@ -143,30 +147,6 @@ info:
   version: "1.0"
 paths:
   /admin:
-    get:
-      consumes:
-      - application/json
-      description: Get all admin with data
-      parameters:
-      - default: Bearer <Add access token here>
-        description: Insert your access token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              additionalProperties: true
-              type: object
-            type: array
-      summary: Get All admin
-      tags:
-      - Admin using Token JWT
     post:
       consumes:
       - application/json
@@ -193,93 +173,7 @@ paths:
       summary: Create admin
       tags:
       - admin
-  /admin/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: delete data admin
-      parameters:
-      - description: id admin
-        in: path
-        name: id
-        required: true
-        type: integer
-      - default: Bearer <Add access token here>
-        description: Insert your access token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: ""
-      summary: Delete Admin
-      tags:
-      - admin
-    get:
-      consumes:
-      - application/json
-      description: Get Admin By ID
-      parameters:
-      - description: anything id
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties: true
-            type: object
-      summary: Get Admin By ID
-      tags:
-      - admin
-    put:
-      consumes:
-      - application/json
-      description: update data admin
-      parameters:
-      - description: id admin
-        in: path
-        name: id
-        required: true
-        type: integer
-      - default: Bearer <Add access token here>
-        description: Insert your access token
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: admin
-        in: body
-        name: admin
-        required: true
-        schema:
-          $ref: '#/definitions/admin.AdminSwagger'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: ""
-      summary: Update Admin
-      tags:
-      - Admin using Token JWT
-  /admin/token:
+  /admin/login:
     post:
       consumes:
       - application/json
@@ -290,7 +184,7 @@ paths:
         name: admin
         required: true
         schema:
-          $ref: '#/definitions/admin.InputAdminToken'
+          $ref: '#/definitions/admin.AuthLogin'
       produces:
       - application/json
       responses:

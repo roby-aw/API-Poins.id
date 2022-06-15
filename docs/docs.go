@@ -17,41 +17,6 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/admin": {
-            "get": {
-                "description": "Get all admin with data",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Admin using Token JWT"
-                ],
-                "summary": "Get All admin",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "default": "Bearer \u003cAdd access token here\u003e",
-                        "description": "Insert your access token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "additionalProperties": true
-                            }
-                        }
-                    }
-                }
-            },
             "post": {
                 "description": "create admin with data",
                 "consumes": [
@@ -92,7 +57,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/token": {
+        "/admin/login": {
             "post": {
                 "description": "Get token for admin",
                 "consumes": [
@@ -112,134 +77,8 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/admin.InputAdminToken"
+                            "$ref": "#/definitions/admin.AuthLogin"
                         }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": ""
-                    }
-                }
-            }
-        },
-        "/admin/{id}": {
-            "get": {
-                "description": "Get Admin By ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "admin"
-                ],
-                "summary": "Get Admin By ID",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "anything id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "update data admin",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Admin using Token JWT"
-                ],
-                "summary": "Update Admin",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "id admin",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "default": "Bearer \u003cAdd access token here\u003e",
-                        "description": "Insert your access token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "admin",
-                        "name": "admin",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/admin.AdminSwagger"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    },
-                    "400": {
-                        "description": ""
-                    }
-                }
-            },
-            "delete": {
-                "description": "delete data admin",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "admin"
-                ],
-                "summary": "Delete Admin",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "id admin",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "default": "Bearer \u003cAdd access token here\u003e",
-                        "description": "Insert your access token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -466,24 +305,30 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "email",
-                "name",
-                "password",
-                "username"
+                "fullname",
+                "no_hp",
+                "password"
             ],
             "properties": {
+                "createdat": {
+                    "type": "string"
+                },
                 "email": {
+                    "type": "string"
+                },
+                "fullname": {
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
                 },
-                "name": {
+                "no_hp": {
                     "type": "string"
                 },
                 "password": {
                     "type": "string"
                 },
-                "username": {
+                "updatedat": {
                     "type": "string"
                 }
             }
@@ -511,17 +356,17 @@ const docTemplate = `{
                 }
             }
         },
-        "admin.InputAdminToken": {
+        "admin.AuthLogin": {
             "type": "object",
             "required": [
-                "password",
-                "username"
+                "email",
+                "password"
             ],
             "properties": {
-                "password": {
+                "email": {
                     "type": "string"
                 },
-                "username": {
+                "password": {
                     "type": "string"
                 }
             }
