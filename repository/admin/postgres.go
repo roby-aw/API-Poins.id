@@ -59,7 +59,7 @@ func (repo *PosgresRepository) InsertAdmin(Admins *admin.RegisterAdmin) (*admin.
 
 func (repo *PosgresRepository) LoginAdmin(Auth *admin.AuthLogin) (*admin.ResponseLogin, error) {
 	var Admin admin.Admin
-	err := repo.db.Where("email = ?", Auth.Email, Auth.Password).First(&Admin).Error
+	err := repo.db.Where("email = ?", Auth.Email).First(&Admin).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("Email salah")
