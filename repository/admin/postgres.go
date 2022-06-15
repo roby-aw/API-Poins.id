@@ -118,6 +118,10 @@ func (repo *PosgresRepository) AcceptTransaction(idtransaction string) error {
 	if err != nil {
 		return err
 	}
+	if transaction.Status_Transaction == "COMPLETED" {
+		err = errors.New("Transaction already completed")
+		return err
+	}
 	transaction.Status_Transaction = "COMPLETED"
 	err = repo.db.Updates(&transaction).Error
 	if err != nil {
