@@ -4,6 +4,7 @@ import (
 	"api-redeem-point/business/admin"
 	"api-redeem-point/business/customermitra"
 	"api-redeem-point/config"
+	"api-redeem-point/utils"
 	"errors"
 	"fmt"
 	"time"
@@ -50,7 +51,7 @@ func (repo *PosgresRepository) RemoveAdmin(id int) error {
 func (repo *PosgresRepository) InsertAdmin(Admins *customermitra.Admin) (*customermitra.Admin, error) {
 	password, _ := Hash(Admins.Password)
 	Admins.Password = string(password)
-	err := repo.db.Create(&Admins).Error
+	err := repo.db.Model(&utils.Admin{}).Create(&Admins).Error
 	if err != nil {
 		return nil, fmt.Errorf("failed insert data")
 	}
