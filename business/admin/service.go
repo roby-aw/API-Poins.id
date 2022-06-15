@@ -13,6 +13,7 @@ type Repository interface {
 	RenewAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 	GetCustomers() ([]*customermitra.Customers, error)
+	GetHistoryCustomers() ([]*CustomerHistory, error)
 }
 
 type Service interface {
@@ -22,6 +23,7 @@ type Service interface {
 	UpdateAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 	FindCustomers() ([]*customermitra.Customers, error)
+	FindHistoryCustomers() ([]*CustomerHistory, error)
 }
 
 type service struct {
@@ -68,4 +70,8 @@ func (s *service) LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error) {
 
 func (s *service) FindCustomers() ([]*customermitra.Customers, error) {
 	return s.repository.GetCustomers()
+}
+
+func (s *service) FindHistoryCustomers() ([]*CustomerHistory, error) {
+	return s.repository.GetHistoryCustomers()
 }

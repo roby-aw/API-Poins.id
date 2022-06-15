@@ -142,3 +142,15 @@ func (Controller *Controller) FindCustomers(c echo.Context) error {
 		"result":   result,
 	})
 }
+
+func (Controller *Controller) FindHistoryCustomers(c echo.Context) error {
+	result, err := Controller.service.FindHistoryCustomers()
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success get customers",
+		"result":   result,
+	})
+}

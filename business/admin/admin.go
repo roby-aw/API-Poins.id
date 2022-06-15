@@ -30,6 +30,16 @@ type Admin struct {
 	No_hp     string    `json:"no_hp" validate:"required"`
 }
 
+type CustomerHistory struct {
+	Customer_id        int       `json:"customer_id"`
+	Customers          Customers `json:"customers" gorm:"foreignkey:ID;references:Customer_id"`
+	Description        string    `json:"description"`
+	Nomor              string    `json:"nomor"`
+	CreatedAt          time.Time `json:"createdat"`
+	Status_Transaction string    `json:"status_transaction"`
+	Poin_redeem        int       `json:"poin_redeem"`
+}
+
 type AuthLogin struct {
 	Email    string `json:"email" validate:"required,email"`
 	Password string `json:"password" validate:"required"`
