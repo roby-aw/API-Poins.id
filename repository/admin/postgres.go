@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -47,6 +48,8 @@ func (repo *PosgresRepository) RemoveAdmin(id int) error {
 	return err
 }
 func (repo *PosgresRepository) InsertAdmin(Admins *customermitra.Admin) (*customermitra.Admin, error) {
+	password, _ := Hash(Admins.Password)
+	Admins.Password = string(password)
 	err := repo.db.Create(&Admins).Error
 	if err != nil {
 		return nil, fmt.Errorf("failed insert data")
@@ -101,4 +104,12 @@ func (repo PosgresRepository) RenewAdmin(id int, admin *admin.Admin) (*admin.Adm
 		return nil, err
 	}
 	return admin, nil
+}
+
+func Hash(password string) ([]byte, error) {
+	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+}
+
+func VerifyPassword(hashedPassword, password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
