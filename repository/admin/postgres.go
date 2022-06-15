@@ -25,6 +25,7 @@ func (repo *PosgresRepository) Dashboard() ([]*admin.Dashboard, error) {
 	var History []customermitra.History_Transaction
 	var Dashboard []*admin.Dashboard
 	err := repo.db.Where("Status_transaction = ?", "PENDING").Find(&History).Error
+	fmt.Println(History)
 	if err != nil {
 		return nil, err
 	}
