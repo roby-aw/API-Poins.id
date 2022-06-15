@@ -74,7 +74,7 @@ func (Controller *Controller) CreateAdmin(c echo.Context) error {
 func (Controller *Controller) LoginAdmin(c echo.Context) error {
 	var request adminBusiness.AuthLogin
 	c.Bind(&request)
-	token, err := Controller.service.LoginAdmin(&request)
+	result, err := Controller.service.LoginAdmin(&request)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
@@ -82,7 +82,7 @@ func (Controller *Controller) LoginAdmin(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":    200,
 		"message": "success login",
-		"token":   token,
+		"result":  result,
 	})
 }
 
