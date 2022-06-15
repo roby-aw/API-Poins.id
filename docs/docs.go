@@ -36,7 +36,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/admin.AdminSwagger"
+                            "$ref": "#/definitions/admin.RegisterAdmin"
                         }
                     }
                 ],
@@ -44,7 +44,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/admin.Admin"
+                            "$ref": "#/definitions/admin.RegisterAdmin"
                         }
                     },
                     "400": {
@@ -301,61 +301,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "admin.Admin": {
-            "type": "object",
-            "required": [
-                "email",
-                "fullname",
-                "no_hp",
-                "password"
-            ],
-            "properties": {
-                "createdat": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "fullname": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "no_hp": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "updatedat": {
-                    "type": "string"
-                }
-            }
-        },
-        "admin.AdminSwagger": {
-            "type": "object",
-            "required": [
-                "email",
-                "name",
-                "password",
-                "username"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
         "admin.AuthLogin": {
             "type": "object",
             "required": [
@@ -364,6 +309,29 @@ const docTemplate = `{
             ],
             "properties": {
                 "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "admin.RegisterAdmin": {
+            "type": "object",
+            "required": [
+                "email",
+                "fullname",
+                "no_hp",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "fullname": {
+                    "type": "string"
+                },
+                "no_hp": {
                     "type": "string"
                 },
                 "password": {

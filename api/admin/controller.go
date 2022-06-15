@@ -19,6 +19,15 @@ func NewController(service adminBusiness.Service) *Controller {
 	}
 }
 
+// Create godoc
+// @Summary Create admin
+// @description create admin with data
+// @tags admin
+// @Accept json
+// @Produce json
+// @Success 200
+// @Failure 400 {object} map[string]interface{}
+// @Router /admin [post]
 func (Controller *Controller) Dashboard(c echo.Context) error {
 	result, err := Controller.service.Dashboard()
 	if err != nil {
@@ -40,8 +49,8 @@ func (Controller *Controller) Dashboard(c echo.Context) error {
 // @tags admin
 // @Accept json
 // @Produce json
-// @Param admin body admin.AdminSwagger true "admin"
-// @Success 201 {object} admin.Admin
+// @Param admin body admin.RegisterAdmin true "admin"
+// @Success 201 {object} admin.RegisterAdmin
 // @Failure 400 {object} map[string]interface{}
 // @Router /admin [post]
 func (Controller *Controller) CreateAdmin(c echo.Context) error {
