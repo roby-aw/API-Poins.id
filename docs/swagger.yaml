@@ -267,6 +267,33 @@ paths:
       summary: Redeem Cashout
       tags:
       - Redeem
+  /dethistory/{idtransaction}:
+    get:
+      consumes:
+      - application/json
+      description: Updatecustomer
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer id
+        in: path
+        name: idcustomer
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customermitra.UpdateCustomer'
+      summary: Updatecustomer
+      tags:
+      - Customer
   /emoney:
     post:
       consumes:
@@ -289,6 +316,33 @@ paths:
       summary: Redeem Emoney
       tags:
       - Redeem
+  /history/{idcustomer}:
+    get:
+      consumes:
+      - application/json
+      description: Updatecustomer
+      parameters:
+      - default: Bearer <Add access token here>
+        description: Insert your access token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: customer id
+        in: path
+        name: idcustomer
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/customermitra.UpdateCustomer'
+      summary: Updatecustomer
+      tags:
+      - Customer
   /login:
     post:
       consumes:

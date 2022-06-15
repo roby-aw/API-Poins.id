@@ -100,6 +100,16 @@ func (Controller *Controller) UpdateCustomer(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary Updatecustomer
+// @description Updatecustomer
+// @tags Customer
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
+// @Param idcustomer path string true "customer id"
+// @Success 200 {object} customermitra.UpdateCustomer
+// @Router /history/{idcustomer} [GET]
 func (Controller *Controller) HistoryCustomer(c echo.Context) error {
 	idcustomer, _ := strconv.Atoi(c.Param("idcustomer"))
 	result, err := Controller.service.HistoryCustomer(idcustomer)
@@ -116,6 +126,16 @@ func (Controller *Controller) HistoryCustomer(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary Updatecustomer
+// @description Updatecustomer
+// @tags Customer
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
+// @Param idcustomer path string true "customer id"
+// @Success 200 {object} customermitra.UpdateCustomer
+// @Router /dethistory/{idtransaction} [GET]
 func (Controller *Controller) DetailHistoryCustomer(c echo.Context) error {
 	idcustomer := c.Param("idtransaction")
 	result, err := Controller.service.DetailHistoryCustomer(idcustomer)

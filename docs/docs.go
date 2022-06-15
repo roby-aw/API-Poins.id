@@ -200,6 +200,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/dethistory/{idtransaction}": {
+            "get": {
+                "description": "Updatecustomer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Updatecustomer",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer id",
+                        "name": "idcustomer",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.UpdateCustomer"
+                        }
+                    }
+                }
+            }
+        },
         "/emoney": {
             "post": {
                 "description": "Redeem Emoney customer",
@@ -229,6 +269,46 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
+                        }
+                    }
+                }
+            }
+        },
+        "/history/{idcustomer}": {
+            "get": {
+                "description": "Updatecustomer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Updatecustomer",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "customer id",
+                        "name": "idcustomer",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.UpdateCustomer"
                         }
                     }
                 }
