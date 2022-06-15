@@ -9,6 +9,7 @@ import (
 type History_Transaction struct {
 	ID                 uint      `json:"id"`
 	CreatedAt          time.Time `json:"createdat"`
+	UpdatedAt          time.Time `json:"updatedat"`
 	ID_Transaction     string    `json:"id_transaction"`
 	Customer_id        int       `json:"customer_id"`
 	Customers          Customers `json:"customers" gorm:"foreignkey:ID;references:Customer_id"`

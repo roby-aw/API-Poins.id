@@ -7,6 +7,7 @@ import (
 type Repository interface {
 	Dashboard() ([]*Dashboard, error)
 	InsertAdmin(admin *RegisterAdmin) (*RegisterAdmin, error)
+	AcceptTransaction(idtransaction string) error
 	RenewAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 }
@@ -14,6 +15,7 @@ type Repository interface {
 type Service interface {
 	Dashboard() ([]*Dashboard, error)
 	CreateAdmin(admin *RegisterAdmin) (*RegisterAdmin, error)
+	ApproveTransaction(idtransaction string) error
 	UpdateAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 }
@@ -41,6 +43,10 @@ func (s *service) CreateAdmin(admin *RegisterAdmin) (*RegisterAdmin, error) {
 	}
 	admin, err = s.repository.InsertAdmin(admin)
 	return admin, err
+}
+
+func (s *service) ApproveTransaction(idtransaction string) error {
+	return s.repository.AcceptTransaction(idtransaction)
 }
 
 func (s *service) UpdateAdmin(id int, admin *Admin) (*Admin, error) {

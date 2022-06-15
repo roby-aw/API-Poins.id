@@ -112,3 +112,15 @@ func (Controller *Controller) UpdateAdmin(c echo.Context) error {
 		"data":     admin,
 	})
 }
+
+func (Controller *Controller) ApproveTransaction(c echo.Context) error {
+	transactionid := c.Param("idtransaction")
+	err := Controller.service.ApproveTransaction(transactionid)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success approve transaction",
+	})
+}

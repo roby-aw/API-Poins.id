@@ -112,6 +112,20 @@ func (repo PosgresRepository) RenewAdmin(id int, admin *admin.Admin) (*admin.Adm
 	return admin, nil
 }
 
+func (repo *PosgresRepository) AcceptTransaction(idtransaction string) error {
+	var transaction *customermitra.History_Transaction
+	err := repo.db.Where("ID_Transaction = ?", idtransaction).First(&transaction).Error
+	if err != nil {
+		return err
+	}
+	transaction.Status_Transaction = "COMPLETED"
+	err = repo.db.Updates(&transaction).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func Hash(password string) ([]byte, error) {
 	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 }
