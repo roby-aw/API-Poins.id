@@ -133,6 +133,15 @@ func (repo *PosgresRepository) AcceptTransaction(idtransaction string) error {
 	return nil
 }
 
+func (repo *PosgresRepository) GetCustomers() ([]*customermitra.Customers, error) {
+	var customers []*customermitra.Customers
+	err := repo.db.Find(&customers).Error
+	if err != nil {
+		return nil, err
+	}
+	return customers, nil
+}
+
 func Hash(password string) ([]byte, error) {
 	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 }

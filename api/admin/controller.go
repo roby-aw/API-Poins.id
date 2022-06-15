@@ -124,3 +124,15 @@ func (Controller *Controller) ApproveTransaction(c echo.Context) error {
 		"messages": "success approve transaction",
 	})
 }
+
+func (Controller *Controller) FindCustomers(c echo.Context) error {
+	result, err := Controller.service.FindCustomers()
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success get customers",
+		"result":   result,
+	})
+}

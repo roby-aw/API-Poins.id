@@ -1,6 +1,8 @@
 package admin
 
 import (
+	"api-redeem-point/business/customermitra"
+
 	"github.com/go-playground/validator/v10"
 )
 
@@ -10,6 +12,7 @@ type Repository interface {
 	AcceptTransaction(idtransaction string) error
 	RenewAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
+	GetCustomers() ([]*customermitra.Customers, error)
 }
 
 type Service interface {
@@ -18,6 +21,7 @@ type Service interface {
 	ApproveTransaction(idtransaction string) error
 	UpdateAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
+	FindCustomers() ([]*customermitra.Customers, error)
 }
 
 type service struct {
@@ -60,4 +64,8 @@ func (s *service) LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error) {
 	}
 	tokens, err := s.repository.LoginAdmin(Auth)
 	return tokens, err
+}
+
+func (s *service) FindCustomers() ([]*customermitra.Customers, error) {
+	return s.repository.GetCustomers()
 }
