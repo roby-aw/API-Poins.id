@@ -34,7 +34,7 @@ type Store struct {
 }
 
 type Customers struct {
-	ID        uint `json:"id" gorm:"primary_key"`
+	ID        uint `gorm:"primary_key"`
 	CreatedAt time.Time
 	Email     string `json:"email"`
 	Fullname  string `json:"fullname"`
