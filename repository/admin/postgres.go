@@ -4,6 +4,7 @@ import (
 	"api-redeem-point/business/admin"
 	"api-redeem-point/business/customermitra"
 	"api-redeem-point/config"
+	"errors"
 	"fmt"
 	"time"
 
@@ -57,7 +58,9 @@ func (repo *PosgresRepository) LoginAdmin(Auth *admin.AuthLogin) (*admin.Respons
 	var Admin admin.Admin
 	err := repo.db.Where("email =? AND password = ?", Auth.Email, Auth.Password).First(&Admin).Error
 	if err != nil {
-		return nil, err
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = errors.New("Email atau password salah")
+		}
 	}
 	expirationTime := time.Now().Add(5 * time.Hour)
 

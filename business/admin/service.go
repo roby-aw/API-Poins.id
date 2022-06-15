@@ -50,6 +50,10 @@ func (s *service) UpdateAdmin(id int, admin *Admin) (*Admin, error) {
 }
 
 func (s *service) LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error) {
+	err := s.validate.Struct(Auth)
+	if err != nil {
+		return nil, err
+	}
 	tokens, err := s.repository.LoginAdmin(Auth)
 	return tokens, err
 }
