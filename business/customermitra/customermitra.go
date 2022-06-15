@@ -51,11 +51,21 @@ type StockProduct struct {
 	Balance   int       `json:"balance" gorm:"size:100"`
 }
 
-type Admin struct {
+type RegisterAdmin struct {
 	Email    string `json:"email" validate:"required,email"`
 	Fullname string `json:"fullname" validate:"required"`
 	Password string `json:"password" validate:"required"`
 	No_hp    string `json:"no_hp" validate:"required"`
+}
+
+type Admin struct {
+	ID        uint      `json:"id"`
+	CreatedAt time.Time `json:"createdat"`
+	UpdatedAt time.Time `json:"updatedat"`
+	Email     string    `json:"email" validate:"required,email"`
+	Fullname  string    `json:"fullname" validate:"required"`
+	Password  string    `json:"password" validate:"required"`
+	No_hp     string    `json:"no_hp" validate:"required"`
 }
 
 type RegisterCustomer struct {

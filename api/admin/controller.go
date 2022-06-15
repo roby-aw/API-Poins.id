@@ -3,7 +3,6 @@ package admin
 import (
 	"api-redeem-point/business/admin"
 	adminBusiness "api-redeem-point/business/admin"
-	"api-redeem-point/business/customermitra"
 	"net/http"
 	"strconv"
 
@@ -46,7 +45,7 @@ func (Controller *Controller) Dashboard(c echo.Context) error {
 // @Failure 400 {object} map[string]interface{}
 // @Router /admin [post]
 func (Controller *Controller) CreateAdmin(c echo.Context) error {
-	admin := customermitra.Admin{}
+	admin := adminBusiness.RegisterAdmin{}
 	c.Bind(&admin)
 	admins, err := Controller.service.CreateAdmin(&admin)
 	if err != nil {

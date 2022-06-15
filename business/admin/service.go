@@ -1,21 +1,19 @@
 package admin
 
 import (
-	"api-redeem-point/business/customermitra"
-
 	"github.com/go-playground/validator/v10"
 )
 
 type Repository interface {
 	Dashboard() ([]*Dashboard, error)
-	InsertAdmin(admin *customermitra.Admin) (*customermitra.Admin, error)
+	InsertAdmin(admin *RegisterAdmin) (*RegisterAdmin, error)
 	RenewAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 }
 
 type Service interface {
 	Dashboard() ([]*Dashboard, error)
-	CreateAdmin(admin *customermitra.Admin) (*customermitra.Admin, error)
+	CreateAdmin(admin *RegisterAdmin) (*RegisterAdmin, error)
 	UpdateAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 }
@@ -36,7 +34,7 @@ func (s *service) Dashboard() ([]*Dashboard, error) {
 	return s.repository.Dashboard()
 }
 
-func (s *service) CreateAdmin(admin *customermitra.Admin) (*customermitra.Admin, error) {
+func (s *service) CreateAdmin(admin *RegisterAdmin) (*RegisterAdmin, error) {
 	err := s.validate.Struct(admin)
 	if err != nil {
 		return nil, err

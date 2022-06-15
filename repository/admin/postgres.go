@@ -4,7 +4,6 @@ import (
 	"api-redeem-point/business/admin"
 	"api-redeem-point/business/customermitra"
 	"api-redeem-point/config"
-	"api-redeem-point/utils"
 	"errors"
 	"fmt"
 	"time"
@@ -48,10 +47,11 @@ func (repo *PosgresRepository) RemoveAdmin(id int) error {
 	}
 	return err
 }
-func (repo *PosgresRepository) InsertAdmin(Admins *customermitra.Admin) (*customermitra.Admin, error) {
+func (repo *PosgresRepository) InsertAdmin(Admins *admin.RegisterAdmin) (*admin.RegisterAdmin, error) {
+	var admin admin.Admin
 	password, _ := Hash(Admins.Password)
 	Admins.Password = string(password)
-	err := repo.db.Model(&utils.Admin{}).Create(&Admins).Error
+	err := repo.db.Model(&admin).Create(&Admins).Error
 	if err != nil {
 		return nil, fmt.Errorf("failed insert data")
 	}
@@ -70,7 +70,7 @@ func (repo *PosgresRepository) LoginAdmin(Auth *admin.AuthLogin) (*admin.Respons
 	expirationTime := time.Now().Add(5 * time.Hour)
 
 	claims := &admin.Claims{
-		ID:    Admin.ID,
+		ID:    int(Admin.ID),
 		Email: Admin.Email,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
@@ -84,7 +84,7 @@ func (repo *PosgresRepository) LoginAdmin(Auth *admin.AuthLogin) (*admin.Respons
 		return nil, err
 	}
 	response := admin.ResponseLogin{
-		ID:       Admin.ID,
+		ID:       int(Admin.ID),
 		Email:    Admin.Email,
 		Fullname: Admin.Fullname,
 		Password: Admin.Password,
