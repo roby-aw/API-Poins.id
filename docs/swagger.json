@@ -9,6 +9,48 @@
     "host": "api-poins-id.herokuapp.com/v1",
     "basePath": "/",
     "paths": {
+        "/account": {
+            "put": {
+                "description": "Updatecustomer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Updatecustomer",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Register",
+                        "name": "Registercustomer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.UpdateCustomer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.UpdateCustomer"
+                        }
+                    }
+                }
+            }
+        },
         "/admin": {
             "post": {
                 "description": "create admin with data",
@@ -88,6 +130,176 @@
                 }
             }
         },
+        "/cashout": {
+            "post": {
+                "description": "Redeem Emoney customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Redeem"
+                ],
+                "summary": "Redeem Cashout",
+                "parameters": [
+                    {
+                        "description": "inputdataemoney",
+                        "name": "InputDataCashout",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
+                        }
+                    }
+                }
+            }
+        },
+        "/emoney": {
+            "post": {
+                "description": "Redeem Emoney customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Redeem"
+                ],
+                "summary": "Redeem Emoney",
+                "parameters": [
+                    {
+                        "description": "inputdataemoney",
+                        "name": "InputDataCashout",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
+                        }
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "description": "Login Customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Login",
+                "parameters": [
+                    {
+                        "description": "Customer",
+                        "name": "Customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.AuthLogin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Login"
+                        }
+                    }
+                }
+            }
+        },
+        "/paketdata": {
+            "post": {
+                "description": "Redeem PaketData customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Redeem"
+                ],
+                "summary": "Redeem PaketData",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/pulsa": {
+            "post": {
+                "description": "Redeem Pulsa customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Redeem"
+                ],
+                "summary": "Redeem Pulsa",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/register": {
             "post": {
                 "description": "Register customer",
@@ -122,48 +334,6 @@
                 }
             }
         },
-        "/v1/account": {
-            "put": {
-                "description": "Updatecustomer",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Customer"
-                ],
-                "summary": "Updatecustomer",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "default": "Bearer \u003cAdd access token here\u003e",
-                        "description": "Insert your access token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "Register",
-                        "name": "Registercustomer",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/customermitra.UpdateCustomer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/customermitra.UpdateCustomer"
-                        }
-                    }
-                }
-            }
-        },
         "/v1/admin/approve/{transactionid}": {
             "post": {
                 "description": "Approve Transaction",
@@ -189,176 +359,6 @@
                 "responses": {
                     "200": {
                         "description": ""
-                    }
-                }
-            }
-        },
-        "/v1/emoney": {
-            "post": {
-                "description": "Redeem Emoney customer",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Redeem"
-                ],
-                "summary": "Redeem Emoney",
-                "parameters": [
-                    {
-                        "description": "inputdataemoney",
-                        "name": "InputDataCashout",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/login": {
-            "post": {
-                "description": "Login Customer",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Customer"
-                ],
-                "summary": "Login",
-                "parameters": [
-                    {
-                        "description": "Customer",
-                        "name": "Customer",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/customermitra.AuthLogin"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Login"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/order/cashout": {
-            "post": {
-                "description": "Redeem Emoney customer",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Redeem"
-                ],
-                "summary": "Redeem Cashout",
-                "parameters": [
-                    {
-                        "description": "inputdataemoney",
-                        "name": "InputDataCashout",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/order/paketdata": {
-            "post": {
-                "description": "Redeem PaketData customer",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Redeem"
-                ],
-                "summary": "Redeem PaketData",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "default": "Bearer \u003cAdd access token here\u003e",
-                        "description": "Insert your access token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/order/pulsa": {
-            "post": {
-                "description": "Redeem Pulsa customer",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Redeem"
-                ],
-                "summary": "Redeem Pulsa",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "default": "Bearer \u003cAdd access token here\u003e",
-                        "description": "Insert your access token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": true
-                        }
                     }
                 }
             }

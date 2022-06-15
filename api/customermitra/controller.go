@@ -28,7 +28,7 @@ func NewController(service customermitraBussiness.Service) *Controller {
 // @Produce json
 // @Param Customer body customermitra.AuthLogin true "Customer"
 // @Success 200 {object} response.Login
-// @Router /v1/login [post]
+// @Router /login [post]
 func (Controller *Controller) Login(c echo.Context) error {
 	var req customermitraBussiness.AuthLogin
 	var err error
@@ -82,7 +82,7 @@ func (Controller *Controller) Register(c echo.Context) error {
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
 // @Param Registercustomer body customermitra.UpdateCustomer true "Register"
 // @Success 200 {object} customermitra.UpdateCustomer
-// @Router /v1/account [put]
+// @Router /account [put]
 func (Controller *Controller) UpdateCustomer(c echo.Context) error {
 	var req customermitraBussiness.UpdateCustomer
 	c.Bind(&req)
@@ -140,7 +140,7 @@ func (Controller *Controller) DetailHistoryCustomer(c echo.Context) error {
 // @Produce json
 // @Param InputDataCashout body customermitra.InputTransactionBankEmoney true "inputdataemoney"
 // @Success 200 {object} customermitra.InputTransactionBankEmoney
-// @Router /v1/emoney [post]
+// @Router /emoney [post]
 func (Controller *Controller) OrderEmoney(c echo.Context) error {
 	emoney := customermitraBussiness.InputTransactionBankEmoney{}
 	c.Bind(&emoney)
@@ -166,7 +166,7 @@ func (Controller *Controller) OrderEmoney(c echo.Context) error {
 // @Produce json
 // @Param InputDataCashout body customermitra.InputTransactionBankEmoney true "inputdataemoney"
 // @Success 200 {object} customermitra.InputTransactionBankEmoney
-// @Router /v1/order/cashout [post]
+// @Router /cashout [post]
 func (Controller *Controller) OrderCashout(c echo.Context) error {
 	req := customermitraBussiness.InputTransactionBankEmoney{}
 	c.Bind(&req)
@@ -192,7 +192,7 @@ func (Controller *Controller) OrderCashout(c echo.Context) error {
 // @Produce json
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
 // @Success 200 {object} map[string]interface{}
-// @Router /v1/order/pulsa [post]
+// @Router /pulsa [post]
 func (Controller *Controller) OrderPulsa(c echo.Context) error {
 	var req customermitraBussiness.RedeemPulsaData
 	c.Bind(&req)
@@ -217,7 +217,7 @@ func (Controller *Controller) OrderPulsa(c echo.Context) error {
 // @Produce json
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
 // @Success 200 {object} map[string]interface{}
-// @Router /v1/order/paketdata [post]
+// @Router /paketdata [post]
 func (Controller *Controller) OrderPaketData(c echo.Context) error {
 	var req customermitraBussiness.RedeemPulsaData
 	c.Bind(&req)
