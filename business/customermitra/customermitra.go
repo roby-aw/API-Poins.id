@@ -11,7 +11,7 @@ type History_Transaction struct {
 	CreatedAt          time.Time `json:"createdat"`
 	ID_Transaction     string    `json:"id_transaction"`
 	Customer_id        int       `json:"customer_id"`
-	Customer           Customer  `json:"customer" gorm:"foreignkey:ID;references:customer_id"`
+	Customer           Customers `json:"customer" gorm:"foreignkey:ID;references:customer_id"`
 	Mitra_id           int       `json:"mitra_id"`
 	Transaction_type   string    `json:"transaction_type"`
 	Bank_Provider      string    `json:"bank_provider"`
@@ -33,7 +33,7 @@ type Store struct {
 	Alamat    string    `json:"alamat"`
 }
 
-type Customer struct {
+type Customers struct {
 	ID        uint `json:"id"`
 	CreatedAt time.Time
 	Email     string `json:"email"`

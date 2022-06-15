@@ -35,7 +35,7 @@ func VerifyPassword(hashedPassword, password string) error {
 }
 
 func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*customermitra.ResponseLogin, error) {
-	var Customer *customermitra.Customer
+	var Customer *customermitra.Customers
 	err := repo.db.Where("email = ?", login.Email).First(&Customer).Error
 	if Customer.Email == "" {
 		err = errors.New("email salah")
@@ -75,7 +75,7 @@ func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*cu
 
 func (repo *PosgresRepository) InsertCustomer(Data *customermitra.RegisterCustomer) (*customermitra.RegisterCustomer, error) {
 	password, err := Hash(Data.Password)
-	var Customer customermitra.Customer
+	var Customer customermitra.Customers
 	Customer.Email = Data.Email
 	Customer.Fullname = Data.Fullname
 	Customer.Password = string(password)
@@ -93,7 +93,7 @@ func (repo *PosgresRepository) InsertCustomer(Data *customermitra.RegisterCustom
 }
 
 func (repo *PosgresRepository) UpdateCustomer(Data *customermitra.UpdateCustomer) (*customermitra.UpdateCustomer, error) {
-	err := repo.db.Model(&customermitra.Customer{}).Where("ID = ?", Data.ID).Updates(customermitra.Customer{Email: Data.Email, Fullname: Data.Name, No_hp: Data.No_hp}).Error
+	err := repo.db.Model(&customermitra.Customers{}).Where("ID = ?", Data.ID).Updates(customermitra.Customers{Email: Data.Email, Fullname: Data.Name, No_hp: Data.No_hp}).Error
 	if err != nil {
 		return nil, err
 	}
@@ -141,7 +141,7 @@ func (repo *PosgresRepository) DetailHistoryCustomer(idtransaction string) (*cus
 }
 
 func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) error {
-	var tmpCustomer customermitra.Customer
+	var tmpCustomer customermitra.Customers
 	err := repo.db.Where("ID = ?", Data.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
 		return err
@@ -173,7 +173,7 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 }
 
 func (repo *PosgresRepository) ClaimPaketData(Data *customermitra.RedeemPulsaData) error {
-	var tmpCustomer customermitra.Customer
+	var tmpCustomer customermitra.Customers
 	err := repo.db.Where("ID = ?", Data.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
 		return err
