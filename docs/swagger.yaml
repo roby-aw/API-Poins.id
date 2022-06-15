@@ -198,6 +198,25 @@ paths:
       summary: Register
       tags:
       - customer
+  /v1/admin/approve/{transactionid}:
+    post:
+      consumes:
+      - application/json
+      description: Approve Transaction
+      parameters:
+      - description: transaction_id
+        in: path
+        name: transactionid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: Approve Transaction
+      tags:
+      - Admin
   /v1/login:
     post:
       consumes:

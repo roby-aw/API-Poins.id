@@ -129,6 +129,35 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/admin/approve/{transactionid}": {
+            "post": {
+                "description": "Approve Transaction",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Approve Transaction",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "transaction_id",
+                        "name": "transactionid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
         "/v1/login": {
             "post": {
                 "description": "Login Customer",
