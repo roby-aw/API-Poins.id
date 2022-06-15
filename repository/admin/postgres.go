@@ -142,15 +142,15 @@ func (repo *PosgresRepository) GetCustomers() ([]*customermitra.Customers, error
 	return customers, nil
 }
 
-func (repo *PosgresRepository) GetHistoryCustomers() ([]*admin.CustomerHistory, error) {
-	var CustomerHistory []*admin.CustomerHistory
+func (repo *PosgresRepository) GetHistoryCustomers() ([]admin.CustomerHistory, error) {
+	var CustomerHistory []admin.CustomerHistory
 	var History_Transaction []*customermitra.History_Transaction
 	err := repo.db.Where("Status_Poin = ?", "OUT").Find(&History_Transaction).Error
 	if err != nil {
 		return nil, err
 	}
 	for _, v := range History_Transaction {
-		var tmpHistory *admin.CustomerHistory
+		var tmpHistory admin.CustomerHistory
 		tmpHistory.Customer_id = v.Customer_id
 		tmpHistory.Customers.Fullname = v.Customers.Fullname
 		tmpHistory.Description = v.Description
