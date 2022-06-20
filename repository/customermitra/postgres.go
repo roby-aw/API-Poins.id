@@ -101,7 +101,7 @@ func (repo *PosgresRepository) UpdateCustomer(Data *customermitra.UpdateCustomer
 
 func (repo *PosgresRepository) HistoryCustomer(id int) ([]customermitra.History, error) {
 	var DataHistory []customermitra.History_Transaction
-	err := repo.db.Where("Customer_id = ? AND Status_Poin = ?", id, "OUT").Order("id desc").Find(&DataHistory).Error
+	err := repo.db.Where("Customer_id = ? AND Status_Poin = ?", id, "OUT").Order("createdat desc").Find(&DataHistory).Error
 	if err != nil {
 		return nil, err
 	}
