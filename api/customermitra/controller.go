@@ -252,7 +252,7 @@ func (Controller *Controller) OrderPaketData(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
-		"messages": "success register",
+		"messages": "success redeem paket data",
 	})
 }
 
@@ -282,6 +282,8 @@ func (Controller *Controller) CallbackXendit(c echo.Context) error {
 	}
 	fmt.Println(resbank)
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": databank,
+		"code":     200,
+		"messages": "success redeem emoney",
+		"result":   databank,
 	})
 }
