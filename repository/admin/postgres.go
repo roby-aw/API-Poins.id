@@ -145,7 +145,9 @@ func (repo *PosgresRepository) GetCustomers() ([]*customermitra.Customers, error
 func (repo *PosgresRepository) GetHistoryCustomers() ([]admin.CustomerHistory, error) {
 	var CustomerHistory []admin.CustomerHistory
 	var History_Transaction []*customermitra.History_Transaction
-	err := repo.db.Where("Status_Poin = ?", "OUT").Order("created_at desc").Preload("Customers").Find(&History_Transaction).Order("createdat desc").Error
+	err := repo.db.Where("Status_Poin = ?", "OUT").Order("created_at desc").Preload("Customers", func(db *gorm.DB) *gorm.DB {
+		return db.Select("id", "name")
+	}).Find(&History_Transaction).Error
 	if err != nil {
 		return nil, err
 	}
