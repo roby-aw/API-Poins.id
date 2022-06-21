@@ -3,6 +3,7 @@ package admin
 import (
 	"api-redeem-point/business/admin"
 	adminBusiness "api-redeem-point/business/admin"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -177,6 +178,7 @@ func (Controller *Controller) TransactionByDate(c echo.Context) error {
 	if end == "" {
 		end = time.Now().Format("2006-01-02")
 	}
+	fmt.Println(start, " - ", end)
 	result, err := Controller.service.TransactionByDate(start, end)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
