@@ -171,6 +171,12 @@ func (repo *PosgresRepository) GetHistoryCustomers() ([]admin.CustomerHistory, e
 	return CustomerHistory, nil
 }
 
+func (repo *PosgresRepository) TransactionDate() ([]admin.TransactionDate, error) {
+	var transaction []admin.TransactionDate
+	repo.db.Model(&customermitra.History_Transaction{}).Where("created_at > ?", "2020-01-01 00:00:00").Where("created_at < ?", "2021-01-01 00:00:00").Find(&transaction)
+	return transaction, nil
+}
+
 func Hash(password string) ([]byte, error) {
 	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 }

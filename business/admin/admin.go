@@ -84,12 +84,10 @@ type Kota struct {
 	Province_ID        int    `json:"province_id" validate:"required"`
 }
 
-type TestAdmin struct {
-	ID       int    `gorm:"primaryKey"`
-	Username string `json:"username" validate:"required"`
-	Email    string `json:"email" validate:"required,email"`
-	Name     string `json:"name" validate:"required"`
-	Password string `json:"password" validate:"required"`
+type TransactionDate struct {
+	ID               int       `json:"id"`
+	Transaction_type string    `json:"transaction_type"`
+	CreatedAt        time.Time `json:"createdat"`
 }
 
 type Auth struct {

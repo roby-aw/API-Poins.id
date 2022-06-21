@@ -14,6 +14,7 @@ type Repository interface {
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 	GetCustomers() ([]*customermitra.Customers, error)
 	GetHistoryCustomers() ([]CustomerHistory, error)
+	TransactionDate() ([]TransactionDate, error)
 }
 
 type Service interface {
@@ -24,6 +25,7 @@ type Service interface {
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 	FindCustomers() ([]*customermitra.Customers, error)
 	FindHistoryCustomers() ([]CustomerHistory, error)
+	TransactionDate() ([]TransactionDate, error)
 }
 
 type service struct {
@@ -74,4 +76,8 @@ func (s *service) FindCustomers() ([]*customermitra.Customers, error) {
 
 func (s *service) FindHistoryCustomers() ([]CustomerHistory, error) {
 	return s.repository.GetHistoryCustomers()
+}
+
+func (s *service) TransactionDate() ([]TransactionDate, error) {
+	return s.repository.TransactionDate()
 }

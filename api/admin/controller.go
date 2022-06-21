@@ -166,3 +166,18 @@ func (Controller *Controller) FindHistoryCustomers(c echo.Context) error {
 		"result":   result,
 	})
 }
+
+func (Controller *Controller) TransactionDate(c echo.Context) error {
+	result, err := Controller.service.TransactionDate()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success get transaction",
+		"result":   result,
+	})
+}
