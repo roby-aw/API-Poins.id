@@ -17,7 +17,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	echoSwagger "github.com/swaggo/echo-swagger"
-	"gorm.io/gorm"
 )
 
 // @title API Jasa Pengiriman
@@ -39,12 +38,11 @@ func main() {
 	defer dbCon.CloseConnection()
 
 	controllers := modules.RegistrationModules(dbCon, config)
-	var db gorm.DB
-	db.AutoMigrate(&repository.History_Transaction{})
-	db.AutoMigrate(&repository.Store{})
-	db.AutoMigrate(&repository.Customer{})
-	db.AutoMigrate(&repository.StockProduct{})
-	db.AutoMigrate(&repository.Admin{})
+	dbCon.Postgres.AutoMigrate(&repository.History_Transaction{})
+	dbCon.Postgres.AutoMigrate(&repository.Store{})
+	dbCon.Postgres.AutoMigrate(&repository.Customer{})
+	dbCon.Postgres.AutoMigrate(&repository.StockProduct{})
+	dbCon.Postgres.AutoMigrate(&repository.Admin{})
 
 	e := echo.New()
 	handleSwagger := echoSwagger.WrapHandler
