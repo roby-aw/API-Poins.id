@@ -175,7 +175,7 @@ func (Controller *Controller) TransactionByDate(c echo.Context) error {
 		start = "2022-01-01"
 	}
 	if end == "" {
-		end = time.Now().Format("2006-02-01")
+		end = time.Now().Format("2006-01-02")
 	}
 	result, err := Controller.service.TransactionByDate(start, end)
 	if err != nil {
