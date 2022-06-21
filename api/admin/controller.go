@@ -178,6 +178,8 @@ func (Controller *Controller) TransactionByDate(c echo.Context) error {
 	if end == "" {
 		end = time.Now().Format("2006-01-02")
 	}
+	start = start + " 00:00:00"
+	end = end + " 23:59:59"
 	fmt.Println(start, " - ", end)
 	result, err := Controller.service.TransactionByDate(start, end)
 	if err != nil {
