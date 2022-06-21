@@ -26,7 +26,9 @@ func NewPosgresRepository(db *gorm.DB) *PosgresRepository {
 func (repo *PosgresRepository) Dashboard() ([]*admin.Dashboard, error) {
 	var History []customermitra.History_Transaction
 	var Dashboard []*admin.Dashboard
-	err := repo.db.Model(&customermitra.History_Transaction{}).Where("Status_transaction = ?", "PENDING").Preload("Customers").Find(&Dashboard).Error
+	err := repo.db.Model(&customermitra.History_Transaction{}).Where("Status_transaction = ?", "PENDING").Preload("Customers", func(db *gorm.DB) *gorm.DB {
+		return db.Select("id", "email", "fullname")
+	}).Find(&Dashboard).Error
 	fmt.Println(History)
 	if err != nil {
 		return nil, err
