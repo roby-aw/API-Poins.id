@@ -36,7 +36,7 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	g.GET("/customer", controller.AdminControlller.FindCustomers, middleware.AdminSetupAuthenticationJWT())
 	g.GET("/history", controller.AdminControlller.FindHistoryCustomers, middleware.AdminSetupAuthenticationJWT())
 	g.GET("/transaction", controller.AdminControlller.TransactionDate)
-	g.GET("/transactiondate", controller.AdminControlller.TransactionByDate)
+	g.GET("/transaction", controller.AdminControlller.TransactionByDate)
 	// g.POST("/token", controller.AdminControlller.GetToken)
 	// g.PUT("/:id", controller.AdminControlller.UpdateAdmin)
 	// g.GET("/:id", controller.AdminControlller.GetAdminByID)
