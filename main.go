@@ -40,11 +40,11 @@ func main() {
 
 	controllers := modules.RegistrationModules(dbCon, config)
 	var db *gorm.DB
-	db.AutoMigrate(repository.History_Transaction{})
-	db.AutoMigrate(repository.Store{})
-	db.AutoMigrate(repository.Customer{})
-	db.AutoMigrate(repository.StockProduct{})
-	db.AutoMigrate(repository.Admin{})
+	db.AutoMigrate(&repository.History_Transaction{})
+	db.AutoMigrate(&repository.Store{})
+	db.AutoMigrate(&repository.Customer{})
+	db.AutoMigrate(&repository.StockProduct{})
+	db.AutoMigrate(&repository.Admin{})
 
 	e := echo.New()
 	handleSwagger := echoSwagger.WrapHandler
