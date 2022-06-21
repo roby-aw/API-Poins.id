@@ -39,7 +39,7 @@ func main() {
 	defer dbCon.CloseConnection()
 
 	controllers := modules.RegistrationModules(dbCon, config)
-	var db gorm.DB
+	var db *gorm.DB
 	db.AutoMigrate(repository.History_Transaction{})
 	db.AutoMigrate(repository.Store{})
 	db.AutoMigrate(repository.Customer{})
