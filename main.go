@@ -39,6 +39,12 @@ func main() {
 	defer dbCon.CloseConnection()
 
 	controllers := modules.RegistrationModules(dbCon, config)
+	var db gorm.DB
+	db.AutoMigrate(repository.History_Transaction{})
+	db.AutoMigrate(repository.Store{})
+	db.AutoMigrate(repository.Customer{})
+	db.AutoMigrate(repository.StockProduct{})
+	db.AutoMigrate(repository.Admin{})
 
 	e := echo.New()
 	handleSwagger := echoSwagger.WrapHandler
@@ -50,12 +56,7 @@ func main() {
 		return c.String(http.StatusOK, "success")
 	})
 	api.RegistrationPath(e, controllers)
-	var db gorm.DB
-	db.AutoMigrate(repository.History_Transaction{})
-	db.AutoMigrate(repository.Store{})
-	db.AutoMigrate(repository.Customer{})
-	db.AutoMigrate(repository.StockProduct{})
-	db.AutoMigrate(repository.Admin{})
+
 	go func() {
 		if port == "" {
 			port = "8080"
