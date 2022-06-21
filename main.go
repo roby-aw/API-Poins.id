@@ -4,6 +4,7 @@ import (
 	"api-redeem-point/api"
 	"api-redeem-point/app/modules"
 	"api-redeem-point/config"
+	"api-redeem-point/repository"
 	"api-redeem-point/utils"
 	"fmt"
 	"log"
@@ -16,6 +17,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	echoSwagger "github.com/swaggo/echo-swagger"
+	"gorm.io/gorm"
 )
 
 // @title API Jasa Pengiriman
@@ -48,7 +50,12 @@ func main() {
 		return c.String(http.StatusOK, "success")
 	})
 	api.RegistrationPath(e, controllers)
-
+	var db gorm.DB
+	db.AutoMigrate(repository.History_Transaction{})
+	db.AutoMigrate(repository.Store{})
+	db.AutoMigrate(repository.Customer{})
+	db.AutoMigrate(repository.StockProduct{})
+	db.AutoMigrate(repository.Admin{})
 	go func() {
 		if port == "" {
 			port = "8080"

@@ -41,12 +41,6 @@ func newPostgres(config *config.AppConfig) *gorm.DB {
 		panic(err)
 	}
 	// db.Migrator().DropTable(customermitra.Customer{})
-	data := History_Transaction{}
-	db.AutoMigrate(data)
-	db.AutoMigrate(Store{})
-	db.AutoMigrate(Customer{})
-	db.AutoMigrate(StockProduct{})
-	db.AutoMigrate(Admin{})
 	return db
 }
 
