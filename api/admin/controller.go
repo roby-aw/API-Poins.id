@@ -32,8 +32,8 @@ func (Controller *Controller) Dashboard(c echo.Context) error {
 	result, err := Controller.service.Dashboard()
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "failed",
-			"Error":   err.Error(),
+			"code":     400,
+			"messages": err.Error(),
 		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -59,8 +59,8 @@ func (Controller *Controller) CreateAdmin(c echo.Context) error {
 	admins, err := Controller.service.CreateAdmin(&admin)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "failed",
-			"Error":   err.Error(),
+			"code":     400,
+			"messages": err.Error(),
 		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -86,7 +86,10 @@ func (Controller *Controller) LoginAdmin(c echo.Context) error {
 	result, err := Controller.service.LoginAdmin(&request)
 
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":    200,
@@ -101,7 +104,10 @@ func (Controller *Controller) UpdateAdmin(c echo.Context) error {
 	c.Bind(&admin)
 	admin, err := Controller.service.UpdateAdmin(id, admin)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
@@ -123,7 +129,10 @@ func (Controller *Controller) ApproveTransaction(c echo.Context) error {
 	transactionid := c.Param("idtransaction")
 	err := Controller.service.ApproveTransaction(transactionid)
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
@@ -146,7 +155,10 @@ func (Controller *Controller) FindCustomers(c echo.Context) error {
 func (Controller *Controller) FindHistoryCustomers(c echo.Context) error {
 	result, err := Controller.service.FindHistoryCustomers()
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
