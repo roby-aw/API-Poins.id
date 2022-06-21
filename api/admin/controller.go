@@ -5,6 +5,7 @@ import (
 	adminBusiness "api-redeem-point/business/admin"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -167,24 +168,16 @@ func (Controller *Controller) FindHistoryCustomers(c echo.Context) error {
 	})
 }
 
-func (Controller *Controller) TransactionDate(c echo.Context) error {
-	result, err := Controller.service.TransactionDate()
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"code":     400,
-			"messages": err.Error(),
-		})
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"code":     200,
-		"messages": "success get transaction",
-		"result":   result,
-	})
-}
-
 func (Controller *Controller) TransactionByDate(c echo.Context) error {
 	start := c.QueryParam("start")
 	end := c.QueryParam("end")
+	if start == "" {
+		start = "2022-01-01"
+	}
+	if end == "" {
+		now := time.Now()
+		end = now.String()
+	}
 	result, err := Controller.service.TransactionByDate(start, end)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
