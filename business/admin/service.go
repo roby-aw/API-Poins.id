@@ -15,6 +15,7 @@ type Repository interface {
 	GetCustomers() ([]*customermitra.Customers, error)
 	GetHistoryCustomers() ([]CustomerHistory, error)
 	TransactionDate() ([]TransactionDate, error)
+	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
 }
 
 type Service interface {
@@ -26,6 +27,7 @@ type Service interface {
 	FindCustomers() ([]*customermitra.Customers, error)
 	FindHistoryCustomers() ([]CustomerHistory, error)
 	TransactionDate() ([]TransactionDate, error)
+	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
 }
 
 type service struct {
@@ -80,4 +82,8 @@ func (s *service) FindHistoryCustomers() ([]CustomerHistory, error) {
 
 func (s *service) TransactionDate() ([]TransactionDate, error) {
 	return s.repository.TransactionDate()
+}
+
+func (s *service) TransactionByDate(startdate string, enddate string) ([]TransactionDate, error) {
+	return s.repository.TransactionByDate(startdate, enddate)
 }
