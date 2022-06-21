@@ -179,7 +179,7 @@ func (repo *PosgresRepository) TransactionDate() ([]admin.TransactionDate, error
 
 func (repo *PosgresRepository) TransactionByDate(startdate string, enddate string) ([]admin.TransactionDate, error) {
 	var transaction []admin.TransactionDate
-	repo.db.Model(&customermitra.History_Transaction{}).Where("created_at => ?", startdate).Where("created_at <= ?", enddate).Order("created_at asc").Find(&transaction)
+	repo.db.Model(&customermitra.History_Transaction{}).Where("created_at >= ?", startdate).Where("created_at <= ?", enddate).Order("created_at asc").Find(&transaction)
 	return transaction, nil
 }
 
