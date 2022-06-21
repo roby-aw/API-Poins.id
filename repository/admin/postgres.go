@@ -173,7 +173,7 @@ func (repo *PosgresRepository) GetHistoryCustomers() ([]admin.CustomerHistory, e
 
 func (repo *PosgresRepository) TransactionDate() ([]admin.TransactionDate, error) {
 	var transaction []admin.TransactionDate
-	repo.db.Model(&customermitra.History_Transaction{}).Where("created_at > ?", "2020-01-01 00:00:00").Where("created_at < ?", "2021-01-01 00:00:00").Find(&transaction)
+	repo.db.Model(&customermitra.History_Transaction{}).Where("created_at > ?", "2022-01-01 00:00:00").Where("created_at < ?", "2023-01-01 00:00:00").Find(&transaction)
 	return transaction, nil
 }
 
