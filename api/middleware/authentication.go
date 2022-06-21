@@ -16,3 +16,12 @@ func CustomerSetupAuthenticationJWT() echo.MiddlewareFunc {
 		SigningKey:    []byte(SECRET_KEY),
 	})
 }
+
+func AdminSetupAuthenticationJWT() echo.MiddlewareFunc {
+	SECRET_KEY := os.Getenv("SECRET_JWT")
+	return middleware.JWTWithConfig(middleware.JWTConfig{
+		SigningMethod: "HS256",
+		Claims:        &customermitra.Claims{},
+		SigningKey:    []byte(SECRET_KEY),
+	})
+}
