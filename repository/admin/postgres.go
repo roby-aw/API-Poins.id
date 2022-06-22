@@ -182,7 +182,7 @@ func (repo *PosgresRepository) TransactionByDate(startdate string, enddate strin
 	//repo.db.Model(&customermitra.History_Transaction{}).Where("created_at > ? AND created_at < ?", startdate, enddate).Order("created_at asc").Find(&transaction)
 	fmt.Println(transaction)
 	//repo.db.Model(&customermitra.History_Transaction{}).Where("created_at BETWEEN ? AND ?", startdate, enddate).Find(&transaction)
-	repo.db.Raw("select * from history_transactions where created_at BETWEEN '?' AND '?'", startdate, enddate).Find(&transaction)
+	repo.db.Raw("select * from history_transactions where created_at BETWEEN ? AND ?", startdate, enddate).Find(&transaction)
 	return transaction, nil
 }
 
