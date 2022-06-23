@@ -335,8 +335,7 @@ func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionB
 
 func (repo *PosgresRepository) InsertStore(store *customermitra.RegisterStore) (*customermitra.RegisterStore, error) {
 	hash, _ := Hash(store.Password)
-	store.Password = string(hash)
-	err := repo.db.Model(&customermitra.Store{}).Create(&store).Error
+	err := repo.db.Create(&customermitra.Store{Email: store.Email, Password: string(hash), Store: store.Store, Alamat: store.Alamat}).Error
 	if err != nil {
 		return nil, err
 	}
