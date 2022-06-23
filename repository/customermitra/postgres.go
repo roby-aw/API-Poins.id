@@ -321,7 +321,6 @@ func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionB
 		Description:       "Redeem Emoney" + " - " + inputdata.ID_Transaction,
 		Amount:            float64(emoney.Amount),
 	}
-	fmt.Println(createData)
 	_, errxendit := disbursement.Create(&createData)
 	if errxendit != nil {
 		err = errors.New(errxendit.Message)
