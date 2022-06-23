@@ -27,7 +27,7 @@ func NewPosgresRepository(db *gorm.DB) *PosgresRepository {
 func (repo *PosgresRepository) Dashboard() (*int, error) {
 	var today64 int64
 	now := time.Now().Format("2006-01-02")
-	err := repo.db.Model(&customermitra.History_Transaction{}).Where("created_at > ?", now+" 00:00:00").Where("transaction_type = ?", "OUT").Count(&today64).Error
+	err := repo.db.Model(&customermitra.History_Transaction{}).Where("created_at > ?", now+" 00:00:00").Where("status_poin = ?", "OUT").Count(&today64).Error
 	if err != nil {
 		return nil, err
 	}
