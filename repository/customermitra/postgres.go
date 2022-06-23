@@ -272,14 +272,11 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 		Description:       "Redeem Emoney" + " - " + inputdata.ID_Transaction,
 		Amount:            float64(emoney.Amount),
 	}
-	resp, errxendit := disbursement.Create(&createData)
+	_, errxendit := disbursement.Create(&createData)
 	if errxendit != nil {
 		err = errors.New(errxendit.Message)
-		fmt.Println(err)
 		return nil, err
 	}
-	fmt.Println(errxendit)
-	fmt.Println(resp)
 	errdb := repo.db.Create(&inputdata).Error
 	if errdb != nil {
 		return nil, errdb
@@ -325,12 +322,11 @@ func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionB
 		Amount:            float64(emoney.Amount),
 	}
 	fmt.Println(createData)
-	resp, errxendit := disbursement.Create(&createData)
-	if err != nil {
-		return nil, errxendit
+	_, errxendit := disbursement.Create(&createData)
+	if errxendit != nil {
+		err = errors.New(errxendit.Message)
+		return nil, err
 	}
-	fmt.Println(errxendit)
-	fmt.Println(resp)
 	errdb := repo.db.Create(&inputdata).Error
 	if errdb != nil {
 		return nil, errdb
