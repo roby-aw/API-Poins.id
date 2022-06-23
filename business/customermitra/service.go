@@ -18,6 +18,7 @@ type Repository interface {
 	ClaimBank(emoney *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
 	TakeCallback(data *Disbursement) (*Disbursement, error)
 	GetOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
+	InsertStore(store *RegisterStore) (*RegisterStore, error)
 }
 
 type Service interface {
@@ -32,6 +33,7 @@ type Service interface {
 	RedeemBank(Data *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
 	GetCallback(data *Disbursement) (*Disbursement, error)
 	ToOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
+	CreateStore(store *RegisterStore) (*RegisterStore, error)
 }
 
 type service struct {
@@ -139,4 +141,12 @@ func (s *service) ToOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTrans
 	}
 	emoney, err = s.repository.GetOrderEmoney(emoney)
 	return emoney, err
+}
+
+func (s *service) CreateStore(store *RegisterStore) (*RegisterStore, error) {
+	err := s.validate.Struct(store)
+	if err != nil {
+		return nil, err
+	}
+	return s.repository.InsertStore(store)
 }

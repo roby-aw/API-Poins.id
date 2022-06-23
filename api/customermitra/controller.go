@@ -275,8 +275,8 @@ func (Controller *Controller) CallbackXendit(c echo.Context) error {
 	databank, err := Controller.service.GetCallback(&resbank)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "failed",
-			"Error":   err.Error(),
+			"code":     400,
+			"messages": err.Error(),
 		})
 	}
 	fmt.Println(resbank)
@@ -284,5 +284,21 @@ func (Controller *Controller) CallbackXendit(c echo.Context) error {
 		"code":     200,
 		"messages": "success redeem emoney",
 		"result":   databank,
+	})
+}
+func (Controller *Controller) RegisterStore(c echo.Context) error {
+	var req customermitraBussiness.RegisterStore
+	c.Bind(&req)
+	result, err := Controller.service.CreateStore(&req)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success create store",
+		"result":   result,
 	})
 }

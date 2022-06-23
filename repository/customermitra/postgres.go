@@ -332,3 +332,13 @@ func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionB
 	}
 	return emoney, nil
 }
+
+func (repo *PosgresRepository) InsertStore(store *customermitra.RegisterStore) (*customermitra.RegisterStore, error) {
+	hash, _ := Hash(store.Password)
+	store.Password = string(hash)
+	err := repo.db.Model(customermitra.Store{}).Create(store).Error
+	if err != nil {
+		return nil, err
+	}
+	return store, nil
+}
