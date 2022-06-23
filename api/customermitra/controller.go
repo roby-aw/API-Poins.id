@@ -302,3 +302,20 @@ func (Controller *Controller) RegisterStore(c echo.Context) error {
 		"result":   result,
 	})
 }
+
+func (Controller *Controller) LoginStore(c echo.Context) error {
+	var req customermitraBussiness.AuthStore
+	c.Bind(&req)
+	result, err := Controller.service.LoginStore(&req)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success login store",
+		"result":   result,
+	})
+}

@@ -46,9 +46,11 @@ func (repo *PosgresRepository) GetCustomersByID(id int) (*customermitra.Customer
 func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*customermitra.ResponseLogin, error) {
 	var Customer *customermitra.Customers
 	err := repo.db.Where("email = ?", login.Email).First(&Customer).Error
-	if Customer.Email == "" {
-		err = errors.New("email salah")
-		return nil, err
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = errors.New("Email salah")
+			return nil, err
+		}
 	}
 	err = VerifyPassword(Customer.Password, login.Password)
 	if err != nil {
@@ -340,4 +342,41 @@ func (repo *PosgresRepository) InsertStore(store *customermitra.RegisterStore) (
 		return nil, err
 	}
 	return store, nil
+}
+
+func (repo *PosgresRepository) SignStore(store *customermitra.AuthStore) (*customermitra.ResponseLoginStore, error) {
+	var tmpStore *customermitra.Store
+	err := repo.db.Where("email = ?", store.Email).First(&tmpStore).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = errors.New("Email salah")
+			return nil, err
+		}
+	}
+	err = VerifyPassword(tmpStore.Password, store.Password)
+	if err != nil {
+		err = errors.New("Password salah")
+		return nil, err
+	}
+	expirationTime := time.Now().Add(24 * time.Hour)
+
+	claims := &customermitra.Claims{
+		ID:    int(tmpStore.ID),
+		Email: tmpStore.Email,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	SECRET_KEY := os.Getenv("SECRET_JWT")
+	token_jwt, err := token.SignedString([]byte(SECRET_KEY))
+	if err != nil {
+		return nil, err
+	}
+	Response := customermitra.ResponseLoginStore{
+		Store: *tmpStore,
+		Token: token_jwt,
+	}
+	return &Response, nil
 }

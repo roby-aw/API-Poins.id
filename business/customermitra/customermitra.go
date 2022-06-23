@@ -42,6 +42,16 @@ type RegisterStore struct {
 	Alamat   string `json:"alamat" validate:"required"`
 }
 
+type AuthStore struct {
+	Email    string `json:"email" validate:"required"`
+	Password string `json:"password" validate:"required"`
+}
+
+type ResponseLoginStore struct {
+	Store Store  `json:"store"`
+	Token string `json:"token"`
+}
+
 type Customers struct {
 	ID        uint `gorm:"primary_key"`
 	CreatedAt time.Time

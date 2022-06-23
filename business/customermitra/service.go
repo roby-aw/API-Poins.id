@@ -19,6 +19,7 @@ type Repository interface {
 	TakeCallback(data *Disbursement) (*Disbursement, error)
 	GetOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
 	InsertStore(store *RegisterStore) (*RegisterStore, error)
+	SignStore(store *AuthStore) (*ResponseLoginStore, error)
 }
 
 type Service interface {
@@ -34,6 +35,7 @@ type Service interface {
 	GetCallback(data *Disbursement) (*Disbursement, error)
 	ToOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
 	CreateStore(store *RegisterStore) (*RegisterStore, error)
+	LoginStore(store *AuthStore) (*ResponseLoginStore, error)
 }
 
 type service struct {
@@ -149,4 +151,7 @@ func (s *service) CreateStore(store *RegisterStore) (*RegisterStore, error) {
 		return nil, err
 	}
 	return s.repository.InsertStore(store)
+}
+func (s *service) LoginStore(store *AuthStore) (*ResponseLoginStore, error) {
+	return s.repository.SignStore(store)
 }
