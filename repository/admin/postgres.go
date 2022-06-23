@@ -242,7 +242,8 @@ func (repo *PosgresRepository) UpdateStock(id int, stock int) (*admin.StockProdu
 
 func (repo *PosgresRepository) TestDB() ([]admin.TransactionMonth, error) {
 	var TransactionMonth []admin.TransactionMonth
-	err := repo.db.Raw("SELECT TO_CHAR(created_at, 'Month') AS Month, COUNT(1) AS count FROM history_transactions GROUP BY TO_CHAR(created_at, 'Month')").Find(&TransactionMonth).Error
+	year := time.Now().Year()
+	err := repo.db.Raw("SELECT TO_CHAR(created_at, 'Month') AS Month, COUNT(1) AS count FROM history_transactions where EXTRACT(YEAR From created_at) = ? GROUP BY TO_CHAR(created_at, 'Month')", year).Find(&TransactionMonth).Error
 	if err != nil {
 		return nil, err
 	}
