@@ -24,17 +24,17 @@ func NewPosgresRepository(db *gorm.DB) *PosgresRepository {
 	}
 }
 
-func (repo *PosgresRepository) Dashboard() ([]*admin.Dashboard, error) {
+func (repo *PosgresRepository) TransactionPending() ([]*admin.TransactionPending, error) {
 	var History []customermitra.History_Transaction
-	var Dashboard []*admin.Dashboard
+	var Pending []*admin.TransactionPending
 	err := repo.db.Model(&customermitra.History_Transaction{}).Where("Status_transaction = ?", "PENDING").Preload("Customers", func(db *gorm.DB) *gorm.DB {
 		return db.Select("id", "email", "fullname")
-	}).Find(&Dashboard).Error
+	}).Find(&Pending).Error
 	fmt.Println(History)
 	if err != nil {
 		return nil, err
 	}
-	return Dashboard, nil
+	return Pending, nil
 }
 
 func (repo *PosgresRepository) RemoveAdmin(id int) error {

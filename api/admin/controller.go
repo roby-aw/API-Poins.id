@@ -31,8 +31,8 @@ func NewController(service adminBusiness.Service) *Controller {
 // @Success 200
 // @Failure 400 {object} map[string]interface{}
 // @Router /admin [post]
-func (Controller *Controller) Dashboard(c echo.Context) error {
-	result, err := Controller.service.Dashboard()
+func (Controller *Controller) TransactionPending(c echo.Context) error {
+	result, err := Controller.service.TransactionPending()
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"code":     400,

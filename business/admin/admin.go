@@ -45,7 +45,7 @@ type AuthLogin struct {
 	Password string `json:"password" validate:"required"`
 }
 
-type Dashboard struct {
+type TransactionPending struct {
 	ID_Transaction     string    `json:"id_transaction"`
 	Nomor              string    `json:"nomor"`
 	Customer_id        int       `json:"customer_id"`

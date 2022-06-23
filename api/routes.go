@@ -32,7 +32,7 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	g := c.Group("/admin")
 	g.POST("/login", controller.AdminControlller.LoginAdmin)
 	g.POST("", controller.AdminControlller.CreateAdmin)
-	g.GET("", controller.AdminControlller.Dashboard, middleware.AdminSetupAuthenticationJWT())
+	g.GET("", controller.AdminControlller.TransactionPending, middleware.AdminSetupAuthenticationJWT())
 	g.POST("/approve/:idtransaction", controller.AdminControlller.ApproveTransaction, middleware.AdminSetupAuthenticationJWT())
 	g.GET("/customer", controller.AdminControlller.FindCustomers, middleware.AdminSetupAuthenticationJWT())
 	g.GET("/history", controller.AdminControlller.FindHistoryCustomers, middleware.AdminSetupAuthenticationJWT())
