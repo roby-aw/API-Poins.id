@@ -22,6 +22,21 @@ func NewController(service adminBusiness.Service) *Controller {
 	}
 }
 
+func (Controller *Controller) Dashboard(c echo.Context) error {
+	result, err := Controller.service.Dashboard()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success get dashboard",
+		"result":   result,
+	})
+}
+
 // Create godoc
 // @Summary Create admin
 // @description create admin with data

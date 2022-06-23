@@ -8,6 +8,7 @@ import (
 )
 
 type Repository interface {
+	Dashboard() (*int, error)
 	TransactionPending() ([]*TransactionPending, error)
 	InsertAdmin(admin *RegisterAdmin) (*RegisterAdmin, error)
 	AcceptTransaction(idtransaction string) error
@@ -19,12 +20,13 @@ type Repository interface {
 	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
 	UpdateCustomer(data customermitra.Customers) (*customermitra.Customers, error)
 	UpdateCustomerPoint(id int, point int) (*int, error)
-	GetProduct() ([]*StockProduct, error)
+	GetProduct() ([]StockProduct, error)
 	UpdateStock(id int, stock int) (*StockProduct, error)
 	TestDB() ([]TransactionMonth, error)
 }
 
 type Service interface {
+	Dashboard() (*Dashboard, error)
 	TransactionPending() ([]*TransactionPending, error)
 	CreateAdmin(admin *RegisterAdmin) (*RegisterAdmin, error)
 	ApproveTransaction(idtransaction string) error
@@ -36,7 +38,7 @@ type Service interface {
 	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
 	UpdateCustomer(data customermitra.Customers) (*customermitra.Customers, error)
 	UpdateCustomerPoint(id int, point int) (*int, error)
-	FindProduct() ([]*StockProduct, error)
+	FindProduct() ([]StockProduct, error)
 	UpdateStock(id int, stock int) (*StockProduct, error)
 	TestDB() ([]TransactionMonth, error)
 }
@@ -51,6 +53,21 @@ func NewService(repository Repository) Service {
 		repository: repository,
 		validate:   validator.New(),
 	}
+}
+
+func (s *service) Dashboard() (*Dashboard, error) {
+	transMonts, err := s.repository.TestDB()
+	if err != nil {
+		return nil, err
+	}
+	Stock, err := s.repository.GetProduct()
+	today, err := s.repository.Dashboard()
+	Dashboard := Dashboard{
+		Today: *today,
+		Stock: Stock,
+		Month: transMonts,
+	}
+	return &Dashboard, nil
 }
 
 func (s *service) TransactionPending() ([]*TransactionPending, error) {
@@ -107,7 +124,7 @@ func (s *service) UpdateCustomerPoint(id int, point int) (*int, error) {
 	return s.repository.UpdateCustomerPoint(id, point)
 }
 
-func (s *service) FindProduct() ([]*StockProduct, error) {
+func (s *service) FindProduct() ([]StockProduct, error) {
 	return s.repository.GetProduct()
 }
 

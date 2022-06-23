@@ -110,3 +110,9 @@ type TransactionMonth struct {
 	Month string `json:"month"`
 	Count int    `json:"count"`
 }
+
+type Dashboard struct {
+	Today int                `json:"today"`
+	Stock []StockProduct     `json:"stock"`
+	Month []TransactionMonth `json:"month"`
+}
