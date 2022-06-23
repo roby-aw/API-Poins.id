@@ -28,6 +28,8 @@ type History_Transaction struct {
 type Store struct {
 	ID        uint      `json:"id"`
 	CreatedAt time.Time `json:"createdat"`
+	UpdatedAt time.Time `json:"updatedat"`
+	DeletedAt time.Time `gorm:"index"`
 	Email     string    `json:"email"`
 	Password  string    `json:"password"`
 	Store     string    `json:"store"`
