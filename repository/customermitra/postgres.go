@@ -236,6 +236,17 @@ func (repo *PosgresRepository) TakeCallback(data *customermitra.Disbursement) (*
 }
 
 func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransactionBankEmoney) (*customermitra.InputTransactionBankEmoney, error) {
+	var tmpCustomer customermitra.Customers
+	err := repo.db.Where("ID = ?", emoney.Customer_id).First(&tmpCustomer).Error
+	if err != nil {
+		return nil, err
+	}
+	hasil := tmpCustomer.Poin - emoney.Poin_redeem
+	tmpCustomer.Poin = hasil
+	err = repo.db.Model(tmpCustomer).Select("Poin").Updates(tmpCustomer).Error
+	if err != nil {
+		return nil, err
+	}
 	random := utils.Randomstring()
 	inputdata := customermitra.History_Transaction{
 		ID_Transaction:     "EM" + random,
@@ -261,7 +272,7 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 		Description:       "Redeem Emoney" + " - " + inputdata.ID_Transaction,
 		Amount:            float64(emoney.Amount),
 	}
-	_, err := disbursement.Create(&createData)
+	_, err = disbursement.Create(&createData)
 	if err != nil {
 		return nil, err
 	}
@@ -273,6 +284,17 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 }
 
 func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionBankEmoney) (*customermitra.InputTransactionBankEmoney, error) {
+	var tmpCustomer customermitra.Customers
+	err := repo.db.Where("ID = ?", emoney.Customer_id).First(&tmpCustomer).Error
+	if err != nil {
+		return nil, err
+	}
+	hasil := tmpCustomer.Poin - emoney.Poin_redeem
+	tmpCustomer.Poin = hasil
+	err = repo.db.Model(tmpCustomer).Select("Poin").Updates(tmpCustomer).Error
+	if err != nil {
+		return nil, err
+	}
 	random := utils.Randomstring()
 	inputdata := customermitra.History_Transaction{
 		ID_Transaction:     "EM" + random,
