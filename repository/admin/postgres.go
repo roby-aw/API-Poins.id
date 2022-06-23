@@ -183,10 +183,7 @@ func (repo *PosgresRepository) TransactionDate() ([]admin.TransactionDate, error
 
 func (repo *PosgresRepository) TransactionByDate(startdate string, enddate string) ([]admin.TransactionDate, error) {
 	var transaction []admin.TransactionDate
-	//repo.db.Model(&customermitra.History_Transaction{}).Where("created_at > ? AND created_at < ?", startdate, enddate).Order("created_at asc").Find(&transaction)
-	fmt.Println(transaction)
-	//repo.db.Model(&customermitra.History_Transaction{}).Where("created_at BETWEEN ? AND ?", startdate, enddate).Find(&transaction)
-	repo.db.Raw("select * from history_transactions where created_at BETWEEN ? AND ?", startdate, enddate).Find(&transaction)
+	repo.db.Raw("select * from history_transactions where created_at BETWEEN ? AND ?", startdate+" 00:00:00", enddate+" 23:59:59").Find(&transaction)
 	return transaction, nil
 }
 
