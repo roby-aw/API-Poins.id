@@ -273,8 +273,10 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 		Amount:            float64(emoney.Amount),
 	}
 	resp, errxendit := disbursement.Create(&createData)
-	if err != nil {
-		return nil, errxendit
+	if errxendit != nil {
+		err = errxendit
+		fmt.Println(err)
+		return nil, err
 	}
 	fmt.Println(errxendit)
 	fmt.Println(resp)
