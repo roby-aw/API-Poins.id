@@ -16,7 +16,7 @@ type Pagination struct {
 func GeneratePagination(c echo.Context) Pagination {
 	limit := 1000
 	page := 1
-	sort := "created_at asc"
+	sort := "created_at desc"
 	query := c.Request().URL.Query()
 	for key, value := range query {
 		queryValue := value[len(value)-1]
