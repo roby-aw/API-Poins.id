@@ -19,6 +19,7 @@ type Repository interface {
 	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
 	UpdateCustomer(data customermitra.Customers) (*customermitra.Customers, error)
 	UpdateCustomerPoint(id int, point int) (*int, error)
+	GetProduct() ([]*StockProduct, error)
 }
 
 type Service interface {
@@ -33,6 +34,7 @@ type Service interface {
 	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
 	UpdateCustomer(data customermitra.Customers) (*customermitra.Customers, error)
 	UpdateCustomerPoint(id int, point int) (*int, error)
+	FindProduct() ([]*StockProduct, error)
 }
 
 type service struct {
@@ -99,4 +101,8 @@ func (s *service) UpdateCustomer(data customermitra.Customers) (*customermitra.C
 
 func (s *service) UpdateCustomerPoint(id int, point int) (*int, error) {
 	return s.repository.UpdateCustomerPoint(id, point)
+}
+
+func (s *service) FindProduct() ([]*StockProduct, error) {
+	return s.repository.GetProduct()
 }

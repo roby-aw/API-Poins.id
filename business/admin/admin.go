@@ -89,6 +89,11 @@ type TransactionDate struct {
 	Transaction_type string    `json:"transaction_type"`
 	CreatedAt        time.Time `json:"createdat"`
 }
+type StockProduct struct {
+	ID      int    `json:"id"`
+	Product string `json:"product" gorm:"size:100"`
+	Balance int    `json:"balance" gorm:"size:100"`
+}
 
 type Auth struct {
 	Token string

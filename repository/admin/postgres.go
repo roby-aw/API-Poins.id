@@ -210,6 +210,12 @@ func (repo *PosgresRepository) UpdateCustomerPoint(id int, point int) (*int, err
 	return &hasil, err
 }
 
+func (repo *PosgresRepository) GetProduct() ([]*admin.StockProduct, error) {
+	var stock []*admin.StockProduct
+	repo.db.Find(&stock)
+	return stock, nil
+}
+
 func Hash(password string) ([]byte, error) {
 	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 }

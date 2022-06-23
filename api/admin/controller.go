@@ -228,3 +228,18 @@ func (Controller *Controller) UpdateCustomerPoint(c echo.Context) error {
 		"result":   result,
 	})
 }
+
+func (Controller *Controller) StockProduct(c echo.Context) error {
+	result, err := Controller.service.FindProduct()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success get product",
+		"result":   result,
+	})
+}
