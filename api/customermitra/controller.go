@@ -165,6 +165,7 @@ func (Controller *Controller) OrderEmoney(c echo.Context) error {
 	emoney := customermitraBussiness.InputTransactionBankEmoney{}
 	c.Bind(&emoney)
 	_, err := Controller.service.ToOrderEmoney(&emoney)
+	fmt.Println(err.Error())
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"code":     400,
