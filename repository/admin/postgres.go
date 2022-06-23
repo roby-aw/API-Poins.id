@@ -188,7 +188,7 @@ func (repo *PosgresRepository) TransactionByDate(startdate string, enddate strin
 }
 
 func (repo *PosgresRepository) UpdateCustomer(data customermitra.Customers) (*customermitra.Customers, error) {
-	err := repo.db.Model(&customermitra.Customers{}).Updates(&data).Error
+	err := repo.db.Model(&customermitra.Customers{}).Where("ID = ?", data.ID).Updates(&customermitra.Customers{Email: data.Email, Fullname: data.Fullname, No_hp: data.No_hp}).Error
 	if err != nil {
 		return nil, err
 	}
