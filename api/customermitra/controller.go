@@ -169,7 +169,7 @@ func (Controller *Controller) OrderEmoney(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"code":     400,
-			"messages": err,
+			"messages": err.Error(),
 		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{

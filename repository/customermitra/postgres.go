@@ -274,7 +274,7 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 	}
 	resp, errxendit := disbursement.Create(&createData)
 	if errxendit != nil {
-		err = errxendit
+		err = errors.New(errxendit.Message)
 		fmt.Println(err)
 		return nil, err
 	}
