@@ -271,7 +271,7 @@ func (Controller *Controller) Test(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
-		"messages": "success update product",
+		"messages": "success get transaction",
 		"result":   result,
 	})
 }
