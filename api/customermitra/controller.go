@@ -192,8 +192,8 @@ func (Controller *Controller) OrderCashout(c echo.Context) error {
 	result, err := Controller.service.RedeemBank(&req)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "failed",
-			"Error":   err.Error(),
+			"code":     400,
+			"messages": err.Error(),
 		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{

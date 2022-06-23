@@ -276,9 +276,9 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 	if err != nil {
 		return nil, err
 	}
-	errdb := repo.db.Create(&inputdata).Error
-	if errdb != nil {
-		return nil, errdb
+	err = repo.db.Create(&inputdata).Error
+	if err != nil {
+		return nil, err
 	}
 	return emoney, nil
 }
