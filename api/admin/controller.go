@@ -3,6 +3,7 @@ package admin
 import (
 	"api-redeem-point/business/admin"
 	adminBusiness "api-redeem-point/business/admin"
+	"api-redeem-point/business/customermitra"
 	"api-redeem-point/utils"
 	"net/http"
 	"strconv"
@@ -189,6 +190,41 @@ func (Controller *Controller) TransactionByDate(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
 		"messages": "success get transaction by date",
+		"result":   result,
+	})
+}
+
+func (Controller *Controller) UpdateCustomer(c echo.Context) error {
+	var req customermitra.Customers
+	c.Bind(&req)
+	result, err := Controller.service.UpdateCustomer(req)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success update customer",
+		"result":   result,
+	})
+
+}
+
+func (Controller *Controller) UpdateCustomerPoint(c echo.Context) error {
+	id, _ := strconv.Atoi(c.QueryParam("id"))
+	point, _ := strconv.Atoi(c.QueryParam("point"))
+	result, err := Controller.service.UpdateCustomerPoint(id, point)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success add point",
 		"result":   result,
 	})
 }

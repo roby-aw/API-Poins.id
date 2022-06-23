@@ -187,6 +187,29 @@ func (repo *PosgresRepository) TransactionByDate(startdate string, enddate strin
 	return transaction, nil
 }
 
+func (repo *PosgresRepository) UpdateCustomer(data customermitra.Customers) (*customermitra.Customers, error) {
+	err := repo.db.Model(&customermitra.Customers{}).Updates(&data).Error
+	if err != nil {
+		return nil, err
+	}
+	return &data, err
+}
+
+func (repo *PosgresRepository) UpdateCustomerPoint(id int, point int) (*int, error) {
+	var data customermitra.Customers
+	err := repo.db.Model(&customermitra.Customers{}).Where("id = ?", id).First(&data).Error
+	if err != nil {
+		return nil, err
+	}
+	hasil := data.Poin + point
+	data.Poin = hasil
+	err = repo.db.Model(&customermitra.Customers{}).Updates(&data).Error
+	if err != nil {
+		return nil, err
+	}
+	return &hasil, err
+}
+
 func Hash(password string) ([]byte, error) {
 	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 }
