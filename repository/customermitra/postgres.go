@@ -62,6 +62,7 @@ func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*cu
 	claims := &customermitra.Claims{
 		ID:    int(Customer.ID),
 		Email: Customer.Email,
+		Role:  "Customer",
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
