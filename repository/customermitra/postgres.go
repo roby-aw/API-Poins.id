@@ -154,12 +154,14 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 	if err != nil {
 		return err
 	}
+	fmt.Println(tmpCustomer)
 	hasil := tmpCustomer.Poin - Data.Poin_redeem
 	tmpCustomer.Poin = hasil
 	err = repo.db.Model(&customermitra.Customers{}).Where("id = ?", Data.Customer_id).Updates(&tmpCustomer).Error
 	if err != nil {
 		return err
 	}
+	fmt.Println(tmpCustomer)
 	random := utils.Randomstring()
 	var tmpHistory customermitra.History_Transaction
 	repo.db.Where("ID_Transaction = ?", "P"+random).First(&tmpHistory)
