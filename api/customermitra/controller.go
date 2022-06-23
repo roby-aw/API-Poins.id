@@ -164,7 +164,7 @@ func (Controller *Controller) DetailHistoryCustomer(c echo.Context) error {
 func (Controller *Controller) OrderEmoney(c echo.Context) error {
 	emoney := customermitraBussiness.InputTransactionBankEmoney{}
 	c.Bind(&emoney)
-	result, err := Controller.service.ToOrderEmoney(&emoney)
+	_, err := Controller.service.ToOrderEmoney(&emoney)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"code":     400,
@@ -174,7 +174,6 @@ func (Controller *Controller) OrderEmoney(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
 		"messages": "success order emoney",
-		"result":   result,
 	})
 }
 
