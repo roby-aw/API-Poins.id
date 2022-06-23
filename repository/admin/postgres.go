@@ -228,6 +228,15 @@ func (repo *PosgresRepository) UpdateStock(id int, stock int) (*admin.StockProdu
 	return &product, nil
 }
 
+func (repo *PosgresRepository) TestDB() (*admin.TransactionMonth, error) {
+	var TransactionMonth admin.TransactionMonth
+	err := repo.db.Raw("SELECT TO_CHAR(created_at, 'Month') AS Month, COUNT(1) AS count FROM history_transactions GROUP BY TO_CHAR(created_at, 'Month')").Find(&TransactionMonth).Error
+	if err != nil {
+		return nil, err
+	}
+	return &TransactionMonth, nil
+}
+
 func Hash(password string) ([]byte, error) {
 	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 }

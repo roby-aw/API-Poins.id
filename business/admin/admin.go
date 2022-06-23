@@ -105,3 +105,8 @@ type Claims struct {
 	Role  string
 	jwt.StandardClaims
 }
+
+type TransactionMonth struct {
+	Month string `json:"month"`
+	Count int    `json:"count"`
+}
