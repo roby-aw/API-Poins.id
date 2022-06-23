@@ -225,7 +225,7 @@ func (repo *PosgresRepository) UpdateStock(id int, stock int) (*admin.StockProdu
 	sum := product.Balance + stock
 	product.Balance = sum
 	repo.db.Model(&customermitra.StockProduct{}).Where("id = ?", id).Updates(customermitra.StockProduct{Balance: sum})
-	return nil, nil
+	return &product, nil
 }
 
 func Hash(password string) ([]byte, error) {
