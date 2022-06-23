@@ -154,14 +154,12 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 	if err != nil {
 		return err
 	}
-	fmt.Println(Customers)
 	hasil := Customers.Poin - Data.Poin_redeem
 	Customers.Poin = hasil
 	err = repo.db.Model(Customers).Select("Poin").Updates(Customers).Error
 	if err != nil {
 		return err
 	}
-	fmt.Println(Customers)
 	random := utils.Randomstring()
 	var tmpHistory customermitra.History_Transaction
 	repo.db.Where("ID_Transaction = ?", "P"+random).First(&tmpHistory)
@@ -191,6 +189,12 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 func (repo *PosgresRepository) ClaimPaketData(Data *customermitra.RedeemPulsaData) error {
 	var tmpCustomer customermitra.Customers
 	err := repo.db.Where("ID = ?", Data.Customer_id).First(&tmpCustomer).Error
+	if err != nil {
+		return err
+	}
+	hasil := tmpCustomer.Poin - Data.Poin_redeem
+	tmpCustomer.Poin = hasil
+	err = repo.db.Model(tmpCustomer).Select("Poin").Updates(tmpCustomer).Error
 	if err != nil {
 		return err
 	}
