@@ -80,6 +80,7 @@ func (repo *PosgresRepository) LoginAdmin(Auth *admin.AuthLogin) (*admin.Respons
 	claims := &admin.Claims{
 		ID:    int(Admin.ID),
 		Email: Admin.Email,
+		Role:  "Admin",
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},

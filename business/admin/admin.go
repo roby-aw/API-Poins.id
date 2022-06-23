@@ -97,5 +97,6 @@ type Auth struct {
 type Claims struct {
 	ID    int
 	Email string
+	Role  string
 	jwt.StandardClaims
 }

@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"api-redeem-point/business/admin"
 	"api-redeem-point/business/customermitra"
 	"os"
 
@@ -21,7 +22,7 @@ func AdminSetupAuthenticationJWT() echo.MiddlewareFunc {
 	SECRET_KEY := os.Getenv("SECRET_JWT")
 	return middleware.JWTWithConfig(middleware.JWTConfig{
 		SigningMethod: "HS256",
-		Claims:        &customermitra.Claims{},
+		Claims:        &admin.Claims{Role: "Admin"},
 		SigningKey:    []byte(SECRET_KEY),
 	})
 }
