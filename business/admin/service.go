@@ -2,6 +2,7 @@ package admin
 
 import (
 	"api-redeem-point/business/customermitra"
+	"api-redeem-point/utils"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -13,7 +14,7 @@ type Repository interface {
 	RenewAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 	GetCustomers() ([]*customermitra.Customers, error)
-	GetHistoryCustomers() ([]CustomerHistory, error)
+	GetHistoryCustomers(pagination utils.Pagination) ([]CustomerHistory, error)
 	TransactionDate() ([]TransactionDate, error)
 	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
 }
@@ -25,7 +26,7 @@ type Service interface {
 	UpdateAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 	FindCustomers() ([]*customermitra.Customers, error)
-	FindHistoryCustomers() ([]CustomerHistory, error)
+	FindHistoryCustomers(pagination utils.Pagination) ([]CustomerHistory, error)
 	TransactionDate() ([]TransactionDate, error)
 	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
 }
@@ -76,8 +77,8 @@ func (s *service) FindCustomers() ([]*customermitra.Customers, error) {
 	return s.repository.GetCustomers()
 }
 
-func (s *service) FindHistoryCustomers() ([]CustomerHistory, error) {
-	return s.repository.GetHistoryCustomers()
+func (s *service) FindHistoryCustomers(pagination utils.Pagination) ([]CustomerHistory, error) {
+	return s.repository.GetHistoryCustomers(pagination)
 }
 
 func (s *service) TransactionDate() ([]TransactionDate, error) {

@@ -3,6 +3,7 @@ package admin
 import (
 	"api-redeem-point/business/admin"
 	adminBusiness "api-redeem-point/business/admin"
+	"api-redeem-point/utils"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -155,7 +156,8 @@ func (Controller *Controller) FindCustomers(c echo.Context) error {
 }
 
 func (Controller *Controller) FindHistoryCustomers(c echo.Context) error {
-	result, err := Controller.service.FindHistoryCustomers()
+	pagination := utils.GeneratePagination(c)
+	result, err := Controller.service.FindHistoryCustomers(pagination)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"code":     400,

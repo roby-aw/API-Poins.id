@@ -4,6 +4,7 @@ import (
 	"api-redeem-point/business/admin"
 	"api-redeem-point/business/customermitra"
 	"api-redeem-point/config"
+	"api-redeem-point/utils"
 	"errors"
 	"fmt"
 	"time"
@@ -144,10 +145,12 @@ func (repo *PosgresRepository) GetCustomers() ([]*customermitra.Customers, error
 	return customers, nil
 }
 
-func (repo *PosgresRepository) GetHistoryCustomers() ([]admin.CustomerHistory, error) {
+func (repo *PosgresRepository) GetHistoryCustomers(pagination utils.Pagination) ([]admin.CustomerHistory, error) {
 	var CustomerHistory []admin.CustomerHistory
 	var History_Transaction []*customermitra.History_Transaction
-	err := repo.db.Where("Status_Poin = ?", "OUT").Order("created_at desc").Preload("Customers", func(db *gorm.DB) *gorm.DB {
+	offset := (pagination.Page - 1) * pagination.Limit
+	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
+	err := queryBuider.Where("Status_Poin = ?", "OUT").Order("created_at desc").Preload("Customers", func(db *gorm.DB) *gorm.DB {
 		return db.Select("id", "email", "fullname")
 	}).Find(&History_Transaction).Error
 	if err != nil {
