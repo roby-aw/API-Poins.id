@@ -34,6 +34,15 @@ func VerifyPassword(hashedPassword, password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
 
+func (repo *PosgresRepository) GetCustomersByID(id int) (*customermitra.Customers, error) {
+	var data customermitra.Customers
+	err := repo.db.Model(&customermitra.Customers{}).Where("id = ?", id).First(&data).Error
+	if err != nil {
+		return nil, err
+	}
+	return &data, nil
+}
+
 func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*customermitra.ResponseLogin, error) {
 	var Customer *customermitra.Customers
 	err := repo.db.Where("email = ?", login.Email).First(&Customer).Error

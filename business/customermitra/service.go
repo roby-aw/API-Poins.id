@@ -1,10 +1,13 @@
 package customermitra
 
 import (
+	"errors"
+
 	"github.com/go-playground/validator/v10"
 )
 
 type Repository interface {
+	GetCustomersByID(id int) (*Customers, error)
 	SignCustomer(login *AuthLogin) (*ResponseLogin, error)
 	InsertCustomer(Data *RegisterCustomer) (*RegisterCustomer, error)
 	UpdateCustomer(Data *UpdateCustomer) (*UpdateCustomer, error)
@@ -18,6 +21,7 @@ type Repository interface {
 }
 
 type Service interface {
+	FindCustomersByID(id int) (*Customers, error)
 	LoginCustomer(login *AuthLogin) (*ResponseLogin, error)
 	CreateCustomer(Data *RegisterCustomer) (*RegisterCustomer, error)
 	UpdateCustomer(Data *UpdateCustomer) (*UpdateCustomer, error)
@@ -40,6 +44,10 @@ func NewService(repository Repository) Service {
 		repository: repository,
 		validate:   validator.New(),
 	}
+}
+
+func (s *service) FindCustomersByID(id int) (*Customers, error) {
+	return s.repository.GetCustomersByID(id)
 }
 
 func (s *service) LoginCustomer(login *AuthLogin) (*ResponseLogin, error) {
@@ -80,6 +88,11 @@ func (s *service) RedeemPulsa(Data *RedeemPulsaData) error {
 	if err != nil {
 		return err
 	}
+	result, err := s.repository.GetCustomersByID(Data.Customer_id)
+	if result.Poin < Data.Poin_redeem {
+		err := errors.New("Poin kurang")
+		return err
+	}
 	return s.repository.ClaimPulsa(Data)
 }
 
@@ -88,12 +101,22 @@ func (s *service) RedeemPaketData(Data *RedeemPulsaData) error {
 	if err != nil {
 		return err
 	}
+	result, err := s.repository.GetCustomersByID(Data.Customer_id)
+	if result.Poin < Data.Poin_redeem {
+		err := errors.New("Poin kurang")
+		return err
+	}
 	return s.repository.ClaimPaketData(Data)
 }
 
 func (s *service) RedeemBank(Data *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error) {
 	err := s.validate.Struct(Data)
 	if err != nil {
+		return nil, err
+	}
+	result, err := s.repository.GetCustomersByID(Data.Customer_id)
+	if result.Poin < Data.Poin_redeem {
+		err := errors.New("Poin kurang")
 		return nil, err
 	}
 	Data, err = s.repository.ClaimBank(Data)
@@ -107,6 +130,11 @@ func (s *service) GetCallback(data *Disbursement) (*Disbursement, error) {
 func (s *service) ToOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error) {
 	err := s.validate.Struct(emoney)
 	if err != nil {
+		return nil, err
+	}
+	result, err := s.repository.GetCustomersByID(emoney.Customer_id)
+	if result.Poin < emoney.Poin_redeem {
+		err := errors.New("Poin kurang")
 		return nil, err
 	}
 	emoney, err = s.repository.GetOrderEmoney(emoney)

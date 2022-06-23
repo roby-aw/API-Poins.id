@@ -44,6 +44,15 @@ type Customers struct {
 	Poin      int    `json:"poin"`
 	Pin       int    `json:"pin"`
 }
+type UpdateCustomers struct {
+	ID       uint   `json:"id"`
+	Email    string `json:"email"`
+	Fullname string `json:"fullname"`
+	Password string `json:"password"`
+	No_hp    string `json:"no_hp"`
+	Poin     int    `json:"poin"`
+	Pin      int    `json:"pin"`
+}
 
 type StockProduct struct {
 	ID        uint      `json:"id"`
