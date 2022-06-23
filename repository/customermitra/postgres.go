@@ -156,8 +156,7 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 	}
 	fmt.Println(Customers)
 	hasil := Customers.Poin - Data.Poin_redeem
-	Customers.Poin = hasil
-	err = repo.db.Model(&customermitra.Customers{}).Where("id = ?", Data.Customer_id).Updates(&Customers.Poin).Error
+	err = repo.db.Model(&customermitra.Customers{}).Where("id = ?", Data.Customer_id).Updates(&customermitra.Customers{Poin: hasil}).Error
 	if err != nil {
 		return err
 	}
