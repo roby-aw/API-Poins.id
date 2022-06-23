@@ -25,14 +25,14 @@ func NewPosgresRepository(db *gorm.DB) *PosgresRepository {
 }
 
 func (repo *PosgresRepository) Dashboard() (*int, error) {
-	var today64 *int64
+	var today64 int64
 	now := time.Now().Format("2006-01-02")
-	err := repo.db.Model(&customermitra.History_Transaction{}).Where("created_at > ?", now+"00:00:00").Count(today64).Error
+	err := repo.db.Model(&customermitra.History_Transaction{}).Where("created_at > ?", now+"00:00:00").Count(&today64).Error
 	if err != nil {
 		return nil, err
 	}
 	var today int
-	today = int(*today64)
+	today = int(today64)
 	return &today, err
 }
 
