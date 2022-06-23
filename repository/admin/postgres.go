@@ -203,7 +203,7 @@ func (repo *PosgresRepository) UpdateCustomerPoint(id int, point int) (*int, err
 	}
 	hasil := data.Poin + point
 	data.Poin = hasil
-	err = repo.db.Model(&customermitra.Customers{}).Updates(&data).Error
+	err = repo.db.Model(&customermitra.Customers{}).Where("id = ?", id).Updates(&data).Error
 	if err != nil {
 		return nil, err
 	}
