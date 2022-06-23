@@ -20,6 +20,7 @@ type Repository interface {
 	UpdateCustomer(data customermitra.Customers) (*customermitra.Customers, error)
 	UpdateCustomerPoint(id int, point int) (*int, error)
 	GetProduct() ([]*StockProduct, error)
+	UpdateStock(id int, stock int) (*StockProduct, error)
 }
 
 type Service interface {
@@ -35,6 +36,7 @@ type Service interface {
 	UpdateCustomer(data customermitra.Customers) (*customermitra.Customers, error)
 	UpdateCustomerPoint(id int, point int) (*int, error)
 	FindProduct() ([]*StockProduct, error)
+	UpdateStock(id int, stock int) (*StockProduct, error)
 }
 
 type service struct {
@@ -105,4 +107,8 @@ func (s *service) UpdateCustomerPoint(id int, point int) (*int, error) {
 
 func (s *service) FindProduct() ([]*StockProduct, error) {
 	return s.repository.GetProduct()
+}
+
+func (s *service) UpdateStock(id int, stock int) (*StockProduct, error) {
+	return s.repository.UpdateStock(id, stock)
 }

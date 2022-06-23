@@ -216,6 +216,18 @@ func (repo *PosgresRepository) GetProduct() ([]*admin.StockProduct, error) {
 	return stock, nil
 }
 
+func (repo *PosgresRepository) UpdateStock(id int, stock int) (*admin.StockProduct, error) {
+	var product admin.StockProduct
+	err := repo.db.Model(&customermitra.StockProduct{}).Where("id = ?", id).Find(&product).Error
+	if err != nil {
+		return nil, err
+	}
+	sum := product.Balance + stock
+	product.Balance = sum
+	repo.db.Model(&customermitra.StockProduct{}).Where("id = ?", id).Updates(customermitra.StockProduct{Balance: sum})
+	return nil, nil
+}
+
 func Hash(password string) ([]byte, error) {
 	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 }

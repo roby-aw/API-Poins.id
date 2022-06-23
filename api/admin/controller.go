@@ -243,3 +243,20 @@ func (Controller *Controller) StockProduct(c echo.Context) error {
 		"result":   result,
 	})
 }
+
+func (Controller *Controller) UpdateStock(c echo.Context) error {
+	id, _ := strconv.Atoi(c.QueryParam("id"))
+	balance, _ := strconv.Atoi(c.QueryParam("balance"))
+	result, err := Controller.service.UpdateStock(id, balance)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success update product",
+		"result":   result,
+	})
+}
