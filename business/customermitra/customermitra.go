@@ -29,7 +29,7 @@ type Store struct {
 	ID        uint      `json:"id"`
 	CreatedAt time.Time `json:"createdat"`
 	UpdatedAt time.Time `json:"updatedat"`
-	DeletedAt time.Time `gorm:"index"`
+	DeletedAt time.Time `json:"deletedat"`
 	Email     string    `json:"email"`
 	Password  string    `json:"password"`
 	Store     string    `json:"store"`
