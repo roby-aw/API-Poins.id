@@ -276,6 +276,7 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 	if err != nil {
 		return nil, errxendit
 	}
+	fmt.Println(errxendit)
 	fmt.Println(resp)
 	errdb := repo.db.Create(&inputdata).Error
 	if errdb != nil {
@@ -326,6 +327,7 @@ func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionB
 	if err != nil {
 		return nil, errxendit
 	}
+	fmt.Println(errxendit)
 	fmt.Println(resp)
 	errdb := repo.db.Create(&inputdata).Error
 	if errdb != nil {
