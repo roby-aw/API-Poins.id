@@ -44,7 +44,7 @@ func (repo *PosgresRepository) GetCustomersByID(id int) (*customermitra.Customer
 }
 
 func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*customermitra.ResponseLogin, error) {
-	var Customer *customermitra.ResponseLogin
+	var Customer customermitra.ResponseLogin
 	err := repo.db.Model(&customermitra.Customers{}).Where("email = ?", login.Email).First(&Customer).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -76,7 +76,7 @@ func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*cu
 		return nil, err
 	}
 	Customer.Token = token_jwt
-	return Customer, err
+	return &Customer, err
 }
 
 func (repo *PosgresRepository) InsertCustomer(Data *customermitra.RegisterCustomer) (*customermitra.RegisterCustomer, error) {

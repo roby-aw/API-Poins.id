@@ -116,8 +116,8 @@ type Login struct {
 type ResponseLogin struct {
 	ID       int    `json:"id"`
 	Email    string `json:"email"`
-	Password string `json:"password"`
 	Fullname string `json:"fullname"`
+	Password string `json:"password"`
 	No_hp    string `json:"no_hp"`
 	Poin     int    `json:"poin"`
 	Pin      int    `json:"pin"`
