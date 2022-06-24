@@ -203,9 +203,10 @@ type InputTransactionBankEmoney struct {
 }
 
 type InputPoin struct {
-	Customer_id int `json:"customer_id" validate:"required"`
-	Store_id    int `json:"store_id" validate:"required"`
-	Amount      int `json:"amount" validate:"required"`
+	Customer_id   int    `json:"customer_id" validate:"required"`
+	Customer_name string `json:"customer_name" validate:"required"`
+	Store_id      int    `json:"store_id" validate:"required"`
+	Amount        int    `json:"amount" validate:"required"`
 }
 
 type Claims struct {
