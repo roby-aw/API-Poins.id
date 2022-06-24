@@ -126,6 +126,9 @@ func (s *service) RedeemBank(Data *InputTransactionBankEmoney) (*InputTransactio
 		return nil, err
 	}
 	Data, err = s.repository.ClaimBank(Data)
+	if err != nil {
+		return nil, err
+	}
 	return Data, nil
 }
 
@@ -144,6 +147,9 @@ func (s *service) ToOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTrans
 		return nil, err
 	}
 	emoney, err = s.repository.GetOrderEmoney(emoney)
+	if err != nil {
+		return nil, err
+	}
 	return emoney, err
 }
 
