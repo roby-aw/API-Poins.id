@@ -189,17 +189,16 @@ func (Controller *Controller) OrderEmoney(c echo.Context) error {
 func (Controller *Controller) OrderCashout(c echo.Context) error {
 	req := customermitraBussiness.InputTransactionBankEmoney{}
 	c.Bind(&req)
-	result, err := Controller.service.RedeemBank(&req)
+	_, err := Controller.service.RedeemBank(&req)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"code":     400,
-			"messages": err,
+			"messages": err.Error(),
 		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
 		"messages": "success order cashout",
-		"result":   result,
 	})
 }
 
