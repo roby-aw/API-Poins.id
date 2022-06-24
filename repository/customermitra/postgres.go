@@ -408,6 +408,7 @@ func (repo *PosgresRepository) InputPoin(input *customermitra.InputPoin) (*int, 
 	if err != nil {
 		return nil, err
 	}
+	tmpCustomer.Poin = tmpCustomer.Poin + i
 	err = repo.db.Model(tmpCustomer).Select("Poin").Updates(tmpCustomer).Error
 	if err != nil {
 		return nil, err
