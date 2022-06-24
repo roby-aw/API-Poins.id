@@ -391,7 +391,7 @@ func (repo *PosgresRepository) InputPoin(input *customermitra.InputPoin) (*int, 
 	}
 	var i int
 	price := input.Amount
-	for i = 0; price > 100; i = i + 1 {
+	for i = 0; price >= 100; i = i + 1 {
 		price = price - 100
 	}
 	random := utils.Randomstring()
