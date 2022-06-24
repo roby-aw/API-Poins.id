@@ -20,6 +20,7 @@ type Repository interface {
 	GetOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
 	InsertStore(store *RegisterStore) (*RegisterStore, error)
 	SignStore(store *AuthStore) (*ResponseLoginStore, error)
+	InputPoin(input *InputPoin) (*int, error)
 }
 
 type Service interface {
@@ -36,6 +37,7 @@ type Service interface {
 	ToOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
 	CreateStore(store *RegisterStore) (*RegisterStore, error)
 	LoginStore(store *AuthStore) (*ResponseLoginStore, error)
+	InputPoin(input *InputPoin) (*int, error)
 }
 
 type service struct {
@@ -154,4 +156,12 @@ func (s *service) CreateStore(store *RegisterStore) (*RegisterStore, error) {
 }
 func (s *service) LoginStore(store *AuthStore) (*ResponseLoginStore, error) {
 	return s.repository.SignStore(store)
+}
+
+func (s *service) InputPoin(input *InputPoin) (*int, error) {
+	err := s.validate.Struct(input)
+	if err != nil {
+		return nil, err
+	}
+	return s.repository.InputPoin(input)
 }

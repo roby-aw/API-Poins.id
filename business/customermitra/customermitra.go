@@ -13,7 +13,7 @@ type History_Transaction struct {
 	ID_Transaction     string    `json:"id_transaction"`
 	Customer_id        int       `json:"customer_id"`
 	Customers          Customers `json:"customers" gorm:"foreignkey:ID;references:Customer_id"`
-	Mitra_id           int       `json:"mitra_id"`
+	Store_id           int       `json:"store_id"`
 	Transaction_type   string    `json:"transaction_type"`
 	Bank_Provider      string    `json:"bank_provider"`
 	Nomor              string    `json:"nomor" gorm:""`
@@ -200,6 +200,12 @@ type InputTransactionBankEmoney struct {
 	Amount        int    `json:"amount" validate:"required"`
 	Poin_account  int    `json:"poin_account" validate:"required"`
 	Poin_redeem   int    `json:"poin_redeem" validate:"required"`
+}
+
+type InputPoin struct {
+	Customer_id int `json:"customer_id" validate:"required"`
+	Store_id    int `json:"store_id" validate:"required"`
+	Amount      int `json:"amount" validate:"required"`
 }
 
 type Claims struct {

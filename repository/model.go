@@ -6,7 +6,7 @@ type History_Transaction struct {
 	gorm.Model
 	ID_Transaction     string `gorm:"primaryKey;autoIncrement:false"`
 	Customer_id        int    `json:"customer_id"`
-	Mitra_id           int    `json:"mitra_id"`
+	Store_id           int    `json:"store_id"`
 	Transaction_type   string `json:"transaction_type"`
 	Bank_Provider      string `json:"bank_provider" gorm:"size:255"`
 	Nomor              string `json:"nomor" gorm:"size:20"`

@@ -382,3 +382,35 @@ func (repo *PosgresRepository) SignStore(store *customermitra.AuthStore) (*custo
 	}
 	return &Response, nil
 }
+
+func (repo *PosgresRepository) InputPoin(input *customermitra.InputPoin) (*int, error) {
+	var tmpCustomer customermitra.Customers
+	err := repo.db.Model(customermitra.Customers{}).Where("ID = ?", input.Customer_id).Find(&tmpCustomer).Error
+	if err != nil {
+		return nil, err
+	}
+	var i int
+	price := input.Amount
+	for i = 0; price > 100; i = i + 1 {
+		price = price - 100
+	}
+	random := utils.Randomstring()
+	transaction := customermitra.History_Transaction{
+		ID_Transaction: "IP" + random,
+		Customer_id:    input.Customer_id,
+		Store_id:       input.Store_id,
+		Amount:         input.Amount,
+		Poin_Redeem:    i,
+		Status_Poin:    "IN",
+		Poin_Account:   tmpCustomer.Poin,
+	}
+	err = repo.db.Create(&transaction).Error
+	if err != nil {
+		return nil, err
+	}
+	err = repo.db.Model(tmpCustomer).Select("Poin").Updates(tmpCustomer).Error
+	if err != nil {
+		return nil, err
+	}
+	return &i, nil
+}
