@@ -38,7 +38,6 @@ func main() {
 	defer dbCon.CloseConnection()
 
 	controllers := modules.RegistrationModules(dbCon, config)
-	dbCon.Postgres.Migrator().DropTable(&repository.History_Transaction{})
 	dbCon.Postgres.AutoMigrate(&repository.History_Transaction{})
 	dbCon.Postgres.AutoMigrate(&repository.Store{})
 	dbCon.Postgres.AutoMigrate(&repository.Customer{})
