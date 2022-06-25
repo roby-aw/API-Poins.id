@@ -61,9 +61,9 @@ func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*cu
 	expirationTime := time.Now().Add(24 * time.Hour)
 
 	claims := &customermitra.Claims{
-		ID:    int(Customer.ID),
-		Email: Customer.Email,
-		Role:  "Customer",
+		ID:       int(Customer.ID),
+		Email:    Customer.Email,
+		Customer: true,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},
@@ -356,10 +356,10 @@ func (repo *PosgresRepository) SignStore(store *customermitra.AuthStore) (*custo
 	}
 	expirationTime := time.Now().Add(24 * time.Hour)
 
-	claims := &customermitra.Claims{
+	claims := &customermitra.ClaimsMitra{
 		ID:    int(tmpStore.ID),
 		Email: tmpStore.Email,
-		Role:  "Mitra",
+		Mitra: true,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},

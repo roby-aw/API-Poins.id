@@ -212,8 +212,15 @@ type InputPoin struct {
 }
 
 type Claims struct {
+	ID       int
+	Email    string
+	Customer bool
+	jwt.StandardClaims
+}
+
+type ClaimsMitra struct {
 	ID    int
 	Email string
-	Role  string
+	Mitra bool
 	jwt.StandardClaims
 }
