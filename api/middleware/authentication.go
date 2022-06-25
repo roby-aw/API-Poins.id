@@ -43,16 +43,10 @@ func StoreSetupAuthenticationJWT() echo.MiddlewareFunc {
 
 			// claims are of type `jwt.MapClaims` when token is created with `jwt.Parse`
 			token, err := jwt.Parse(auth, keyFunc)
-			claims, ok := token.Claims.(jwt.MapClaims)
+			claims, _ := token.Claims.(jwt.MapClaims)
 			fmt.Println(claims["Customer"])
 			if claims["Store"] == nil {
 				return nil, errors.New("Role not store")
-			}
-			if !ok || !token.Valid {
-				err = errors.New("error jwt")
-			}
-			if err != nil {
-				return nil, err
 			}
 			fmt.Println(token)
 			fmt.Println(token.Claims)
