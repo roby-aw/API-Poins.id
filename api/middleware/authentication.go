@@ -48,8 +48,7 @@ func StoreSetupAuthenticationJWT() echo.MiddlewareFunc {
 			if claims["Store"] == nil {
 				return nil, errors.New("Role not store")
 			}
-			fmt.Println(token)
-			fmt.Println(token.Claims)
+			fmt.Println(claims["Store"])
 			if err != nil {
 				return nil, err
 			}
