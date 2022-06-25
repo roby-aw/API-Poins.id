@@ -359,7 +359,7 @@ func (repo *PosgresRepository) SignStore(store *customermitra.AuthStore) (*custo
 	claims := &customermitra.ClaimsMitra{
 		ID:    int(tmpStore.ID),
 		Email: tmpStore.Email,
-		Mitra: true,
+		Store: true,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 		},

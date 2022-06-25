@@ -221,6 +221,6 @@ type Claims struct {
 type ClaimsMitra struct {
 	ID    int
 	Email string
-	Mitra bool
+	Store bool
 	jwt.StandardClaims
 }
