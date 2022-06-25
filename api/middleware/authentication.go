@@ -45,7 +45,7 @@ func StoreSetupAuthenticationJWT() echo.MiddlewareFunc {
 			token, err := jwt.Parse(auth, keyFunc)
 			claims, _ := token.Claims.(jwt.MapClaims)
 			fmt.Println(claims["Customer"])
-			if claims["Store"] != nil {
+			if claims["Store"] != true {
 				return nil, errors.New("Role not store")
 			}
 			fmt.Println(claims["Store"])
