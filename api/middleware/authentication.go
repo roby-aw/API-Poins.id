@@ -44,6 +44,7 @@ func StoreSetupAuthenticationJWT() echo.MiddlewareFunc {
 			// claims are of type `jwt.MapClaims` when token is created with `jwt.Parse`
 			token, err := jwt.Parse(auth, keyFunc)
 			fmt.Println(token)
+			fmt.Println(token.Claims)
 			if err != nil {
 				return nil, err
 			}
