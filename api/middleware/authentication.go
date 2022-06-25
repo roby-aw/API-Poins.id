@@ -52,9 +52,7 @@ func StoreSetupAuthenticationJWT() echo.MiddlewareFunc {
 			if err != nil {
 				return nil, err
 			}
-			if !token.Valid {
-				return nil, errors.New("invalid token")
-			}
+			fmt.Println("====")
 			return token, nil
 		},
 	}
