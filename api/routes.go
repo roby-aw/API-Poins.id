@@ -45,5 +45,5 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	s := c.Group("/store")
 	s.POST("", controller.CustomerMitraController.RegisterStore)
 	s.POST("/login", controller.CustomerMitraController.LoginStore)
-	s.POST("/poin", controller.CustomerMitraController.InputPoinStore)
+	s.POST("/poin", controller.CustomerMitraController.InputPoinStore, middleware.StoreSetupAuthenticationJWT())
 }
