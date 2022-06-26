@@ -254,7 +254,9 @@ func (repo *PosgresRepository) HistoryStore(pagination utils.Pagination) ([]admi
 	var tmpHistory []admin.HistoryStore
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
-	err := queryBuider.Model(&customermitra.History_Transaction{}).Where("Status_Poin = ?", "IN").Preload("Customers").Preload("Store").Find(&tmpHistory).Error
+	err := queryBuider.Model(&customermitra.History_Transaction{}).Where("Status_Poin = ?", "IN").Preload("Customers", func(db *gorm.DB) *gorm.DB {
+		return db.Select("id", "email", "fullname")
+	}).Preload("Store").Find(&tmpHistory).Error
 	if err != nil {
 		return nil, err
 	}
