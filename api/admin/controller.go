@@ -159,7 +159,8 @@ func (Controller *Controller) ApproveTransaction(c echo.Context) error {
 }
 
 func (Controller *Controller) FindCustomers(c echo.Context) error {
-	result, err := Controller.service.FindCustomers()
+	pagination := utils.GeneratePagination(c)
+	result, err := Controller.service.FindCustomers(pagination)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
