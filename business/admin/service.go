@@ -23,6 +23,7 @@ type Repository interface {
 	GetProduct() ([]StockProduct, error)
 	UpdateStock(id int, stock int) (*StockProduct, error)
 	TestDB() ([]TransactionMonth, error)
+	HistoryStore() ([]HistoryStore, error)
 }
 
 type Service interface {
@@ -41,6 +42,7 @@ type Service interface {
 	FindProduct() ([]StockProduct, error)
 	UpdateStock(id int, stock int) (*StockProduct, error)
 	TestDB() ([]TransactionMonth, error)
+	HistoryStore() ([]HistoryStore, error)
 }
 
 type service struct {
@@ -134,4 +136,8 @@ func (s *service) UpdateStock(id int, stock int) (*StockProduct, error) {
 
 func (s *service) TestDB() ([]TransactionMonth, error) {
 	return s.repository.TestDB()
+}
+
+func (s *service) HistoryStore() ([]HistoryStore, error) {
+	return s.repository.HistoryStore()
 }

@@ -290,3 +290,18 @@ func (Controller *Controller) Test(c echo.Context) error {
 		"result":   result,
 	})
 }
+
+func (Controller *Controller) HistoryStore(c echo.Context) error {
+	result, err := Controller.service.HistoryStore()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success get history store",
+		"result":   result,
+	})
+}

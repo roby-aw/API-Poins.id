@@ -116,3 +116,18 @@ type Dashboard struct {
 	Stock []StockProduct     `json:"stock"`
 	Month []TransactionMonth `json:"month"`
 }
+
+type HistoryStore struct {
+	Store       Store     `json:"store"`
+	Customer    Customers `json:"customer"`
+	CreatedAt   time.Time `json:"createdat"`
+	Poin_Redeem int       `json:"poin_redeem"`
+	Amount      int       `json:"amount"`
+}
+
+type Store struct {
+	ID     uint   `json:"id"`
+	Email  string `json:"email"`
+	Store  string `json:"store"`
+	Alamat string `json:"alamat"`
+}

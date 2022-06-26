@@ -16,7 +16,7 @@ type History_Transaction struct {
 	Store_id           int       `json:"store_id"`
 	Transaction_type   string    `json:"transaction_type"`
 	Bank_Provider      string    `json:"bank_provider"`
-	Nomor              string    `json:"nomor" gorm:""`
+	Nomor              string    `json:"nomor"`
 	Poin_Account       int       `json:"poin_account"`
 	Poin_Redeem        int       `json:"poin_redeem"`
 	Amount             int       `json:"amount"`

@@ -4,6 +4,7 @@ import (
 	"api-redeem-point/business/admin"
 	"api-redeem-point/business/customermitra"
 	"api-redeem-point/config"
+	"api-redeem-point/repository"
 	"api-redeem-point/utils"
 	"errors"
 	"fmt"
@@ -248,6 +249,15 @@ func (repo *PosgresRepository) TestDB() ([]admin.TransactionMonth, error) {
 		return nil, err
 	}
 	return TransactionMonth, nil
+}
+
+func (repo *PosgresRepository) HistoryStore() ([]admin.HistoryStore, error) {
+	var tmpHistory []admin.HistoryStore
+	err := repo.db.Model(repository.History_Transaction{}).Where("status_poin = ?", "OUT").Select("created_at", "poin_redeem", "amount").Find(&tmpHistory).Preload("customer").Preload("store").Error
+	if err != nil {
+		return nil, err
+	}
+	return tmpHistory, nil
 }
 
 func Hash(password string) ([]byte, error) {
