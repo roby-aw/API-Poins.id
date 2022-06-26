@@ -47,7 +47,8 @@ func (Controller *Controller) Dashboard(c echo.Context) error {
 // @Failure 400 {object} map[string]interface{}
 // @Router /admin [post]
 func (Controller *Controller) TransactionPending(c echo.Context) error {
-	result, err := Controller.service.TransactionPending()
+	pagination := utils.GeneratePagination(c)
+	result, err := Controller.service.TransactionPending(pagination)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"code":     400,

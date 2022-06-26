@@ -9,7 +9,7 @@ import (
 
 type Repository interface {
 	Dashboard() (*int, error)
-	TransactionPending() ([]*TransactionPending, error)
+	TransactionPending(pagination utils.Pagination) ([]*TransactionPending, error)
 	InsertAdmin(admin *RegisterAdmin) (*RegisterAdmin, error)
 	AcceptTransaction(idtransaction string) error
 	RenewAdmin(id int, admin *Admin) (*Admin, error)
@@ -28,7 +28,7 @@ type Repository interface {
 
 type Service interface {
 	Dashboard() (*Dashboard, error)
-	TransactionPending() ([]*TransactionPending, error)
+	TransactionPending(pagination utils.Pagination) ([]*TransactionPending, error)
 	CreateAdmin(admin *RegisterAdmin) (*RegisterAdmin, error)
 	ApproveTransaction(idtransaction string) error
 	UpdateAdmin(id int, admin *Admin) (*Admin, error)
@@ -72,8 +72,8 @@ func (s *service) Dashboard() (*Dashboard, error) {
 	return &Dashboard, nil
 }
 
-func (s *service) TransactionPending() ([]*TransactionPending, error) {
-	return s.repository.TransactionPending()
+func (s *service) TransactionPending(pagination utils.Pagination) ([]*TransactionPending, error) {
+	return s.repository.TransactionPending(pagination)
 }
 
 func (s *service) CreateAdmin(admin *RegisterAdmin) (*RegisterAdmin, error) {

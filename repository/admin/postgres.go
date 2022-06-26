@@ -36,13 +36,13 @@ func (repo *PosgresRepository) Dashboard() (*int, error) {
 	return &today, err
 }
 
-func (repo *PosgresRepository) TransactionPending() ([]*admin.TransactionPending, error) {
-	var History []customermitra.History_Transaction
+func (repo *PosgresRepository) TransactionPending(pagination utils.Pagination) ([]*admin.TransactionPending, error) {
 	var Pending []*admin.TransactionPending
-	err := repo.db.Model(&customermitra.History_Transaction{}).Where("Status_transaction = ?", "PENDING").Preload("Customers", func(db *gorm.DB) *gorm.DB {
+	offset := (pagination.Page - 1) * pagination.Limit
+	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
+	err := queryBuider.Model(&customermitra.History_Transaction{}).Where("Status_transaction = ?", "PENDING").Preload("Customers", func(db *gorm.DB) *gorm.DB {
 		return db.Select("id", "email", "fullname")
 	}).Find(&Pending).Error
-	fmt.Println(History)
 	if err != nil {
 		return nil, err
 	}
