@@ -57,7 +57,7 @@ func (Controller *Controller) TransactionPending(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
-		"messages": "success get dashboard",
+		"messages": "success get transaction pending",
 		"result":   result,
 	})
 }
