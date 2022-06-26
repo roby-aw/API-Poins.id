@@ -119,7 +119,7 @@ type Dashboard struct {
 
 type HistoryStore struct {
 	Store_id    int       `json:"store_id"`
-	Store       Store     `json:"store" gorm:"foreignkey:ID;references:Store_id`
+	Store       Store     `json:"store" gorm:"foreignkey:ID;references:Store_id"`
 	Customer_id int       `json:"customer_id"`
 	Customer    Customers `json:"customer" gorm:"foreignkey:ID;references:Customer_id"`
 	CreatedAt   time.Time `json:"createdat"`
