@@ -163,7 +163,7 @@ func (repo *PosgresRepository) GetHistoryCustomers(pagination utils.Pagination) 
 	var History_Transaction []*customermitra.History_Transaction
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
-	err := queryBuider.Where("Status_Poin = ?", "OUT").Order("created_at desc").Preload("Customers", func(db *gorm.DB) *gorm.DB {
+	err := queryBuider.Where("Status_Poin = ?", "OUT").Preload("Customers", func(db *gorm.DB) *gorm.DB {
 		return db.Select("id", "email", "fullname")
 	}).Find(&History_Transaction).Error
 	if err != nil {
@@ -250,9 +250,11 @@ func (repo *PosgresRepository) TestDB() ([]admin.TransactionMonth, error) {
 	return TransactionMonth, nil
 }
 
-func (repo *PosgresRepository) HistoryStore() ([]admin.HistoryStore, error) {
+func (repo *PosgresRepository) HistoryStore(pagination utils.Pagination) ([]admin.HistoryStore, error) {
 	var tmpHistory []admin.HistoryStore
-	err := repo.db.Model(&customermitra.History_Transaction{}).Where("status_poin = ?", "IN").Preload("Customers").Preload("Store").Find(&tmpHistory).Error
+	offset := (pagination.Page - 1) * pagination.Limit
+	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
+	err := queryBuider.Model(&customermitra.History_Transaction{}).Where("Status_Poin = ?", "IN").Preload("Customers").Preload("Store").Find(&tmpHistory).Error
 	if err != nil {
 		return nil, err
 	}

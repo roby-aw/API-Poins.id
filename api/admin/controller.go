@@ -292,7 +292,8 @@ func (Controller *Controller) Test(c echo.Context) error {
 }
 
 func (Controller *Controller) HistoryStore(c echo.Context) error {
-	result, err := Controller.service.HistoryStore()
+	pagination := utils.GeneratePagination(c)
+	result, err := Controller.service.HistoryStore(pagination)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"code":     400,

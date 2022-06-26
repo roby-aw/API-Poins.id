@@ -23,7 +23,7 @@ type Repository interface {
 	GetProduct() ([]StockProduct, error)
 	UpdateStock(id int, stock int) (*StockProduct, error)
 	TestDB() ([]TransactionMonth, error)
-	HistoryStore() ([]HistoryStore, error)
+	HistoryStore(pagination utils.Pagination) ([]HistoryStore, error)
 }
 
 type Service interface {
@@ -42,7 +42,7 @@ type Service interface {
 	FindProduct() ([]StockProduct, error)
 	UpdateStock(id int, stock int) (*StockProduct, error)
 	TestDB() ([]TransactionMonth, error)
-	HistoryStore() ([]HistoryStore, error)
+	HistoryStore(pagination utils.Pagination) ([]HistoryStore, error)
 }
 
 type service struct {
@@ -138,6 +138,6 @@ func (s *service) TestDB() ([]TransactionMonth, error) {
 	return s.repository.TestDB()
 }
 
-func (s *service) HistoryStore() ([]HistoryStore, error) {
-	return s.repository.HistoryStore()
+func (s *service) HistoryStore(pagination utils.Pagination) ([]HistoryStore, error) {
+	return s.repository.HistoryStore(pagination)
 }
