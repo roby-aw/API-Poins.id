@@ -252,7 +252,7 @@ func (repo *PosgresRepository) TestDB() ([]admin.TransactionMonth, error) {
 
 func (repo *PosgresRepository) HistoryStore() ([]admin.HistoryStore, error) {
 	var tmpHistory []admin.HistoryStore
-	err := repo.db.Model(&customermitra.History_Transaction{}).Where("status_poin = ?", "IN").Select("store_id", "store", "customer_id", "customers", "created_at", "poin_redeem", "amount").Preload("Customers").Preload("Store").Find(&tmpHistory).Error
+	err := repo.db.Model(&customermitra.History_Transaction{}).Where("status_poin = ?", "IN").Preload("Customers").Preload("Store").Find(&tmpHistory).Error
 	if err != nil {
 		return nil, err
 	}
