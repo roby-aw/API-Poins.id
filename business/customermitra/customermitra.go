@@ -14,6 +14,7 @@ type History_Transaction struct {
 	Customer_id        int       `json:"customer_id"`
 	Customers          Customers `json:"customers" gorm:"foreignkey:ID;references:Customer_id"`
 	Store_id           int       `json:"store_id"`
+	Store              Store     `json:"store" gorm:"foreignkey:ID;references:Store_id"`
 	Transaction_type   string    `json:"transaction_type"`
 	Bank_Provider      string    `json:"bank_provider"`
 	Nomor              string    `json:"nomor"`
