@@ -251,12 +251,28 @@ func (repo *PosgresRepository) TestDB() ([]admin.TransactionMonth, error) {
 }
 
 func (repo *PosgresRepository) HistoryStore() ([]admin.HistoryStore, error) {
-	var tmpHistory []admin.HistoryStore
-	err := repo.db.Model(customermitra.History_Transaction{}).Where("status_poin = ?", "IN").Select("created_at", "poin_redeem", "amount", "store_id", "customer_id").Preload("customer").Preload("store").Find(&tmpHistory).Error
+	var tmpHistory []customermitra.History_Transaction
+	err := repo.db.Where("status_poin = ?", "IN").Select("created_at", "poin_redeem", "amount", "store_id", "customer_id").Preload("customer").Preload("store").Find(&tmpHistory).Error
 	if err != nil {
 		return nil, err
 	}
-	return tmpHistory, nil
+	var History []admin.HistoryStore
+	for _, v := range tmpHistory {
+		var tmpHistoryStore admin.HistoryStore
+		v.Store_id = tmpHistoryStore.Store_id
+		v.Store.ID = tmpHistoryStore.Store.ID
+		v.Store.Email = tmpHistoryStore.Store.Email
+		v.Store.Store = tmpHistoryStore.Store.Store
+		v.Customer_id = tmpHistoryStore.Customer_id
+		v.Customers.Email = tmpHistoryStore.Customers.Email
+		v.Customers.Fullname = tmpHistoryStore.Customers.Fullname
+		v.CreatedAt = tmpHistoryStore.CreatedAt
+		v.Poin_Redeem = tmpHistoryStore.Poin_Redeem
+		v.Amount = tmpHistoryStore.Amount
+
+		History = append(History, tmpHistoryStore)
+	}
+	return History, nil
 }
 
 func Hash(password string) ([]byte, error) {
