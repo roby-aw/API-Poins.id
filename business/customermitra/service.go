@@ -83,7 +83,12 @@ func (s *service) UpdateCustomer(Data *UpdateCustomer) (*UpdateCustomer, error) 
 }
 
 func (s *service) HistoryCustomer(id int, pagination utils.Pagination) ([]History, error) {
-	return s.repository.HistoryCustomer(id, pagination)
+	result, err := s.repository.HistoryCustomer(id, pagination)
+	if len(result) == 0 {
+		err = errors.New("Tidak ada transaction")
+		return nil, err
+	}
+	return result, err
 }
 
 func (s *service) DetailHistoryCustomer(idtransaction string) (*DetailHistory, error) {
