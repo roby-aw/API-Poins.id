@@ -188,6 +188,22 @@ func (Controller *Controller) FindHistoryCustomers(c echo.Context) error {
 	})
 }
 
+func (Controller *Controller) DeleteCustomer(c echo.Context) error {
+	id, _ := strconv.Atoi(c.QueryParam("id"))
+	err := Controller.service.DeleteCustomer(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success delete customers",
+		"result":   id,
+	})
+}
+
 func (Controller *Controller) TransactionByDate(c echo.Context) error {
 	start := c.QueryParam("start")
 	end := c.QueryParam("end")

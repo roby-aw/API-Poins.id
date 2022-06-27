@@ -3,6 +3,7 @@ package admin
 import (
 	"api-redeem-point/business/customermitra"
 	"api-redeem-point/utils"
+	"errors"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -16,6 +17,7 @@ type Repository interface {
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 	GetCustomers(pagination utils.Pagination) ([]*customermitra.Customers, error)
 	GetHistoryCustomers(pagination utils.Pagination) ([]CustomerHistory, error)
+	DeleteCustomer(id int) error
 	TransactionDate() ([]TransactionDate, error)
 	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
 	UpdateCustomer(data customermitra.Customers) (*customermitra.Customers, error)
@@ -35,6 +37,7 @@ type Service interface {
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 	FindCustomers(pagination utils.Pagination) ([]*customermitra.Customers, error)
 	FindHistoryCustomers(pagination utils.Pagination) ([]CustomerHistory, error)
+	DeleteCustomer(id int) error
 	TransactionDate() ([]TransactionDate, error)
 	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
 	UpdateCustomer(data customermitra.Customers) (*customermitra.Customers, error)
@@ -108,6 +111,14 @@ func (s *service) FindCustomers(pagination utils.Pagination) ([]*customermitra.C
 
 func (s *service) FindHistoryCustomers(pagination utils.Pagination) ([]CustomerHistory, error) {
 	return s.repository.GetHistoryCustomers(pagination)
+}
+
+func (s *service) DeleteCustomer(id int) error {
+	if id == 0 {
+		err := errors.New("Masukkan id customer")
+		return err
+	}
+	return s.repository.DeleteCustomer(id)
 }
 
 func (s *service) TransactionDate() ([]TransactionDate, error) {

@@ -4,6 +4,7 @@ import (
 	"api-redeem-point/business/admin"
 	"api-redeem-point/business/customermitra"
 	"api-redeem-point/config"
+	"api-redeem-point/repository"
 	"api-redeem-point/utils"
 	"errors"
 	"fmt"
@@ -187,6 +188,19 @@ func (repo *PosgresRepository) GetHistoryCustomers(pagination utils.Pagination) 
 	}
 
 	return CustomerHistory, nil
+}
+
+func (repo *PosgresRepository) DeleteCustomer(id int) error {
+	var customer *admin.Customers
+	err := repo.db.Model(&repository.Customer{}).Where("ID = ?", id).First(&customer).Error
+	if err != nil {
+		return err
+	}
+	err = repo.db.Delete(customer, id).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (repo *PosgresRepository) TransactionDate() ([]admin.TransactionDate, error) {
