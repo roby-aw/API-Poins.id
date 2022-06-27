@@ -18,6 +18,7 @@ func GeneratePagination(c echo.Context) Pagination {
 	page := 1
 	sort := "created_at desc"
 	query := c.Request().URL.Query()
+	fmt.Println(query)
 	for key, value := range query {
 		queryValue := value[len(value)-1]
 		switch key {
