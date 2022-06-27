@@ -279,6 +279,19 @@ func (repo *PosgresRepository) HistoryStore(pagination utils.Pagination) ([]admi
 	return tmpHistory, nil
 }
 
+func (repo *PosgresRepository) DeleteStore(id int) error {
+	var store *customermitra.Store
+	err := repo.db.Model(&repository.Store{}).Where("ID = ?", id).First(&store).Error
+	if err != nil {
+		return err
+	}
+	err = repo.db.Delete(store, id).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func Hash(password string) ([]byte, error) {
 	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 }

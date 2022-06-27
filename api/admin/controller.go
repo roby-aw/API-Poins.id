@@ -324,3 +324,19 @@ func (Controller *Controller) HistoryStore(c echo.Context) error {
 		"result":   result,
 	})
 }
+
+func (Controller *Controller) DeleteStore(c echo.Context) error {
+	id, _ := strconv.Atoi(c.QueryParam("id"))
+	err := Controller.service.DeleteStore(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success delete store",
+		"result":   id,
+	})
+}

@@ -26,6 +26,7 @@ type Repository interface {
 	UpdateStock(id int, stock int) (*StockProduct, error)
 	TestDB() ([]TransactionMonth, error)
 	HistoryStore(pagination utils.Pagination) ([]HistoryStore, error)
+	DeleteStore(id int) error
 }
 
 type Service interface {
@@ -46,6 +47,7 @@ type Service interface {
 	UpdateStock(id int, stock int) (*StockProduct, error)
 	TestDB() ([]TransactionMonth, error)
 	HistoryStore(pagination utils.Pagination) ([]HistoryStore, error)
+	DeleteStore(id int) error
 }
 
 type service struct {
@@ -151,4 +153,8 @@ func (s *service) TestDB() ([]TransactionMonth, error) {
 
 func (s *service) HistoryStore(pagination utils.Pagination) ([]HistoryStore, error) {
 	return s.repository.HistoryStore(pagination)
+}
+
+func (s *service) DeleteStore(id int) error {
+	return s.repository.DeleteStore(id)
 }
