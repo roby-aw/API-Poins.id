@@ -156,5 +156,9 @@ func (s *service) HistoryStore(pagination utils.Pagination) ([]HistoryStore, err
 }
 
 func (s *service) DeleteStore(id int) error {
+	if id == 0 {
+		err := errors.New("Masukkan id customer")
+		return err
+	}
 	return s.repository.DeleteStore(id)
 }
