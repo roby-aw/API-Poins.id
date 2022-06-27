@@ -260,7 +260,7 @@ func (repo *PosgresRepository) TestDB() ([]admin.TransactionMonth, error) {
 	var TransactionMonth []admin.TransactionMonth
 	year := time.Now().Year()
 	month := time.Now().Month()
-	err := repo.db.Raw("SELECT TO_CHAR(created_at, 'DD'), Count(1) From history_transactions where EXTRACT(YEAR From created_at) = ? AND EXTRACT(MONTH From created_at) = ? AND status_transaction = ? GROUP BY TO_CHAR(created_at, 'DD') order by 1;", year, month, "OUT").Find(&TransactionMonth).Error
+	err := repo.db.Raw("SELECT TO_CHAR(created_at, 'DD') AS Day, Count(1) From history_transactions where EXTRACT(YEAR From created_at) = ? AND EXTRACT(MONTH From created_at) = ? AND status_transaction = ? GROUP BY TO_CHAR(created_at, 'DD') order by 1;", year, month, "OUT").Find(&TransactionMonth).Error
 	if err != nil {
 		return nil, err
 	}

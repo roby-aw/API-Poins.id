@@ -107,7 +107,7 @@ type Claims struct {
 }
 
 type TransactionMonth struct {
-	Month string `json:"month"`
+	Day   string `json:"Day"`
 	Count int    `json:"count"`
 }
 
