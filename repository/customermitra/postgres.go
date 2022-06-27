@@ -106,9 +106,11 @@ func (repo *PosgresRepository) UpdateCustomer(Data *customermitra.UpdateCustomer
 	return Data, nil
 }
 
-func (repo *PosgresRepository) HistoryCustomer(id int) ([]customermitra.History, error) {
+func (repo *PosgresRepository) HistoryCustomer(id int, pagination utils.Pagination) ([]customermitra.History, error) {
 	var DataHistory []customermitra.History_Transaction
-	err := repo.db.Where("Customer_id = ? AND Status_Poin = ?", id, "OUT").Order("created_at desc").Find(&DataHistory).Error
+	offset := (pagination.Page - 1) * pagination.Limit
+	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
+	err := queryBuider.Where("Customer_id = ? AND Status_Poin = ?", id, "OUT").Find(&DataHistory).Error
 	if err != nil {
 		return nil, err
 	}

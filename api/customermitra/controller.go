@@ -2,6 +2,7 @@ package customermitra
 
 import (
 	customermitraBussiness "api-redeem-point/business/customermitra"
+	"api-redeem-point/utils"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -111,8 +112,9 @@ func (Controller *Controller) UpdateCustomer(c echo.Context) error {
 // @Success 200 {object} customermitra.UpdateCustomer
 // @Router /history/{idcustomer} [GET]
 func (Controller *Controller) HistoryCustomer(c echo.Context) error {
-	idcustomer, _ := strconv.Atoi(c.Param("idcustomer"))
-	result, err := Controller.service.HistoryCustomer(idcustomer)
+	idcustomer, _ := strconv.Atoi(c.QueryParam("id"))
+	pagination := utils.GeneratePagination(c)
+	result, err := Controller.service.HistoryCustomer(idcustomer, pagination)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"code":     400,
