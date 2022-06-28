@@ -132,7 +132,7 @@ func (s *service) RedeemPaketData(Data *RedeemPulsaData) error {
 	if err != nil {
 		return err
 	}
-	err = s.repository.DecraseStock(2, Data.Amount)
+	err = s.repository.DecraseStock(2, Data.Poin_redeem)
 	if err != nil {
 		return err
 	}
