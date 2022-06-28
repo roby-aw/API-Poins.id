@@ -224,6 +224,10 @@ func (repo *PosgresRepository) UpdateCustomer(data admin.UpdateCustomer) (*admin
 			return nil, err
 		}
 	}
+	if data.Password != "" {
+		password, _ := Hash(data.Password)
+		data.Password = string(password)
+	}
 	err = repo.db.Model(&customermitra.Customers{}).Where("ID = ?", data.ID).Updates(&customermitra.Customers{Email: data.Email, Fullname: data.Fullname, No_hp: data.No_hp, Pin: data.Pin}).Error
 	if err != nil {
 		return nil, err
