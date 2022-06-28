@@ -132,6 +132,10 @@ func (s *service) TransactionByDate(startdate string, enddate string) ([]Transac
 }
 
 func (s *service) UpdateCustomer(data UpdateCustomer) (*UpdateCustomer, error) {
+	err := s.validate.Struct(data)
+	if err != nil {
+		return nil, err
+	}
 	return s.repository.UpdateCustomer(data)
 }
 
