@@ -3,7 +3,6 @@ package admin
 import (
 	"api-redeem-point/business/admin"
 	adminBusiness "api-redeem-point/business/admin"
-	"api-redeem-point/business/customermitra"
 	"api-redeem-point/utils"
 	"net/http"
 	"strconv"
@@ -231,7 +230,7 @@ func (Controller *Controller) TransactionByDate(c echo.Context) error {
 }
 
 func (Controller *Controller) UpdateCustomer(c echo.Context) error {
-	var req customermitra.Customers
+	var req adminBusiness.UpdateCustomer
 	c.Bind(&req)
 	result, err := Controller.service.UpdateCustomer(req)
 	if err != nil {

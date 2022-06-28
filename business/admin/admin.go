@@ -133,3 +133,12 @@ type Store struct {
 	Store  string `json:"store"`
 	Alamat string `json:"alamat"`
 }
+
+type UpdateCustomer struct {
+	ID       int    `json:"id" validate:"required,email"`
+	Email    string `json:"email" validate:"required"`
+	Fullname string `json:"fullname" validate:"required"`
+	Password string `json:"password" validate:"required"`
+	No_hp    string `json:"no_hp"`
+	Pin      int    `json:"pin"`
+}

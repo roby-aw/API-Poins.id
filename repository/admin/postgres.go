@@ -215,8 +215,15 @@ func (repo *PosgresRepository) TransactionByDate(startdate string, enddate strin
 	return transaction, nil
 }
 
-func (repo *PosgresRepository) UpdateCustomer(data customermitra.Customers) (*customermitra.Customers, error) {
-	err := repo.db.Model(&customermitra.Customers{}).Where("ID = ?", data.ID).Updates(&customermitra.Customers{Email: data.Email, Fullname: data.Fullname, No_hp: data.No_hp}).Error
+func (repo *PosgresRepository) UpdateCustomer(data admin.UpdateCustomer) (*admin.UpdateCustomer, error) {
+	err := repo.db.Model(&customermitra.Customers{}).Where("ID = ?", data.ID).First(&data).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = errors.New("wrong id customer")
+			return nil, err
+		}
+	}
+	err = repo.db.Model(&customermitra.Customers{}).Where("ID = ?", data.ID).Updates(&customermitra.Customers{Email: data.Email, Fullname: data.Fullname, No_hp: data.No_hp, Pin: data.Pin}).Error
 	if err != nil {
 		return nil, err
 	}

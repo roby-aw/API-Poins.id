@@ -20,7 +20,7 @@ type Repository interface {
 	DeleteCustomer(id int) error
 	TransactionDate() ([]TransactionDate, error)
 	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
-	UpdateCustomer(data customermitra.Customers) (*customermitra.Customers, error)
+	UpdateCustomer(data UpdateCustomer) (*UpdateCustomer, error)
 	UpdateCustomerPoint(id int, point int) (*int, error)
 	GetProduct() ([]StockProduct, error)
 	UpdateStock(id int, stock int) (*StockProduct, error)
@@ -41,7 +41,7 @@ type Service interface {
 	DeleteCustomer(id int) error
 	TransactionDate() ([]TransactionDate, error)
 	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
-	UpdateCustomer(data customermitra.Customers) (*customermitra.Customers, error)
+	UpdateCustomer(data UpdateCustomer) (*UpdateCustomer, error)
 	UpdateCustomerPoint(id int, point int) (*int, error)
 	FindProduct() ([]StockProduct, error)
 	UpdateStock(id int, stock int) (*StockProduct, error)
@@ -131,7 +131,7 @@ func (s *service) TransactionByDate(startdate string, enddate string) ([]Transac
 	return s.repository.TransactionByDate(startdate, enddate)
 }
 
-func (s *service) UpdateCustomer(data customermitra.Customers) (*customermitra.Customers, error) {
+func (s *service) UpdateCustomer(data UpdateCustomer) (*UpdateCustomer, error) {
 	return s.repository.UpdateCustomer(data)
 }
 
