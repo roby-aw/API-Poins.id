@@ -319,9 +319,10 @@ func (Controller *Controller) HistoryStore(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"code":     200,
-		"messages": "success get history store",
-		"result":   result,
+		"code":       200,
+		"messages":   "success get history store",
+		"pagination": pagination,
+		"result":     result,
 	})
 }
 
