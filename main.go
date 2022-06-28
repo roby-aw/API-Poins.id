@@ -19,9 +19,9 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
-// @title API Jasa Pengiriman
+// @title API Poins ID
 // @version 1.0
-// @description Berikut API Jasa Pengiriman
+// @description Berikut API Poins ID
 // @host api-poins-id.herokuapp.com/v1
 // @BasePath /
 func main() {

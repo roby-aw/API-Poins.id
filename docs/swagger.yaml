@@ -180,8 +180,8 @@ definitions:
 host: api-poins-id.herokuapp.com/v1
 info:
   contact: {}
-  description: Berikut API Jasa Pengiriman
-  title: API Jasa Pengiriman
+  description: Berikut API Poins ID
+  title: API Poins ID
   version: "1.0"
 paths:
   /account:

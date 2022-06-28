@@ -1203,8 +1203,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "api-poins-id.herokuapp.com/v1",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "API Jasa Pengiriman",
-	Description:      "Berikut API Jasa Pengiriman",
+	Title:            "API Poins ID",
+	Description:      "Berikut API Poins ID",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

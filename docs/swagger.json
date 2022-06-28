@@ -1,8 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "Berikut API Jasa Pengiriman",
-        "title": "API Jasa Pengiriman",
+        "description": "Berikut API Poins ID",
+        "title": "API Poins ID",
         "contact": {},
         "version": "1.0"
     },
