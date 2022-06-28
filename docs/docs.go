@@ -16,48 +16,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/account": {
-            "put": {
-                "description": "Updatecustomer",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Customer"
-                ],
-                "summary": "Updatecustomer",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "default": "Bearer \u003cAdd access token here\u003e",
-                        "description": "Insert your access token",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "description": "Register",
-                        "name": "Registercustomer",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/customermitra.UpdateCustomer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/customermitra.UpdateCustomer"
-                        }
-                    }
-                }
-            }
-        },
         "/admin": {
             "get": {
                 "description": "Dashboard for admin",
@@ -641,7 +599,7 @@ const docTemplate = `{
         },
         "/cashout": {
             "post": {
-                "description": "Redeem Emoney customer",
+                "description": "Redeem Cashout customer",
                 "consumes": [
                     "application/json"
                 ],
@@ -667,13 +625,59 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
+                            "$ref": "#/definitions/response.Result"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
                         }
                     }
                 }
             }
         },
         "/customer": {
+            "put": {
+                "description": "Updatecustomer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Updatecustomer",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "customer",
+                        "name": "Registercustomer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.UpdateCustomer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.UpdateCustomer"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Login Customer",
                 "consumes": [
@@ -701,7 +705,53 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.Login"
+                            "$ref": "#/definitions/response.Result"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/register": {
+            "post": {
+                "description": "Register customer",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Register",
+                "parameters": [
+                    {
+                        "description": "Register",
+                        "name": "Registercustomer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.RegisterCustomer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Result"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
                         }
                     }
                 }
@@ -709,7 +759,7 @@ const docTemplate = `{
         },
         "/dethistory/{idtransaction}": {
             "get": {
-                "description": "Updatecustomer",
+                "description": "Detail history customer",
                 "consumes": [
                     "application/json"
                 ],
@@ -731,8 +781,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "customer id",
-                        "name": "idcustomer",
+                        "description": "id transaction",
+                        "name": "idtransaction",
                         "in": "path",
                         "required": true
                     }
@@ -741,7 +791,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/customermitra.UpdateCustomer"
+                            "$ref": "#/definitions/response.Result"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
                         }
                     }
                 }
@@ -775,15 +831,21 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
+                            "$ref": "#/definitions/response.Result"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
                         }
                     }
                 }
             }
         },
-        "/history/{idcustomer}": {
+        "/history": {
             "get": {
-                "description": "Updatecustomer",
+                "description": "History Customer",
                 "consumes": [
                     "application/json"
                 ],
@@ -793,7 +855,7 @@ const docTemplate = `{
                 "tags": [
                     "Customer"
                 ],
-                "summary": "Updatecustomer",
+                "summary": "History Customer",
                 "parameters": [
                     {
                         "type": "string",
@@ -804,10 +866,22 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
-                        "description": "customer id",
-                        "name": "idcustomer",
-                        "in": "path",
+                        "type": "integer",
+                        "description": "pagination",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "pagination",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "id customer",
+                        "name": "id",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -815,7 +889,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/customermitra.UpdateCustomer"
+                            "$ref": "#/definitions/response.Result"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
                         }
                     }
                 }
@@ -842,14 +922,28 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "description": "Input data paket data",
+                        "name": "InputDataPaketData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.RedeemPulsaData"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/response.Result"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
                         }
                     }
                 }
@@ -878,8 +972,8 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "inputdataemoney",
-                        "name": "InputDataCashout",
+                        "description": "Input data pulsa",
+                        "name": "InputDataPulsa",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -891,16 +985,21 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": true
+                            "$ref": "#/definitions/response.Result"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
                         }
                     }
                 }
             }
         },
-        "/register": {
+        "/store": {
             "post": {
-                "description": "Register customer",
+                "description": "Register Store for Admin",
                 "consumes": [
                     "application/json"
                 ],
@@ -908,17 +1007,25 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Customer"
+                    "Admin"
                 ],
-                "summary": "Register",
+                "summary": "Register Store",
                 "parameters": [
                     {
-                        "description": "Register",
-                        "name": "Registercustomer",
+                        "type": "string",
+                        "default": "Bearer \u003cAdd access token here\u003e",
+                        "description": "Insert your access token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Register Store",
+                        "name": "RegisterStore",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.RegisterCustomer"
+                            "$ref": "#/definitions/customermitra.RegisterStore"
                         }
                     }
                 ],
@@ -926,7 +1033,93 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/customermitra.RegisterCustomer"
+                            "$ref": "#/definitions/response.Result"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/store/login": {
+            "post": {
+                "description": "Register Store for Admin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Store"
+                ],
+                "summary": "Login Store",
+                "parameters": [
+                    {
+                        "description": "LoginStore",
+                        "name": "LoginStore",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.AuthStore"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Result"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/store/poin": {
+            "post": {
+                "description": "Input Poin Customer for Store",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Store"
+                ],
+                "summary": "Input Poin Store",
+                "parameters": [
+                    {
+                        "description": "InputPoinStore",
+                        "name": "InputPoinStore",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/customermitra.InputPoin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Result"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
                         }
                     }
                 }
@@ -1012,6 +1205,40 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string"
+                }
+            }
+        },
+        "customermitra.AuthStore": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "customermitra.InputPoin": {
+            "type": "object",
+            "required": [
+                "amount",
+                "customer_id",
+                "store_id"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "customer_id": {
+                    "type": "integer"
+                },
+                "store_id": {
+                    "type": "integer"
                 }
             }
         },
@@ -1108,31 +1335,25 @@ const docTemplate = `{
                 }
             }
         },
-        "customermitra.ResponseLogin": {
+        "customermitra.RegisterStore": {
             "type": "object",
+            "required": [
+                "alamat",
+                "email",
+                "password",
+                "store"
+            ],
             "properties": {
+                "alamat": {
+                    "type": "string"
+                },
                 "email": {
-                    "type": "string"
-                },
-                "fullname": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "no_hp": {
                     "type": "string"
                 },
                 "password": {
                     "type": "string"
                 },
-                "pin": {
-                    "type": "integer"
-                },
-                "poin": {
-                    "type": "integer"
-                },
-                "token": {
+                "store": {
                     "type": "string"
                 }
             }
@@ -1165,20 +1386,6 @@ const docTemplate = `{
                 },
                 "messages": {
                     "type": "string"
-                }
-            }
-        },
-        "response.Login": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "messages": {
-                    "type": "string"
-                },
-                "results": {
-                    "$ref": "#/definitions/customermitra.ResponseLogin"
                 }
             }
         },

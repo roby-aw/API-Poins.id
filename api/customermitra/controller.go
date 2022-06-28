@@ -28,7 +28,8 @@ func NewController(service customermitraBussiness.Service) *Controller {
 // @Accept json
 // @Produce json
 // @Param Customer body customermitra.AuthLogin true "Customer"
-// @Success 200 {object} response.Login
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
 // @Router /customer [post]
 func (Controller *Controller) Login(c echo.Context) error {
 	var req customermitraBussiness.AuthLogin
@@ -55,8 +56,9 @@ func (Controller *Controller) Login(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param Registercustomer body customermitra.RegisterCustomer true "Register"
-// @Success 200 {object} customermitra.RegisterCustomer
-// @Router /register [post]
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /customer/register [post]
 func (Controller *Controller) Register(c echo.Context) error {
 	var req customermitraBussiness.RegisterCustomer
 	c.Bind(&req)
@@ -81,9 +83,9 @@ func (Controller *Controller) Register(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
-// @Param Registercustomer body customermitra.UpdateCustomer true "Register"
+// @Param Registercustomer body customermitra.UpdateCustomer true "customer"
 // @Success 200 {object} customermitra.UpdateCustomer
-// @Router /account [put]
+// @Router /customer [put]
 func (Controller *Controller) UpdateCustomer(c echo.Context) error {
 	var req customermitraBussiness.UpdateCustomer
 	c.Bind(&req)
@@ -102,15 +104,18 @@ func (Controller *Controller) UpdateCustomer(c echo.Context) error {
 }
 
 // Create godoc
-// @Summary Updatecustomer
-// @description Updatecustomer
+// @Summary History Customer
+// @description History Customer
 // @tags Customer
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
-// @Param idcustomer path string true "customer id"
-// @Success 200 {object} customermitra.UpdateCustomer
-// @Router /history/{idcustomer} [GET]
+// @Param limit query int false "pagination"
+// @Param page query int false "pagination"
+// @Param id query int true "id customer"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /history [GET]
 func (Controller *Controller) HistoryCustomer(c echo.Context) error {
 	idcustomer, _ := strconv.Atoi(c.QueryParam("id"))
 	pagination := utils.GeneratePagination(c)
@@ -131,13 +136,14 @@ func (Controller *Controller) HistoryCustomer(c echo.Context) error {
 
 // Create godoc
 // @Summary Detail history customer
-// @description Updatecustomer
+// @description Detail history customer
 // @tags Customer
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
-// @Param idcustomer path string true "customer id"
-// @Success 200 {object} customermitra.UpdateCustomer
+// @Param idtransaction path string true "id transaction"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
 // @Router /dethistory/{idtransaction} [GET]
 func (Controller *Controller) DetailHistoryCustomer(c echo.Context) error {
 	idcustomer := c.Param("idtransaction")
@@ -162,7 +168,8 @@ func (Controller *Controller) DetailHistoryCustomer(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param InputDataCashout body customermitra.InputTransactionBankEmoney true "inputdataemoney"
-// @Success 200 {object} customermitra.InputTransactionBankEmoney
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
 // @Router /emoney [post]
 func (Controller *Controller) OrderEmoney(c echo.Context) error {
 	emoney := customermitraBussiness.InputTransactionBankEmoney{}
@@ -182,12 +189,13 @@ func (Controller *Controller) OrderEmoney(c echo.Context) error {
 
 // Create godoc
 // @Summary Redeem Cashout
-// @description Redeem Emoney customer
+// @description Redeem Cashout customer
 // @tags Redeem
 // @Accept json
 // @Produce json
 // @Param InputDataCashout body customermitra.InputTransactionBankEmoney true "inputdataemoney"
-// @Success 200 {object} customermitra.InputTransactionBankEmoney
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
 // @Router /cashout [post]
 func (Controller *Controller) OrderCashout(c echo.Context) error {
 	req := customermitraBussiness.InputTransactionBankEmoney{}
@@ -212,8 +220,9 @@ func (Controller *Controller) OrderCashout(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
-// @Param InputDataCashout body customermitra.RedeemPulsaData true "inputdataemoney"
-// @Success 200 {object} map[string]interface{}
+// @Param InputDataPulsa body customermitra.RedeemPulsaData true "Input data pulsa"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
 // @Router /pulsa [post]
 func (Controller *Controller) OrderPulsa(c echo.Context) error {
 	var req customermitraBussiness.RedeemPulsaData
@@ -238,7 +247,9 @@ func (Controller *Controller) OrderPulsa(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
-// @Success 200 {object} map[string]interface{}
+// @Param InputDataPaketData body customermitra.RedeemPulsaData true "Input data paket data"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
 // @Router /paketdata [post]
 func (Controller *Controller) OrderPaketData(c echo.Context) error {
 	var req customermitraBussiness.RedeemPulsaData
@@ -288,6 +299,18 @@ func (Controller *Controller) CallbackXendit(c echo.Context) error {
 		"result":   databank,
 	})
 }
+
+// Create godoc
+// @Summary Register Store
+// @description Register Store for Admin
+// @tags Admin
+// @Accept json
+// @Produce json
+// @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
+// @Param RegisterStore body customermitra.RegisterStore true "Register Store"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /store [post]
 func (Controller *Controller) RegisterStore(c echo.Context) error {
 	var req customermitraBussiness.RegisterStore
 	c.Bind(&req)
@@ -305,6 +328,16 @@ func (Controller *Controller) RegisterStore(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary Login Store
+// @description Register Store for Admin
+// @tags Store
+// @Accept json
+// @Produce json
+// @Param LoginStore body customermitra.AuthStore true "LoginStore"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /store/login [post]
 func (Controller *Controller) LoginStore(c echo.Context) error {
 	var req customermitraBussiness.AuthStore
 	c.Bind(&req)
@@ -322,6 +355,16 @@ func (Controller *Controller) LoginStore(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary Input Poin Store
+// @description Input Poin Customer for Store
+// @tags Store
+// @Accept json
+// @Produce json
+// @Param InputPoinStore body customermitra.InputPoin true "InputPoinStore"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /store/poin [post]
 func (Controller *Controller) InputPoinStore(c echo.Context) error {
 	var req customermitraBussiness.InputPoin
 	c.Bind(&req)
