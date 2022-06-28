@@ -381,12 +381,10 @@ paths:
       - description: "2022-01-01"
         in: query
         name: start
-        required: true
         type: string
       - description: "2022-12-31"
         in: query
         name: end
-        required: true
         type: string
       produces:
       - application/json

@@ -347,15 +347,13 @@ const docTemplate = `{
                         "type": "string",
                         "description": "2022-01-01",
                         "name": "start",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
                         "description": "2022-12-31",
                         "name": "end",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     }
                 ],
                 "responses": {

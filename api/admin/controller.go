@@ -254,8 +254,8 @@ func (Controller *Controller) DeleteCustomer(c echo.Context) error {
 // @tags Admin
 // @Accept json
 // @Produce json
-// @Param start query string true "2022-01-01"
-// @Param end query string true "2022-12-31"
+// @Param start query string false "2022-01-01"
+// @Param end query string false "2022-12-31"
 // @Success 200	{object} response.Result
 // @Failure 400 {object} response.Error
 // @Router /admin/transaction [get]
