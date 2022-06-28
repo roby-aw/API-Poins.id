@@ -38,7 +38,7 @@ func ConfigMiddleware(fitur string) middleware.JWTConfig {
 			token, _ := jwt.Parse(auth, keyFunc)
 			claims, _ := token.Claims.(jwt.MapClaims)
 			if claims[fitur] == nil {
-				return nil, errors.New("Role not store")
+				return nil, errors.New("Role not " + fitur)
 			}
 			return token, nil
 		},
