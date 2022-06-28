@@ -37,7 +37,7 @@ type Store struct {
 }
 
 type RegisterStore struct {
-	Email    string `json:"email" validate:"required"`
+	Email    string `json:"email" validate:"required, email"`
 	Password string `json:"password" validate:"required"`
 	Store    string `json:"store" validate:"required"`
 	Alamat   string `json:"alamat" validate:"required"`
