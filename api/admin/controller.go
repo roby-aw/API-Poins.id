@@ -56,9 +56,10 @@ func (Controller *Controller) TransactionPending(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"code":     200,
-		"messages": "success get transaction pending",
-		"result":   result,
+		"code":       200,
+		"messages":   "success get transaction pending",
+		"pagination": pagination,
+		"result":     result,
 	})
 }
 
@@ -166,9 +167,10 @@ func (Controller *Controller) FindCustomers(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"code":     200,
-		"messages": "success get customers",
-		"result":   result,
+		"code":       200,
+		"messages":   "success get customers",
+		"pagination": pagination,
+		"result":     result,
 	})
 }
 
@@ -182,9 +184,10 @@ func (Controller *Controller) FindHistoryCustomers(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"code":     200,
-		"messages": "success get customers",
-		"result":   result,
+		"code":       200,
+		"messages":   "success get customers",
+		"pagination": pagination,
+		"result":     result,
 	})
 }
 

@@ -122,9 +122,10 @@ func (Controller *Controller) HistoryCustomer(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"code":     200,
-		"messages": "success get history customer",
-		"result":   result,
+		"code":       200,
+		"messages":   "success get history customer",
+		"pagination": pagination,
+		"result":     result,
 	})
 }
 
