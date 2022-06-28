@@ -336,6 +336,12 @@ func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionB
 
 func (repo *PosgresRepository) InsertStore(store *customermitra.RegisterStore) (*customermitra.RegisterStore, error) {
 	hash, _ := Hash(store.Password)
+	var tmpStore customermitra.Store
+	repo.db.Where("email = ?", store.Email).First(&tmpStore)
+	if tmpStore.Email != "" {
+		err := errors.New("Email already use")
+		return nil, err
+	}
 	err := repo.db.Create(&customermitra.Store{Email: store.Email, Password: string(hash), Store: store.Store, Alamat: store.Alamat}).Error
 	if err != nil {
 		return nil, err
