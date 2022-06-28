@@ -1,8 +1,6 @@
 package middleware
 
 import (
-	"api-redeem-point/business/admin"
-	"api-redeem-point/business/customermitra"
 	"errors"
 	"fmt"
 	"os"
@@ -13,24 +11,21 @@ import (
 )
 
 func CustomerSetupAuthenticationJWT() echo.MiddlewareFunc {
-	SECRET_KEY := os.Getenv("SECRET_JWT")
-	return middleware.JWTWithConfig(middleware.JWTConfig{
-		SigningMethod: "HS256",
-		Claims:        &customermitra.Claims{},
-		SigningKey:    []byte(SECRET_KEY),
-	})
+	config := ConfigMiddleware("Customer")
+	return middleware.JWTWithConfig(config)
 }
 
 func AdminSetupAuthenticationJWT() echo.MiddlewareFunc {
-	SECRET_KEY := os.Getenv("SECRET_JWT")
-	return middleware.JWTWithConfig(middleware.JWTConfig{
-		SigningMethod: "HS256",
-		Claims:        &admin.Claims{Role: "Admin"},
-		SigningKey:    []byte(SECRET_KEY),
-	})
+	config := ConfigMiddleware("Admin")
+	return middleware.JWTWithConfig(config)
 }
 
 func StoreSetupAuthenticationJWT() echo.MiddlewareFunc {
+	config := ConfigMiddleware("Store")
+	return middleware.JWTWithConfig(config)
+}
+
+func ConfigMiddleware(fitur string) middleware.JWTConfig {
 	SECRET_KEY := os.Getenv("SECRET_JWT")
 	config := middleware.JWTConfig{
 		ParseTokenFunc: func(auth string, c echo.Context) (interface{}, error) {
@@ -40,18 +35,13 @@ func StoreSetupAuthenticationJWT() echo.MiddlewareFunc {
 				}
 				return SECRET_KEY, nil
 			}
-
-			// claims are of type `jwt.MapClaims` when token is created with `jwt.Parse`
 			token, _ := jwt.Parse(auth, keyFunc)
 			claims, _ := token.Claims.(jwt.MapClaims)
-			fmt.Println(claims["Customer"])
-			if claims["Store"] == nil {
+			if claims[fitur] == nil {
 				return nil, errors.New("Role not store")
 			}
-			fmt.Println(claims["Store"])
-			fmt.Println("====")
 			return token, nil
 		},
 	}
-	return middleware.JWTWithConfig(config)
+	return config
 }
