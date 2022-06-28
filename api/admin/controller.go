@@ -21,6 +21,15 @@ func NewController(service adminBusiness.Service) *Controller {
 	}
 }
 
+// Create godoc
+// @Summary Dashboard Admin
+// @description Dashboard for admin
+// @tags Admin
+// @Accept json
+// @Produce json
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /admin [get]
 func (Controller *Controller) Dashboard(c echo.Context) error {
 	result, err := Controller.service.Dashboard()
 	if err != nil {
@@ -37,14 +46,14 @@ func (Controller *Controller) Dashboard(c echo.Context) error {
 }
 
 // Create godoc
-// @Summary Create admin
-// @description create admin with data
+// @Summary Transaction Pending
+// @description Transaction Pending for Admin
 // @tags Admin
 // @Accept json
 // @Produce json
-// @Success 200
-// @Failure 400 {object} map[string]interface{}
-// @Router /admin [post]
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /admin/transaction/pending [get]
 func (Controller *Controller) TransactionPending(c echo.Context) error {
 	pagination := utils.GeneratePagination(c)
 	result, err := Controller.service.TransactionPending(pagination)
@@ -69,8 +78,8 @@ func (Controller *Controller) TransactionPending(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param admin body admin.RegisterAdmin true "admin"
-// @Success 201 {object} admin.RegisterAdmin
-// @Failure 400 {object} map[string]interface{}
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
 // @Router /admin [post]
 func (Controller *Controller) CreateAdmin(c echo.Context) error {
 	admin := adminBusiness.RegisterAdmin{}
@@ -96,8 +105,8 @@ func (Controller *Controller) CreateAdmin(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param admin body admin.AuthLogin true "admin"
-// @Success 200 {object} map[string]interface{}
-// @Failure 400
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
 // @Router /admin/login [post]
 func (Controller *Controller) LoginAdmin(c echo.Context) error {
 	var request adminBusiness.AuthLogin
@@ -142,7 +151,8 @@ func (Controller *Controller) UpdateAdmin(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param transactionid path string true "transaction_id"
-// @Success 200
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
 // @Router /admin/approve/{transactionid} [post]
 func (Controller *Controller) ApproveTransaction(c echo.Context) error {
 	transactionid := c.Param("idtransaction")
@@ -159,6 +169,17 @@ func (Controller *Controller) ApproveTransaction(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary Find customers
+// @description Find customers for admin
+// @tags Admin
+// @Accept json
+// @Produce json
+// @Param limit query int true "pagination"
+// @Param page query int true "pagination"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /admin/customer [get]
 func (Controller *Controller) FindCustomers(c echo.Context) error {
 	pagination := utils.GeneratePagination(c)
 	result, err := Controller.service.FindCustomers(pagination)
@@ -173,6 +194,17 @@ func (Controller *Controller) FindCustomers(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary Find History Customers
+// @description Find History Customers for admin
+// @tags Admin
+// @Accept json
+// @Produce json
+// @Param limit query int true "pagination"
+// @Param page query int true "pagination"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /admin/history [get]
 func (Controller *Controller) FindHistoryCustomers(c echo.Context) error {
 	pagination := utils.GeneratePagination(c)
 	result, err := Controller.service.FindHistoryCustomers(pagination)
@@ -190,6 +222,16 @@ func (Controller *Controller) FindHistoryCustomers(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary Delete Customers
+// @description Delete Customers for admin
+// @tags Admin
+// @Accept json
+// @Produce json
+// @Param id query int true "id customer"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /admin/customer [delete]
 func (Controller *Controller) DeleteCustomer(c echo.Context) error {
 	id, _ := strconv.Atoi(c.QueryParam("id"))
 	err := Controller.service.DeleteCustomer(id)
@@ -206,6 +248,17 @@ func (Controller *Controller) DeleteCustomer(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary Transaction By Date
+// @description Transaction By Date for admin
+// @tags Admin
+// @Accept json
+// @Produce json
+// @Param start query string true "2022-01-01"
+// @Param end query string true "2022-12-31"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /admin/transaction [get]
 func (Controller *Controller) TransactionByDate(c echo.Context) error {
 	start := c.QueryParam("start")
 	end := c.QueryParam("end")

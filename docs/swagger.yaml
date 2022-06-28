@@ -106,8 +106,12 @@ definitions:
     properties:
       email:
         type: string
+      fullname:
+        type: string
       id:
         type: integer
+      no_hp:
+        type: string
       password:
         type: string
       pin:
@@ -130,6 +134,13 @@ definitions:
     required:
     - id
     type: object
+  response.Error:
+    properties:
+      code:
+        type: integer
+      messages:
+        type: string
+    type: object
   response.Login:
     properties:
       code:
@@ -138,6 +149,14 @@ definitions:
         type: string
       results:
         $ref: '#/definitions/customermitra.ResponseLogin'
+    type: object
+  response.Result:
+    properties:
+      code:
+        type: integer
+      messages:
+        type: string
+      result: {}
     type: object
 host: api-poins-id.herokuapp.com/v1
 info:
@@ -175,6 +194,24 @@ paths:
       tags:
       - Customer
   /admin:
+    get:
+      consumes:
+      - application/json
+      description: Dashboard for admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Dashboard Admin
+      tags:
+      - Admin
     post:
       consumes:
       - application/json
@@ -189,15 +226,14 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: Created
+        "200":
+          description: OK
           schema:
-            $ref: '#/definitions/admin.RegisterAdmin'
+            $ref: '#/definitions/response.Result'
         "400":
           description: Bad Request
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/response.Error'
       summary: Create admin
       tags:
       - Admin
@@ -216,8 +252,98 @@ paths:
       - application/json
       responses:
         "200":
-          description: ""
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
       summary: Approve Transaction
+      tags:
+      - Admin
+  /admin/customer:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Customers for admin
+      parameters:
+      - description: id customer
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Delete Customers
+      tags:
+      - Admin
+    get:
+      consumes:
+      - application/json
+      description: Find customers for admin
+      parameters:
+      - description: pagination
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: pagination
+        in: query
+        name: page
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Find customers
+      tags:
+      - Admin
+  /admin/history:
+    get:
+      consumes:
+      - application/json
+      description: Find History Customers for admin
+      parameters:
+      - description: pagination
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: pagination
+        in: query
+        name: page
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Find History Customers
       tags:
       - Admin
   /admin/login:
@@ -238,11 +364,61 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties: true
-            type: object
+            $ref: '#/definitions/response.Result'
         "400":
-          description: ""
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
       summary: Login admin
+      tags:
+      - Admin
+  /admin/transaction:
+    get:
+      consumes:
+      - application/json
+      description: Transaction By Date for admin
+      parameters:
+      - description: "2022-01-01"
+        in: query
+        name: start
+        required: true
+        type: string
+      - description: "2022-12-31"
+        in: query
+        name: end
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Transaction By Date
+      tags:
+      - Admin
+  /admin/transaction/pending:
+    get:
+      consumes:
+      - application/json
+      description: Transaction Pending for Admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Transaction Pending
       tags:
       - Admin
   /cashout:
