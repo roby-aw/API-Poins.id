@@ -211,7 +211,7 @@ func (repo *PosgresRepository) TransactionDate() ([]admin.TransactionDate, error
 
 func (repo *PosgresRepository) TransactionByDate(startdate string, enddate string) ([]admin.TransactionDate, error) {
 	var transaction []admin.TransactionDate
-	repo.db.Raw("select * from history_transactions where created_at BETWEEN ? AND ?", startdate+" 00:00:00", enddate+" 23:59:59").Where("status_poin = ?", "OUT").Find(&transaction)
+	repo.db.Raw("select * from history_transactions where status_poin = ? AND created_at BETWEEN ? AND ?", "OUT", startdate+" 00:00:00", enddate+" 23:59:59").Find(&transaction)
 	return transaction, nil
 }
 
