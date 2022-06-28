@@ -259,7 +259,7 @@ func (repo *PosgresRepository) GetProduct() ([]admin.StockProduct, error) {
 
 func (repo *PosgresRepository) UpdateStock(id int, stock int) (*admin.StockProduct, error) {
 	var product admin.StockProduct
-	err := repo.db.Model(&customermitra.StockProduct{}).Where("id = ?", id).Find(&product).Error
+	err := repo.db.Model(&customermitra.StockProduct{}).Where("id = ?", id).First(&product).Error
 	if err != nil {
 		return nil, err
 	}
