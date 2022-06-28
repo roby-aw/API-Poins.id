@@ -261,7 +261,10 @@ func (repo *PosgresRepository) UpdateStock(id int, stock int) (*admin.StockProdu
 	var product admin.StockProduct
 	err := repo.db.Model(&customermitra.StockProduct{}).Where("id = ?", id).First(&product).Error
 	if err != nil {
-		return nil, err
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = errors.New("wrong id product")
+			return nil, err
+		}
 	}
 	sum := product.Balance + stock
 	product.Balance = sum
