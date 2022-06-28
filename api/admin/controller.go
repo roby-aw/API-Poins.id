@@ -282,6 +282,16 @@ func (Controller *Controller) TransactionByDate(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary Transaction By Date
+// @description Transaction By Date for admin
+// @tags Admin
+// @Accept json
+// @Produce json
+// @Param admin body admin.UpdateCustomer true "admin"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /admin/customer [put]
 func (Controller *Controller) UpdateCustomer(c echo.Context) error {
 	var req adminBusiness.UpdateCustomer
 	c.Bind(&req)
@@ -300,6 +310,17 @@ func (Controller *Controller) UpdateCustomer(c echo.Context) error {
 
 }
 
+// Create godoc
+// @Summary Update customer point
+// @description Update customer point for admin
+// @tags Admin
+// @Accept json
+// @Produce json
+// @Param id query int true "id customer"
+// @Param point query int true "point customer"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /admin/customer/point [put]
 func (Controller *Controller) UpdateCustomerPoint(c echo.Context) error {
 	id, _ := strconv.Atoi(c.QueryParam("id"))
 	point, _ := strconv.Atoi(c.QueryParam("point"))
@@ -317,6 +338,15 @@ func (Controller *Controller) UpdateCustomerPoint(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary Stock Product
+// @description Stock Product for admin
+// @tags Admin
+// @Accept json
+// @Produce json
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /admin/stock [get]
 func (Controller *Controller) StockProduct(c echo.Context) error {
 	result, err := Controller.service.FindProduct()
 	if err != nil {
@@ -332,6 +362,17 @@ func (Controller *Controller) StockProduct(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary Update Stock Product
+// @description Update Stock Product for admin
+// @tags Admin
+// @Accept json
+// @Produce json
+// @Param id query int true "id product"
+// @Param balance query int true "balance product"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /admin/stock [put]
 func (Controller *Controller) UpdateStock(c echo.Context) error {
 	id, _ := strconv.Atoi(c.QueryParam("id"))
 	balance, _ := strconv.Atoi(c.QueryParam("balance"))
@@ -364,6 +405,17 @@ func (Controller *Controller) Test(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary History Store
+// @description History Store for admin
+// @tags Admin
+// @Accept json
+// @Produce json
+// @Param limit query int true "pagination"
+// @Param page query int true "pagination"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /admin/historystore [get]
 func (Controller *Controller) HistoryStore(c echo.Context) error {
 	pagination := utils.GeneratePagination(c)
 	result, err := Controller.service.HistoryStore(pagination)
@@ -381,6 +433,16 @@ func (Controller *Controller) HistoryStore(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary Delete Store
+// @description Delete Store for admin
+// @tags Admin
+// @Accept json
+// @Produce json
+// @Param id query int true "id store"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /admin/store [delete]
 func (Controller *Controller) DeleteStore(c echo.Context) error {
 	id, _ := strconv.Atoi(c.QueryParam("id"))
 	err := Controller.service.DeleteStore(id)

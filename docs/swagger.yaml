@@ -26,6 +26,25 @@ definitions:
     - no_hp
     - password
     type: object
+  admin.UpdateCustomer:
+    properties:
+      email:
+        type: string
+      fullname:
+        type: string
+      id:
+        type: integer
+      no_hp:
+        type: string
+      password:
+        type: string
+      pin:
+        type: integer
+    required:
+    - email
+    - fullname
+    - id
+    type: object
   customermitra.AuthLogin:
     properties:
       email:
@@ -316,6 +335,61 @@ paths:
       summary: Find customers
       tags:
       - Admin
+    put:
+      consumes:
+      - application/json
+      description: Transaction By Date for admin
+      parameters:
+      - description: admin
+        in: body
+        name: admin
+        required: true
+        schema:
+          $ref: '#/definitions/admin.UpdateCustomer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Transaction By Date
+      tags:
+      - Admin
+  /admin/customer/point:
+    put:
+      consumes:
+      - application/json
+      description: Update customer point for admin
+      parameters:
+      - description: id customer
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: point customer
+        in: query
+        name: point
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Update customer point
+      tags:
+      - Admin
   /admin/history:
     get:
       consumes:
@@ -346,6 +420,36 @@ paths:
       summary: Find History Customers
       tags:
       - Admin
+  /admin/historystore:
+    get:
+      consumes:
+      - application/json
+      description: History Store for admin
+      parameters:
+      - description: pagination
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: pagination
+        in: query
+        name: page
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: History Store
+      tags:
+      - Admin
   /admin/login:
     post:
       consumes:
@@ -370,6 +474,79 @@ paths:
           schema:
             $ref: '#/definitions/response.Error'
       summary: Login admin
+      tags:
+      - Admin
+  /admin/stock:
+    get:
+      consumes:
+      - application/json
+      description: Stock Product for admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Stock Product
+      tags:
+      - Admin
+    put:
+      consumes:
+      - application/json
+      description: Update Stock Product for admin
+      parameters:
+      - description: id product
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: balance product
+        in: query
+        name: balance
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Update Stock Product
+      tags:
+      - Admin
+  /admin/store:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Store for admin
+      parameters:
+      - description: id store
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Delete Store
       tags:
       - Admin
   /admin/transaction:
