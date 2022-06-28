@@ -2,6 +2,7 @@ package customermitra
 
 import (
 	"api-redeem-point/business/customermitra"
+	"api-redeem-point/repository"
 	"api-redeem-point/utils"
 	"errors"
 	"fmt"
@@ -411,4 +412,17 @@ func (repo *PosgresRepository) InputPoin(input *customermitra.InputPoin) (*int, 
 		return nil, err
 	}
 	return &i, nil
+}
+
+func (repo *PosgresRepository) DecraseStock(id int, stock int) error {
+	var tmpStock customermitra.StockProduct
+	repo.db.Model(&repository.StockProduct{}).Where("id = ?", id).First(&tmpStock)
+	if tmpStock.Balance < stock {
+		err := errors.New("out of stock")
+		return err
+	}
+	decrase := tmpStock.Balance - stock
+	tmpStock.Balance = decrase
+	repo.db.Model(tmpStock).Select("Balance").Updates(tmpStock)
+	return nil
 }

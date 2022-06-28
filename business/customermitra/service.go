@@ -22,6 +22,7 @@ type Repository interface {
 	InsertStore(store *RegisterStore) (*RegisterStore, error)
 	SignStore(store *AuthStore) (*ResponseLoginStore, error)
 	InputPoin(input *InputPoin) (*int, error)
+	DecraseStock(id int, stock int) error
 }
 
 type Service interface {
@@ -39,6 +40,7 @@ type Service interface {
 	CreateStore(store *RegisterStore) (*RegisterStore, error)
 	LoginStore(store *AuthStore) (*ResponseLoginStore, error)
 	InputPoin(input *InputPoin) (*int, error)
+	DecraseStock(id int, stock int) error
 }
 
 type service struct {
@@ -105,7 +107,15 @@ func (s *service) RedeemPulsa(Data *RedeemPulsaData) error {
 		err := errors.New("Poin kurang")
 		return err
 	}
-	return s.repository.ClaimPulsa(Data)
+	err = s.repository.ClaimPulsa(Data)
+	if err != nil {
+		return err
+	}
+	err = s.repository.DecraseStock(2, Data.Amount)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *service) RedeemPaketData(Data *RedeemPulsaData) error {
@@ -118,7 +128,15 @@ func (s *service) RedeemPaketData(Data *RedeemPulsaData) error {
 		err := errors.New("Poin kurang")
 		return err
 	}
-	return s.repository.ClaimPaketData(Data)
+	err = s.repository.ClaimPaketData(Data)
+	if err != nil {
+		return err
+	}
+	err = s.repository.DecraseStock(2, Data.Amount)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *service) RedeemBank(Data *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error) {
@@ -132,6 +150,10 @@ func (s *service) RedeemBank(Data *InputTransactionBankEmoney) (*InputTransactio
 		return nil, err
 	}
 	Data, err = s.repository.ClaimBank(Data)
+	if err != nil {
+		return nil, err
+	}
+	err = s.repository.DecraseStock(1, Data.Amount)
 	if err != nil {
 		return nil, err
 	}
@@ -156,6 +178,10 @@ func (s *service) ToOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTrans
 	if err != nil {
 		return nil, err
 	}
+	err = s.repository.DecraseStock(1, emoney.Amount)
+	if err != nil {
+		return nil, err
+	}
 	return emoney, err
 }
 
@@ -176,4 +202,8 @@ func (s *service) InputPoin(input *InputPoin) (*int, error) {
 		return nil, err
 	}
 	return s.repository.InputPoin(input)
+}
+
+func (s *service) DecraseStock(id int, stock int) error {
+	return s.repository.DecraseStock(id, stock)
 }
