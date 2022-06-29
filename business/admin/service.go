@@ -25,7 +25,7 @@ type Repository interface {
 	GetProduct() ([]StockProduct, error)
 	UpdateStock(id int, stock int) (*StockProduct, error)
 	TestDB() ([]TransactionMonth, error)
-	HistoryStore(pagination utils.Pagination) ([]HistoryStore, error)
+	HistoryStore(pagination utils.Pagination, name string) ([]HistoryStore, error)
 	DeleteStore(id int) error
 	GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error)
 }
@@ -47,7 +47,7 @@ type Service interface {
 	FindProduct() ([]StockProduct, error)
 	UpdateStock(id int, stock int) (*StockProduct, error)
 	TestDB() ([]TransactionMonth, error)
-	HistoryStore(pagination utils.Pagination) ([]HistoryStore, error)
+	HistoryStore(pagination utils.Pagination, name string) ([]HistoryStore, error)
 	DeleteStore(id int) error
 	GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error)
 }
@@ -157,8 +157,8 @@ func (s *service) TestDB() ([]TransactionMonth, error) {
 	return s.repository.TestDB()
 }
 
-func (s *service) HistoryStore(pagination utils.Pagination) ([]HistoryStore, error) {
-	return s.repository.HistoryStore(pagination)
+func (s *service) HistoryStore(pagination utils.Pagination, name string) ([]HistoryStore, error) {
+	return s.repository.HistoryStore(pagination, name)
 }
 
 func (s *service) DeleteStore(id int) error {

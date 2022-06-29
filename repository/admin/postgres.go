@@ -283,10 +283,19 @@ func (repo *PosgresRepository) TestDB() ([]admin.TransactionMonth, error) {
 	return TransactionMonth, nil
 }
 
-func (repo *PosgresRepository) HistoryStore(pagination utils.Pagination) ([]admin.HistoryStore, error) {
+func (repo *PosgresRepository) HistoryStore(pagination utils.Pagination, name string) ([]admin.HistoryStore, error) {
 	var tmpHistory []admin.HistoryStore
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
+	if name != "" {
+		err := queryBuider.Model(&repository.History_Transaction{}).Where("LOWER(store.store) LIKE LOWER(?)", "%"+name+"%").Where("Status_Poin = ?", "IN").Preload("Customers", func(db *gorm.DB) *gorm.DB {
+			return db.Select("id", "email", "fullname")
+		}).Preload("Store").Find(&tmpHistory).Error
+		if err != nil {
+			return nil, err
+		}
+		return tmpHistory, nil
+	}
 	err := queryBuider.Model(&customermitra.History_Transaction{}).Where("Status_Poin = ?", "IN").Preload("Customers", func(db *gorm.DB) *gorm.DB {
 		return db.Select("id", "email", "fullname")
 	}).Preload("Store").Find(&tmpHistory).Error

@@ -417,8 +417,9 @@ func (Controller *Controller) Test(c echo.Context) error {
 // @Failure 400 {object} response.Error
 // @Router /admin/historystore [get]
 func (Controller *Controller) HistoryStore(c echo.Context) error {
+	name := c.QueryParam("name")
 	pagination := utils.GeneratePagination(c)
-	result, err := Controller.service.HistoryStore(pagination)
+	result, err := Controller.service.HistoryStore(pagination, name)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"code":     400,
