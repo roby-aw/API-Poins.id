@@ -489,7 +489,7 @@ func (Controller *Controller) UpdateStore(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
-		"messages": "success get store",
+		"messages": "success update store",
 		"result":   result,
 	})
 }
