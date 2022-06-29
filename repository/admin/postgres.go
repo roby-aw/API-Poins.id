@@ -313,7 +313,7 @@ func (repo *PosgresRepository) GetStore(pagination utils.Pagination) ([]*custome
 	var store []*customermitra.Store
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
-	err := queryBuider.Model(&repository.Store{}).Order("created_at desc").Find(&store).Error
+	err := queryBuider.Model(&repository.Store{}).Find(&store).Error
 	if err != nil {
 		return nil, err
 	}
