@@ -314,7 +314,7 @@ func (repo *PosgresRepository) GetStore(pagination utils.Pagination, name string
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
 	if name != "" {
-		err := queryBuider.Model(&repository.Store{}).Where("store LIKE ?", "%"+name+"%").Find(&store).Error
+		err := queryBuider.Model(&repository.Store{}).Where("LOWER(column_name) LIKE LOWER(?)", "%"+name+"%").Find(&store).Error
 		if err != nil {
 			return nil, err
 		}
