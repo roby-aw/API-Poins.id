@@ -479,6 +479,7 @@ func (Controller *Controller) GetStore(c echo.Context) error {
 
 func (Controller *Controller) UpdateStore(c echo.Context) error {
 	var Store adminBusiness.UpdateStore
+	c.Bind(&Store)
 	result, err := Controller.service.UpdateStore(Store)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
