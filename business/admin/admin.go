@@ -142,3 +142,11 @@ type UpdateCustomer struct {
 	No_hp    string `json:"no_hp"`
 	Pin      int    `json:"pin"`
 }
+
+type UpdateStore struct {
+	ID       uint   `json:"id" validate:"required"`
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password"`
+	Store    string `json:"store" validate:"required"`
+	Alamat   string `json:"alamat" validate:"required"`
+}

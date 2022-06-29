@@ -28,6 +28,7 @@ type Repository interface {
 	HistoryStore(pagination utils.Pagination, name string) ([]HistoryStore, error)
 	DeleteStore(id int) error
 	GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error)
+	UpdateStore(store UpdateStore) (*UpdateStore, error)
 }
 
 type Service interface {
@@ -50,6 +51,7 @@ type Service interface {
 	HistoryStore(pagination utils.Pagination, name string) ([]HistoryStore, error)
 	DeleteStore(id int) error
 	GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error)
+	UpdateStore(store UpdateStore) (*UpdateStore, error)
 }
 
 type service struct {
@@ -171,4 +173,12 @@ func (s *service) DeleteStore(id int) error {
 
 func (s *service) GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error) {
 	return s.repository.GetStore(pagination, name)
+}
+
+func (s *service) UpdateStore(store UpdateStore) (*UpdateStore, error) {
+	err := s.validate.Struct(store)
+	if err != nil {
+		return nil, err
+	}
+	return s.repository.UpdateStore(store)
 }

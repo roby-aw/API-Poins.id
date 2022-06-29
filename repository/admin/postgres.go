@@ -336,6 +336,26 @@ func (repo *PosgresRepository) GetStore(pagination utils.Pagination, name string
 	return store, nil
 }
 
+func (repo *PosgresRepository) UpdateStore(store admin.UpdateStore) (*admin.UpdateStore, error) {
+	err := repo.db.Model(&repository.Store{}).Where("ID = ?", store.ID).First(&store).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = errors.New("wrong id store")
+			return nil, err
+		}
+	}
+	if store.Password != "" {
+		password, _ := Hash(store.Password)
+		store.Password = string(password)
+	}
+	err = repo.db.Model(&repository.Store{}).Where("ID = ?", store.ID).Updates(&repository.Store{Email: store.Email, Password: store.Password, Store: store.Store, Alamat: store.Alamat}).Error
+	if err != nil {
+		return nil, err
+	}
+	repo.db.Model(&repository.Store{}).Where("ID = ?", store.ID).First(&store)
+	return &store, nil
+}
+
 func Hash(password string) ([]byte, error) {
 	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 }
