@@ -389,7 +389,7 @@ func (repo *PosgresRepository) SignStore(store *customermitra.AuthStore) (*custo
 
 func (repo *PosgresRepository) InputPoin(input *customermitra.InputPoin) (*int, error) {
 	var tmpCustomer customermitra.Customers
-	err := repo.db.Model(customermitra.Customers{}).Where("ID = ?", input.Customer_id).Find(&tmpCustomer).Error
+	err := repo.db.Model(customermitra.Customers{}).Where("ID = ?", input.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
 		return nil, err
 	}
