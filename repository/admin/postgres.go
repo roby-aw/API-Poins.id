@@ -309,6 +309,15 @@ func (repo *PosgresRepository) DeleteStore(id int) error {
 	return nil
 }
 
+func (repo *PosgresRepository) GetStore(pagination utils.Pagination) ([]*customermitra.Store, error) {
+	var store []*customermitra.Store
+	err := repo.db.Model(&repository.Store{}).Order("created_at desc").Find(&store).Error
+	if err != nil {
+		return nil, err
+	}
+	return store, nil
+}
+
 func Hash(password string) ([]byte, error) {
 	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 }

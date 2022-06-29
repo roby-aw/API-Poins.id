@@ -45,6 +45,7 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	g.PUT("/stock", controller.AdminControlller.UpdateStock)
 	g.GET("/historystore", controller.AdminControlller.HistoryStore)
 	g.DELETE("/store", controller.AdminControlller.DeleteStore)
+	g.GET("/store", controller.AdminControlller.GetStore)
 	s := c.Group("/store")
 	s.POST("", controller.CustomerMitraController.RegisterStore)
 	s.POST("/login", controller.CustomerMitraController.LoginStore)

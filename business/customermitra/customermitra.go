@@ -27,13 +27,11 @@ type History_Transaction struct {
 }
 
 type Store struct {
-	ID        uint      `json:"id"`
-	CreatedAt time.Time `json:"createdat"`
-	UpdatedAt time.Time `json:"updatedat"`
-	Email     string    `json:"email"`
-	Password  string    `json:"password"`
-	Store     string    `json:"store"`
-	Alamat    string    `json:"alamat"`
+	ID       uint   `json:"id"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Store    string `json:"store"`
+	Alamat   string `json:"alamat"`
 }
 
 type RegisterStore struct {

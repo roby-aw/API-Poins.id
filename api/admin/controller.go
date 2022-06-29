@@ -458,3 +458,19 @@ func (Controller *Controller) DeleteStore(c echo.Context) error {
 		"result":   id,
 	})
 }
+
+func (Controller *Controller) GetStore(c echo.Context) error {
+	pagination := utils.GeneratePagination(c)
+	result, err := Controller.service.GetStore(pagination)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success delete store",
+		"result":   result,
+	})
+}
