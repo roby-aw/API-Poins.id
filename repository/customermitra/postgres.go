@@ -391,12 +391,18 @@ func (repo *PosgresRepository) InputPoin(input *customermitra.InputPoin) (*int, 
 	var tmpCustomer customermitra.Customers
 	err := repo.db.Model(customermitra.Customers{}).Where("ID = ?", input.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
-		return nil, err
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = errors.New("wrong id customer")
+			return nil, err
+		}
 	}
 	var store customermitra.Store
 	err = repo.db.Model(repository.Store{}).Where("ID = ?", input.Store_id).First(&store).Error
 	if err != nil {
-		return nil, err
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = errors.New("wrong id store")
+			return nil, err
+		}
 	}
 	var i int
 	price := input.Amount
