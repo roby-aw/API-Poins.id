@@ -472,7 +472,7 @@ func (Controller *Controller) GetStore(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
-		"messages": "success delete store",
+		"messages": "success get store",
 		"result":   result,
 	})
 }
