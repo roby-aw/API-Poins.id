@@ -393,6 +393,11 @@ func (repo *PosgresRepository) InputPoin(input *customermitra.InputPoin) (*int, 
 	if err != nil {
 		return nil, err
 	}
+	var store customermitra.Store
+	err = repo.db.Model(repository.Store{}).Where("ID = ?", input.Store_id).First(&store).Error
+	if err != nil {
+		return nil, err
+	}
 	var i int
 	price := input.Amount
 	for i = 0; price >= 100; i = i + 1 {
