@@ -460,8 +460,9 @@ func (Controller *Controller) DeleteStore(c echo.Context) error {
 }
 
 func (Controller *Controller) GetStore(c echo.Context) error {
+	name := c.QueryParam("name")
 	pagination := utils.GeneratePagination(c)
-	result, err := Controller.service.GetStore(pagination)
+	result, err := Controller.service.GetStore(pagination, name)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"code":     400,

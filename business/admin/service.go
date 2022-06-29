@@ -27,7 +27,7 @@ type Repository interface {
 	TestDB() ([]TransactionMonth, error)
 	HistoryStore(pagination utils.Pagination) ([]HistoryStore, error)
 	DeleteStore(id int) error
-	GetStore(pagination utils.Pagination) ([]*customermitra.Store, error)
+	GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error)
 }
 
 type Service interface {
@@ -49,7 +49,7 @@ type Service interface {
 	TestDB() ([]TransactionMonth, error)
 	HistoryStore(pagination utils.Pagination) ([]HistoryStore, error)
 	DeleteStore(id int) error
-	GetStore(pagination utils.Pagination) ([]*customermitra.Store, error)
+	GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error)
 }
 
 type service struct {
@@ -169,6 +169,6 @@ func (s *service) DeleteStore(id int) error {
 	return s.repository.DeleteStore(id)
 }
 
-func (s *service) GetStore(pagination utils.Pagination) ([]*customermitra.Store, error) {
-	return s.repository.GetStore(pagination)
+func (s *service) GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error) {
+	return s.repository.GetStore(pagination, name)
 }

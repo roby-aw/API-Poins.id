@@ -309,10 +309,17 @@ func (repo *PosgresRepository) DeleteStore(id int) error {
 	return nil
 }
 
-func (repo *PosgresRepository) GetStore(pagination utils.Pagination) ([]*customermitra.Store, error) {
+func (repo *PosgresRepository) GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error) {
 	var store []*customermitra.Store
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
+	if name != "" {
+		err := queryBuider.Model(&repository.Store{}).Where("store = ?", name).Find(&store).Error
+		if err != nil {
+			return nil, err
+		}
+		return store, nil
+	}
 	err := queryBuider.Model(&repository.Store{}).Find(&store).Error
 	if err != nil {
 		return nil, err
