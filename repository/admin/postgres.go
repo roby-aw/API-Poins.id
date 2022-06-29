@@ -290,7 +290,7 @@ func (repo *PosgresRepository) HistoryStore(pagination utils.Pagination, name st
 	if name != "" {
 		err := queryBuider.Model(&repository.History_Transaction{}).Where("Status_Poin = ?", "IN").Preload("Customers", func(db *gorm.DB) *gorm.DB {
 			return db.Select("id", "email", "fullname")
-		}).Preload("Store", "LOWER(store.store) LIKE LOWER(?)", "%"+name+"%").Find(&tmpHistory).Error
+		}).Preload("Store", "LOWER(store) LIKE LOWER(?)", "%"+name+"%").Find(&tmpHistory).Error
 		if err != nil {
 			return nil, err
 		}
