@@ -351,6 +351,7 @@ func (repo *PosgresRepository) UpdateStore(store admin.UpdateStore) (*admin.Upda
 	if tmpEmail.Email != "" {
 		fmt.Println("ga kosong")
 		for i := 0; i < 2; i++ {
+			fmt.Println("masuk loop")
 			if tmpEmail.Email == store.Email {
 				break
 			}
