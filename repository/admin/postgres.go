@@ -348,7 +348,7 @@ func (repo *PosgresRepository) UpdateStore(store admin.UpdateStore) (*admin.Upda
 	var tmpEmail admin.Store
 	repo.db.Model(&repository.Store{}).Where("email = ?", store.Email).First(&tmpEmail)
 	fmt.Println(tmpEmail)
-	if tmpEmail.Email == "" {
+	if tmpEmail.Email != "" {
 		func() {
 			if tmpEmail.Email == store.Email {
 				return
