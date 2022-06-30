@@ -348,9 +348,16 @@ func (repo *PosgresRepository) UpdateStore(store admin.UpdateStore) (*admin.Upda
 	var tmpEmail admin.Store
 	repo.db.Model(&repository.Store{}).Where("email = ?", store.Email).First(&tmpEmail)
 	fmt.Println(tmpEmail)
-	if tmpEmail.Email != "" && tmpEmail.Email != store.Email {
-		err = errors.New("Email already used")
-		return nil, err
+	if tmpEmail.Email == "" {
+		func() {
+			if tmpEmail.Email == store.Email {
+				return
+			}
+			err = errors.New("Email already used")
+		}()
+		if err != nil {
+			return nil, err
+		}
 	}
 	if store.Password != "" {
 		password, _ := Hash(store.Password)
