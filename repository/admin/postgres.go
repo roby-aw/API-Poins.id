@@ -357,6 +357,7 @@ func (repo *PosgresRepository) UpdateStore(store admin.UpdateStore) (*admin.Upda
 				fmt.Println("email sama")
 				break
 			}
+			fmt.Println(tmpStore)
 			fmt.Println(tmpEmail)
 			fmt.Println("=====")
 			err = errors.New("Email already used")
