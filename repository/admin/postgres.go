@@ -337,8 +337,9 @@ func (repo *PosgresRepository) GetStore(pagination utils.Pagination, name string
 }
 
 func (repo *PosgresRepository) UpdateStore(store admin.UpdateStore) (*admin.UpdateStore, error) {
+	var err error
 	var tmpStore admin.Store
-	err := repo.db.Model(&repository.Store{}).Where("ID = ?", store.ID).First(&tmpStore).Error
+	err = repo.db.Model(&repository.Store{}).Where("ID = ?", store.ID).First(&tmpStore).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("wrong id store")
@@ -353,6 +354,7 @@ func (repo *PosgresRepository) UpdateStore(store admin.UpdateStore) (*admin.Upda
 		for i := 0; i < 2; i++ {
 			fmt.Println("masuk loop")
 			if tmpEmail.Email == store.Email {
+				fmt.Println("email sama")
 				break
 			}
 			fmt.Println(tmpEmail)
@@ -362,6 +364,9 @@ func (repo *PosgresRepository) UpdateStore(store admin.UpdateStore) (*admin.Upda
 				return nil, err
 			}
 		}
+	}
+	if err != nil {
+		return nil, err
 	}
 	if store.Password != "" {
 		password, _ := Hash(store.Password)
