@@ -348,6 +348,7 @@ func (repo *PosgresRepository) UpdateStore(store admin.UpdateStore) (*admin.Upda
 		password, _ := Hash(store.Password)
 		store.Password = string(password)
 	}
+	fmt.Println(store)
 	err = repo.db.Model(&repository.Store{}).Where("ID = ?", store.ID).Updates(&repository.Store{Email: store.Email, Password: store.Password, Store: store.Store, Alamat: store.Alamat}).Error
 	if err != nil {
 		return nil, err
