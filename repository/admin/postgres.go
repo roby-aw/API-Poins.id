@@ -348,8 +348,8 @@ func (repo *PosgresRepository) UpdateStore(store admin.UpdateStore) (*admin.Upda
 	var tmpEmail admin.Store
 	repo.db.Model(&repository.Store{}).Where("email = ?", store.Email).First(&tmpEmail)
 	fmt.Println(tmpEmail)
-	for i := 0; i < 1; i++ {
-		if tmpEmail.Email != "" {
+	if tmpEmail.Email != "" {
+		for i := 0; i < 1; i++ {
 			if tmpEmail.Email == store.Email {
 				break
 			}
