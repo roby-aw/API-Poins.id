@@ -224,6 +224,20 @@ func (repo *PosgresRepository) UpdateCustomer(data admin.UpdateCustomer) (*admin
 			return nil, err
 		}
 	}
+	var tmpEmail admin.Customers
+	repo.db.Model(&repository.Customer{}).Where("email = ?", data.Email).First(&tmpEmail)
+	if tmpEmail.Email != "" {
+		func() {
+			if tmpCustomer.Email == tmpEmail.Email {
+				return
+			}
+			err = errors.New("Email already used")
+			return
+		}()
+		if err != nil {
+			return nil, err
+		}
+	}
 	if data.Password != "" {
 		password, _ := Hash(data.Password)
 		data.Password = string(password)
