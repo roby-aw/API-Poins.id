@@ -349,6 +349,7 @@ func (repo *PosgresRepository) UpdateStore(store admin.UpdateStore) (*admin.Upda
 	repo.db.Model(&repository.Store{}).Where("email = ?", store.Email).First(&tmpEmail)
 	fmt.Println(tmpEmail)
 	if tmpEmail.Email != "" {
+		fmt.Println("ga kosong")
 		for i := 0; i < 2; i++ {
 			if tmpEmail.Email == store.Email {
 				break
