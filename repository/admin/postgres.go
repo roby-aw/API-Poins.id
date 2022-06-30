@@ -354,9 +354,9 @@ func (repo *PosgresRepository) UpdateStore(store admin.UpdateStore) (*admin.Upda
 				return
 			}
 			err = errors.New("Email already used")
-			fmt.Println(err.Error())
+			fmt.Println(err)
 		}()
-		fmt.Println(err.Error())
+		fmt.Println(err)
 		if err != nil {
 			return nil, err
 		}
