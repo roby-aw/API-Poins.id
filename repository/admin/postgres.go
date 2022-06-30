@@ -347,6 +347,7 @@ func (repo *PosgresRepository) UpdateStore(store admin.UpdateStore) (*admin.Upda
 	}
 	var tmpEmail admin.Store
 	repo.db.Model(&repository.Store{}).Where("email = ?", store.Email).First(&tmpEmail)
+	fmt.Println(tmpEmail)
 	if tmpEmail.Email != "" || tmpEmail.Email != store.Email {
 		err = errors.New("Email already used")
 		return nil, err
