@@ -169,7 +169,7 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 	}
 	balance := stock.Balance - Data.Amount
 	stock.Balance = balance
-	repo.db.Model(&repository.StockProduct{}).Select("Balance").Updates(stock)
+	repo.db.Model(&repository.StockProduct{}).Updates(stock)
 	random := utils.Randomstring()
 	var tmpHistory customermitra.History_Transaction
 	repo.db.Where("ID_Transaction = ?", "P"+random).First(&tmpHistory)
