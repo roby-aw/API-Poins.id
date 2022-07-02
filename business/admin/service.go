@@ -9,6 +9,7 @@ import (
 )
 
 type Repository interface {
+	GetAdminByID(id int) (*Admin, error)
 	Dashboard() (*int, error)
 	TransactionPending(pagination utils.Pagination) ([]*TransactionPending, error)
 	InsertAdmin(admin *RegisterAdmin) (*RegisterAdmin, error)
@@ -32,7 +33,8 @@ type Repository interface {
 }
 
 type Service interface {
-	Dashboard() (*Dashboard, error)
+	FindAdminByID(id int) (*Admin, error)
+	Dashboard(id int) (*Dashboard, error)
 	TransactionPending(pagination utils.Pagination) ([]*TransactionPending, error)
 	CreateAdmin(admin *RegisterAdmin) (*RegisterAdmin, error)
 	ApproveTransaction(idtransaction string) error
@@ -66,7 +68,12 @@ func NewService(repository Repository) Service {
 	}
 }
 
-func (s *service) Dashboard() (*Dashboard, error) {
+func (s *service) FindAdminByID(id int) (*Admin, error) {
+	return s.repository.GetAdminByID(id)
+}
+
+func (s *service) Dashboard(id int) (*Dashboard, error) {
+	admin, err := s.repository.GetAdminByID(id)
 	transMonts, err := s.repository.TestDB()
 	if err != nil {
 		return nil, err
@@ -77,6 +84,7 @@ func (s *service) Dashboard() (*Dashboard, error) {
 		Today: *today,
 		Stock: Stock,
 		Month: transMonts,
+		Admin: *admin,
 	}
 	return &Dashboard, nil
 }

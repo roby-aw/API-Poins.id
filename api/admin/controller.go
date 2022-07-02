@@ -29,9 +29,10 @@ func NewController(service adminBusiness.Service) *Controller {
 // @Produce json
 // @Success 200	{object} response.Result
 // @Failure 400 {object} response.Error
-// @Router /admin [get]
+// @Router /admin/{id} [get]
 func (Controller *Controller) Dashboard(c echo.Context) error {
-	result, err := Controller.service.Dashboard()
+	id, _ := strconv.Atoi(c.Param("id"))
+	result, err := Controller.service.Dashboard(id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"code":     400,

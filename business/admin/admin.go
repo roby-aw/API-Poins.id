@@ -115,6 +115,7 @@ type Dashboard struct {
 	Today int                `json:"today"`
 	Stock []StockProduct     `json:"stock"`
 	Month []TransactionMonth `json:"month"`
+	Admin Admin              `json:"admin"`
 }
 
 type HistoryStore struct {

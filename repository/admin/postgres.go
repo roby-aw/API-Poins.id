@@ -25,6 +25,15 @@ func NewPosgresRepository(db *gorm.DB) *PosgresRepository {
 	}
 }
 
+func (repo *PosgresRepository) GetAdminByID(id int) (*admin.Admin, error) {
+	var tmpAdmin *admin.Admin
+	err := repo.db.Model(&repository.Admin{}).Where("id = ?", id).First(tmpAdmin).Error
+	if err != nil {
+		return nil, err
+	}
+	return tmpAdmin, nil
+}
+
 func (repo *PosgresRepository) Dashboard() (*int, error) {
 	var today64 int64
 	now := time.Now().Format("2006-01-02")
