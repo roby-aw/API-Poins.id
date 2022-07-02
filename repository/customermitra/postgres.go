@@ -161,21 +161,21 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 	if err != nil {
 		return err
 	}
-	var stock customermitra.StockProduct
-	repo.db.Model(repository.StockProduct{}).Where("id = 2").First(&stock)
-	if stock.Balance < Data.Amount {
-		err = errors.New("stock not available")
-		return err
-	}
-	balance := stock.Balance - Data.Amount
-	stock.Balance = balance
-	fmt.Println(balance)
-	fmt.Println(stock)
-	err = repo.db.Model(repository.StockProduct{}).Where("id = 2").Select("balance").Updates(stock).Error
-	if err != nil {
-		return err
-	}
-	fmt.Println(stock)
+	// var stock customermitra.StockProduct
+	// repo.db.Model(repository.StockProduct{}).Where("id = 2").First(&stock)
+	// if stock.Balance < Data.Amount {
+	// 	err = errors.New("stock not available")
+	// 	return err
+	// }
+	// balance := stock.Balance - Data.Amount
+	// stock.Balance = balance
+	// fmt.Println(balance)
+	// fmt.Println(stock)
+	// err = repo.db.Model(repository.StockProduct{}).Where("id = 2").Select("balance").Updates(stock).Error
+	// if err != nil {
+	// 	return err
+	// }
+	// fmt.Println(stock)
 	random := utils.Randomstring()
 	var tmpHistory customermitra.History_Transaction
 	repo.db.Where("ID_Transaction = ?", "P"+random).First(&tmpHistory)
