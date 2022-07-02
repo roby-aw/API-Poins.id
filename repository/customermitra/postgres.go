@@ -169,7 +169,7 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 	}
 	balance := stock.Balance - Data.Amount
 	stock.Balance = balance
-	err = repo.db.Model(repository.StockProduct{}).Select("balance").Updates(stock).Error
+	err = repo.db.Model(repository.StockProduct{}).Where("id = 2").Select("balance").Updates(stock).Error
 	if err != nil {
 		return err
 	}
