@@ -118,7 +118,7 @@ func (Controller *Controller) UpdateCustomer(c echo.Context) error {
 // @Router /history [GET]
 func (Controller *Controller) HistoryCustomer(c echo.Context) error {
 	idcustomer, _ := strconv.Atoi(c.QueryParam("id"))
-	pagination := utils.GeneratePagination(c)
+	pagination := utils.GeneratePagination(c.Request().URL.Query())
 	result, err := Controller.service.HistoryCustomer(idcustomer, pagination)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{

@@ -1,10 +1,8 @@
 package utils
 
 import (
-	"fmt"
+	"net/url"
 	"strconv"
-
-	"github.com/labstack/echo/v4"
 )
 
 type Pagination struct {
@@ -13,12 +11,10 @@ type Pagination struct {
 	Sort  string `json:"sort"`
 }
 
-func GeneratePagination(c echo.Context) Pagination {
+func GeneratePagination(query url.Values) Pagination {
 	limit := 1000
 	page := 1
 	sort := "created_at desc"
-	query := c.Request().URL.Query()
-	fmt.Println(query)
 	for key, value := range query {
 		queryValue := value[len(value)-1]
 		switch key {
@@ -34,7 +30,6 @@ func GeneratePagination(c echo.Context) Pagination {
 
 		}
 	}
-	fmt.Println(limit, " = ", page, " = ", sort)
 	return Pagination{
 		Limit: limit,
 		Page:  page,

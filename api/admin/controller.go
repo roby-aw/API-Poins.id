@@ -55,7 +55,7 @@ func (Controller *Controller) Dashboard(c echo.Context) error {
 // @Failure 400 {object} response.Error
 // @Router /admin/transaction/pending [get]
 func (Controller *Controller) TransactionPending(c echo.Context) error {
-	pagination := utils.GeneratePagination(c)
+	pagination := utils.GeneratePagination(c.Request().URL.Query())
 	result, err := Controller.service.TransactionPending(pagination)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -181,7 +181,7 @@ func (Controller *Controller) ApproveTransaction(c echo.Context) error {
 // @Failure 400 {object} response.Error
 // @Router /admin/customer [get]
 func (Controller *Controller) FindCustomers(c echo.Context) error {
-	pagination := utils.GeneratePagination(c)
+	pagination := utils.GeneratePagination(c.Request().URL.Query())
 	result, err := Controller.service.FindCustomers(pagination)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
@@ -206,7 +206,7 @@ func (Controller *Controller) FindCustomers(c echo.Context) error {
 // @Failure 400 {object} response.Error
 // @Router /admin/history [get]
 func (Controller *Controller) FindHistoryCustomers(c echo.Context) error {
-	pagination := utils.GeneratePagination(c)
+	pagination := utils.GeneratePagination(c.Request().URL.Query())
 	result, err := Controller.service.FindHistoryCustomers(pagination)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -418,7 +418,7 @@ func (Controller *Controller) Test(c echo.Context) error {
 // @Router /admin/historystore [get]
 func (Controller *Controller) HistoryStore(c echo.Context) error {
 	name := c.QueryParam("name")
-	pagination := utils.GeneratePagination(c)
+	pagination := utils.GeneratePagination(c.Request().URL.Query())
 	result, err := Controller.service.HistoryStore(pagination, name)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -462,7 +462,7 @@ func (Controller *Controller) DeleteStore(c echo.Context) error {
 
 func (Controller *Controller) GetStore(c echo.Context) error {
 	name := c.QueryParam("name")
-	pagination := utils.GeneratePagination(c)
+	pagination := utils.GeneratePagination(c.Request().URL.Query())
 	result, err := Controller.service.GetStore(pagination, name)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
