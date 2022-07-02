@@ -162,14 +162,14 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 		return err
 	}
 	var stock customermitra.StockProduct
-	repo.db.Model(&repository.StockProduct{}).Where("id = 2").First(&stock)
+	repo.db.Model(repository.StockProduct{}).Where("id = 2").First(&stock)
 	if stock.Balance < Data.Amount {
 		err = errors.New("stock not available")
 		return err
 	}
 	balance := stock.Balance - Data.Amount
 	stock.Balance = balance
-	err = repo.db.Model(&repository.StockProduct{}).Updates(stock).Error
+	err = repo.db.Model(repository.StockProduct{}).Updates(stock).Error
 	if err != nil {
 		return err
 	}
