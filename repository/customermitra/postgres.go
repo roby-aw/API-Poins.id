@@ -155,27 +155,18 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 	if err != nil {
 		return err
 	}
+	var stock customermitra.StockProduct
+	repo.db.Model(repository.StockProduct{}).Where("id = 2").First(&stock)
+	if stock.Balance < Data.Amount {
+		err = errors.New("stock not available")
+		return err
+	}
 	hasil := Customers.Poin - Data.Poin_redeem
 	Customers.Poin = hasil
 	err = repo.db.Model(Customers).Select("Poin").Updates(Customers).Error
 	if err != nil {
 		return err
 	}
-	// var stock customermitra.StockProduct
-	// repo.db.Model(repository.StockProduct{}).Where("id = 2").First(&stock)
-	// if stock.Balance < Data.Amount {
-	// 	err = errors.New("stock not available")
-	// 	return err
-	// }
-	// balance := stock.Balance - Data.Amount
-	// stock.Balance = balance
-	// fmt.Println(balance)
-	// fmt.Println(stock)
-	// err = repo.db.Model(repository.StockProduct{}).Where("id = 2").Select("balance").Updates(stock).Error
-	// if err != nil {
-	// 	return err
-	// }
-	// fmt.Println(stock)
 	random := utils.Randomstring()
 	var tmpHistory customermitra.History_Transaction
 	repo.db.Where("ID_Transaction = ?", "P"+random).First(&tmpHistory)
@@ -206,6 +197,12 @@ func (repo *PosgresRepository) ClaimPaketData(Data *customermitra.RedeemPulsaDat
 	var tmpCustomer customermitra.Customers
 	err := repo.db.Where("ID = ?", Data.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
+		return err
+	}
+	var stock customermitra.StockProduct
+	repo.db.Model(repository.StockProduct{}).Where("id = 2").First(&stock)
+	if stock.Balance < Data.Amount {
+		err = errors.New("stock not available")
 		return err
 	}
 	hasil := tmpCustomer.Poin - Data.Poin_redeem
@@ -257,6 +254,12 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 	if err != nil {
 		return nil, err
 	}
+	var stock customermitra.StockProduct
+	repo.db.Model(repository.StockProduct{}).Where("id = 2").First(&stock)
+	if stock.Balance < emoney.Amount {
+		err = errors.New("stock not available")
+		return nil, err
+	}
 	hasil := tmpCustomer.Poin - emoney.Poin_redeem
 	tmpCustomer.Poin = hasil
 	err = repo.db.Model(tmpCustomer).Select("Poin").Updates(tmpCustomer).Error
@@ -304,6 +307,12 @@ func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionB
 	var tmpCustomer customermitra.Customers
 	err := repo.db.Where("ID = ?", emoney.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
+		return nil, err
+	}
+	var stock customermitra.StockProduct
+	repo.db.Model(repository.StockProduct{}).Where("id = 2").First(&stock)
+	if stock.Balance < emoney.Amount {
+		err = errors.New("stock not available")
 		return nil, err
 	}
 	hasil := tmpCustomer.Poin - emoney.Poin_redeem
