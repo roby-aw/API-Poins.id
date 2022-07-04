@@ -5,6 +5,7 @@ import (
 	"api-redeem-point/business/customermitra"
 	"api-redeem-point/utils"
 	"errors"
+	"fmt"
 	"os"
 	"reflect"
 	"testing"
@@ -12,11 +13,12 @@ import (
 
 var service admin.Service
 var admin1, admin2, admin3, updateadmin admin.Admin
-var customer1, customer2, customer3 admin.Customers
+var customer1, customer2, customer3 customermitra.Customers
 var InsertAdmin admin.Admin
 var insertSpec, updateSpec, failedSpec, errorspec admin.RegisterAdmin
 var stockProduct1, stockProduct2 admin.StockProduct
 var TransactionMonth1, TransactionMonth2 admin.TransactionMonth
+var pagination utils.Pagination
 
 var errorFindID int
 
@@ -79,6 +81,18 @@ func TestDashboard(t *testing.T) {
 	})
 }
 
+func TestGetCustomers(t *testing.T) {
+	t.Run("Expect found the result", func(t *testing.T) {
+		result, _ := service.FindCustomers(pagination)
+		if len(result) != 3 {
+			t.Error("Expect found lenght customers is 3")
+		}
+		if result[0].ID != 1 {
+			t.Error("Expect found id 1")
+		}
+	})
+}
+
 func setup() {
 	admin1.ID = 1
 	admin1.Email = "testemail@gmail.com"
@@ -112,6 +126,24 @@ func setup() {
 	TransactionMonth1.Day = "02"
 	TransactionMonth2.Count = 10
 
+	customer1.ID = 1
+	customer1.Email = "testcustomer1@gmail.com"
+	customer1.Fullname = "testcustomer1"
+	customer1.Password = "testpassword1"
+
+	customer2.ID = 2
+	customer2.Email = "testcustomer2@gmail.com"
+	customer2.Fullname = "testcustomer2"
+	customer2.Password = "testpassword2"
+
+	customer3.ID = 3
+	customer3.Email = "testcustomer3@gmail.com"
+	customer3.Fullname = "testcustomer3"
+	customer3.Password = "testpassword3"
+
+	pagination.Limit = 1000
+	pagination.Page = 1
+
 	repo := newInMemoryRepository()
 	service = admin.NewService(&repo)
 
@@ -127,6 +159,8 @@ type inMemoryRepository struct {
 	Product          map[int]admin.StockProduct
 	AllProduct       []admin.StockProduct
 	TransactionMonth []admin.TransactionMonth
+	Customer         map[int]customermitra.Customers
+	AllCustomer      []customermitra.Customers
 }
 
 func newInMemoryRepository() inMemoryRepository {
@@ -152,6 +186,15 @@ func newInMemoryRepository() inMemoryRepository {
 	repo.TransactionMonth = []admin.TransactionMonth{}
 	repo.TransactionMonth = append(repo.TransactionMonth, TransactionMonth1)
 	repo.TransactionMonth = append(repo.TransactionMonth, TransactionMonth2)
+
+	repo.Customer = make(map[int]customermitra.Customers)
+	repo.Customer[int(customer1.ID)] = customer1
+	repo.Customer[int(customer2.ID)] = customer2
+	repo.Customer[int(customer3.ID)] = customer3
+
+	repo.AllCustomer = append(repo.AllCustomer, customer1)
+	repo.AllCustomer = append(repo.AllCustomer, customer2)
+	repo.AllCustomer = append(repo.AllCustomer, customer3)
 
 	return repo
 }
@@ -213,7 +256,15 @@ func (repo *inMemoryRepository) RenewAdmin(id int, admin *admin.Admin) (*admin.A
 	return nil, nil
 }
 func (repo *inMemoryRepository) GetCustomers(pagination utils.Pagination) ([]*customermitra.Customers, error) {
-	return nil, nil
+	customers := repo.AllCustomer
+	var tmpcustomer []*customermitra.Customers
+	for _, v := range customers {
+		var tmp customermitra.Customers
+		tmp = v
+		tmpcustomer = append(tmpcustomer, &tmp)
+		fmt.Println(tmpcustomer)
+	}
+	return tmpcustomer, nil
 }
 func (repo *inMemoryRepository) GetHistoryCustomers(pagination utils.Pagination) ([]admin.CustomerHistory, error) {
 	return nil, nil
