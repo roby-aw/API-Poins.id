@@ -5,7 +5,6 @@ import (
 	"api-redeem-point/business/customermitra"
 	"api-redeem-point/utils"
 	"errors"
-	"fmt"
 	"os"
 	"reflect"
 	"testing"
@@ -262,7 +261,6 @@ func (repo *inMemoryRepository) GetCustomers(pagination utils.Pagination) ([]*cu
 		var tmp customermitra.Customers
 		tmp = v
 		tmpcustomer = append(tmpcustomer, &tmp)
-		fmt.Println(tmpcustomer)
 	}
 	return tmpcustomer, nil
 }

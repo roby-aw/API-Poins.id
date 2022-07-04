@@ -4,7 +4,6 @@ import (
 	customermitraBussiness "api-redeem-point/business/customermitra"
 	"api-redeem-point/utils"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -254,7 +253,6 @@ func (Controller *Controller) OrderPulsa(c echo.Context) error {
 func (Controller *Controller) OrderPaketData(c echo.Context) error {
 	var req customermitraBussiness.RedeemPulsaData
 	c.Bind(&req)
-	fmt.Println(req)
 	err := Controller.service.RedeemPaketData(&req)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -284,7 +282,6 @@ func (Controller *Controller) CallbackXendit(c echo.Context) error {
 	responseWriter := c.Response().Writer
 	responseWriter.Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
 	responseWriter.WriteHeader(200)
-	fmt.Println(resbank)
 	databank, err := Controller.service.GetCallback(&resbank)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -292,7 +289,6 @@ func (Controller *Controller) CallbackXendit(c echo.Context) error {
 			"messages": err.Error(),
 		})
 	}
-	fmt.Println(resbank)
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
 		"messages": "success redeem emoney",
