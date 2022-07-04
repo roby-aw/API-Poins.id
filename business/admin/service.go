@@ -34,7 +34,7 @@ type Repository interface {
 
 type Service interface {
 	FindAdminByID(id int) (*Admin, error)
-	Dashboard(id int) (*Dashboard, error)
+	Dashboard() (*Dashboard, error)
 	TransactionPending(pagination utils.Pagination) ([]*TransactionPending, error)
 	CreateAdmin(admin *RegisterAdmin) (*RegisterAdmin, error)
 	ApproveTransaction(idtransaction string) error
@@ -72,8 +72,7 @@ func (s *service) FindAdminByID(id int) (*Admin, error) {
 	return s.repository.GetAdminByID(id)
 }
 
-func (s *service) Dashboard(id int) (*Dashboard, error) {
-	admin, err := s.repository.GetAdminByID(id)
+func (s *service) Dashboard() (*Dashboard, error) {
 	transMonts, err := s.repository.TestDB()
 	if err != nil {
 		return nil, err
@@ -84,7 +83,6 @@ func (s *service) Dashboard(id int) (*Dashboard, error) {
 		Today: *today,
 		Stock: Stock,
 		Month: transMonts,
-		Admin: *admin,
 	}
 	return &Dashboard, nil
 }
