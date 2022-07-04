@@ -41,7 +41,7 @@ func (Controller *Controller) FindAdminByID(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"code":     200,
-		"messages": "success get dashboard",
+		"messages": "success get admin by id",
 		"result":   result,
 	})
 }

@@ -33,6 +33,7 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	g.POST("/login", controller.AdminControlller.LoginAdmin)
 	g.POST("", controller.AdminControlller.CreateAdmin)
 	g.GET("", controller.AdminControlller.Dashboard)
+	g.GET("/:id", controller.AdminControlller.FindAdminByID)
 	g.GET("/transaction/pending", controller.AdminControlller.TransactionPending)
 	g.POST("/approve/:idtransaction", controller.AdminControlller.ApproveTransaction)
 	g.GET("/history", controller.AdminControlller.FindHistoryCustomers)
