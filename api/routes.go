@@ -27,7 +27,6 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	c.POST("/cashout", controller.CustomerMitraController.OrderCashout, middleware.CustomerSetupAuthenticationJWT())
 	c.POST("/emoney", controller.CustomerMitraController.OrderEmoney, middleware.CustomerSetupAuthenticationJWT())
 	c.POST("/callback", controller.CustomerMitraController.CallbackXendit)
-	c.GET("/test", controller.AdminControlller.Test)
 	//admin
 	g := c.Group("/admin")
 	g.POST("/login", controller.AdminControlller.LoginAdmin)

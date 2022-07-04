@@ -295,7 +295,7 @@ func (repo *PosgresRepository) UpdateStock(id int, stock int) (*admin.StockProdu
 	return &product, nil
 }
 
-func (repo *PosgresRepository) TestDB() ([]admin.TransactionMonth, error) {
+func (repo *PosgresRepository) GetTransactionMonthDay() ([]admin.TransactionMonth, error) {
 	var TransactionMonth []admin.TransactionMonth
 	year := time.Now().Year()
 	month := time.Now().Month()

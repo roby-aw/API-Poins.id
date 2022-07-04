@@ -406,21 +406,6 @@ func (Controller *Controller) UpdateStock(c echo.Context) error {
 	})
 }
 
-func (Controller *Controller) Test(c echo.Context) error {
-	result, err := Controller.service.TestDB()
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"code":     400,
-			"messages": err.Error(),
-		})
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"code":     200,
-		"messages": "success get transaction",
-		"result":   result,
-	})
-}
-
 // Create godoc
 // @Summary History Store
 // @description History Store for admin

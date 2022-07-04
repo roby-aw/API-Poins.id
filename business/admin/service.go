@@ -25,7 +25,7 @@ type Repository interface {
 	UpdateCustomerPoint(id int, point int) (*int, error)
 	GetProduct() ([]StockProduct, error)
 	UpdateStock(id int, stock int) (*StockProduct, error)
-	TestDB() ([]TransactionMonth, error)
+	GetTransactionMonthDay() ([]TransactionMonth, error)
 	HistoryStore(pagination utils.Pagination, name string) ([]HistoryStore, error)
 	DeleteStore(id int) error
 	GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error)
@@ -49,7 +49,7 @@ type Service interface {
 	UpdateCustomerPoint(id int, point int) (*int, error)
 	FindProduct() ([]StockProduct, error)
 	UpdateStock(id int, stock int) (*StockProduct, error)
-	TestDB() ([]TransactionMonth, error)
+	GetTransactionMonthDay() ([]TransactionMonth, error)
 	HistoryStore(pagination utils.Pagination, name string) ([]HistoryStore, error)
 	DeleteStore(id int) error
 	GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error)
@@ -73,7 +73,7 @@ func (s *service) FindAdminByID(id int) (*Admin, error) {
 }
 
 func (s *service) Dashboard() (*Dashboard, error) {
-	transMonts, err := s.repository.TestDB()
+	transMonts, err := s.repository.GetTransactionMonthDay()
 	if err != nil {
 		return nil, err
 	}
@@ -161,8 +161,8 @@ func (s *service) UpdateStock(id int, stock int) (*StockProduct, error) {
 	return s.repository.UpdateStock(id, stock)
 }
 
-func (s *service) TestDB() ([]TransactionMonth, error) {
-	return s.repository.TestDB()
+func (s *service) GetTransactionMonthDay() ([]TransactionMonth, error) {
+	return s.repository.GetTransactionMonthDay()
 }
 
 func (s *service) HistoryStore(pagination utils.Pagination, name string) ([]HistoryStore, error) {
