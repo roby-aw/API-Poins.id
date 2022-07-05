@@ -100,7 +100,7 @@ type RegisterCustomer struct {
 	Fullname string `json:"fullname" validate:"required"`
 	Password string `json:"password" validate:"required"`
 	No_hp    string `json:"no_hp" validate:"required,numeric"`
-	Pin      int    `json:"pin" validate:"required"`
+	Pin      int    `json:"pin" validate:"required,lt=5,numeric"`
 }
 
 type Login struct {
