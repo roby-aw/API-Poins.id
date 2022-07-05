@@ -14,6 +14,7 @@ import (
 var service admin.Service
 var admin1, admin2, admin3, updateadmin admin.Admin
 var customer1, customer2, customer3 customermitra.Customers
+var store1, store2, store3 customermitra.Store
 var history1, history2, history3 customermitra.History_Transaction
 var InsertAdmin admin.Admin
 var insertSpec, updateSpec, failedSpec, errorspec admin.RegisterAdmin
@@ -21,6 +22,8 @@ var stockProduct1, stockProduct2 admin.StockProduct
 var TransactionMonth1, TransactionMonth2 admin.TransactionMonth
 var pagination utils.Pagination
 var loginadmin admin.AuthLogin
+var stock1, stock2 admin.StockProduct
+var historystore1, historystore2 customermitra.History_Transaction
 
 var errorFindID int
 
@@ -155,6 +158,18 @@ func TestLoginAdmin(t *testing.T) {
 	})
 }
 
+func TestGetStore(t *testing.T) {
+	t.Run("Expect can get all store", func(t *testing.T) {
+		result, _ := service.GetStore(pagination, "")
+		if len(result) != 3 {
+			t.Error("Expect len result is 3")
+		}
+		if result[store2.ID-1].Email != store2.Email {
+			t.Error("Expect email store 2")
+		}
+	})
+}
+
 func setup() {
 	admin1.ID = 1
 	admin1.Email = "testemail@gmail.com"
@@ -208,6 +223,24 @@ func setup() {
 	customer3.Password = "testpassword3"
 	customer3.Pin = 6366
 	customer3.Poin = 1000
+
+	store1.ID = 1
+	store1.Email = "store1@gmail.com"
+	store1.Alamat = "jl. store 1"
+	store1.Store = "store1"
+	store1.Password = "passwordstore1"
+
+	store2.ID = 2
+	store2.Email = "store2@gmail.com"
+	store2.Alamat = "jl. store 2"
+	store2.Store = "store2"
+	store2.Password = "passwordstore2"
+
+	store3.ID = 3
+	store3.Email = "store3@gmail.com"
+	store3.Alamat = "jl. store 3"
+	store3.Store = "store3"
+	store3.Password = "passwordstore3"
 
 	history1.ID = 1
 	history1.ID_Transaction = "T12345"
@@ -273,6 +306,8 @@ type inMemoryRepository struct {
 	AllCustomer      []customermitra.Customers
 	History          map[string]customermitra.History_Transaction
 	AllHistory       []customermitra.History_Transaction
+	Store            map[int]customermitra.Store
+	AllStore         []customermitra.Store
 }
 
 func newInMemoryRepository() inMemoryRepository {
@@ -318,6 +353,16 @@ func newInMemoryRepository() inMemoryRepository {
 	repo.AllHistory = append(repo.AllHistory, history1)
 	repo.AllHistory = append(repo.AllHistory, history2)
 	repo.AllHistory = append(repo.AllHistory, history3)
+
+	repo.Store = make(map[int]customermitra.Store)
+	repo.Store[int(store1.ID)] = store1
+	repo.Store[int(store2.ID)] = store2
+	repo.Store[int(store3.ID)] = store3
+
+	repo.AllStore = []customermitra.Store{}
+	repo.AllStore = append(repo.AllStore, store1)
+	repo.AllStore = append(repo.AllStore, store2)
+	repo.AllStore = append(repo.AllStore, store3)
 
 	return repo
 }
@@ -469,7 +514,14 @@ func (repo *inMemoryRepository) DeleteStore(id int) error {
 	return nil
 }
 func (repo *inMemoryRepository) GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error) {
-	return nil, nil
+	data := repo.AllStore
+	var tmpStore []*customermitra.Store
+	for _, v := range data {
+		var tmpData customermitra.Store
+		tmpData = v
+		tmpStore = append(tmpStore, &tmpData)
+	}
+	return tmpStore, nil
 }
 func (repo *inMemoryRepository) UpdateStore(store admin.UpdateStore) (*admin.UpdateStore, error) {
 	return nil, nil
