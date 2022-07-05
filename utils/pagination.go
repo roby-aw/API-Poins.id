@@ -12,7 +12,7 @@ type Pagination struct {
 }
 
 func GeneratePagination(query url.Values) Pagination {
-	limit := 1000
+	limit := 25
 	page := 1
 	sort := "created_at desc"
 	for key, value := range query {
