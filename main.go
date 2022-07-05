@@ -4,7 +4,6 @@ import (
 	"api-redeem-point/api"
 	"api-redeem-point/app/modules"
 	"api-redeem-point/config"
-	"api-redeem-point/repository"
 	"api-redeem-point/utils"
 	"fmt"
 	"log"
@@ -38,11 +37,11 @@ func main() {
 	defer dbCon.CloseConnection()
 
 	controllers := modules.RegistrationModules(dbCon, config)
-	dbCon.Postgres.AutoMigrate(&repository.History_Transaction{})
-	dbCon.Postgres.AutoMigrate(&repository.Store{})
-	dbCon.Postgres.AutoMigrate(&repository.Customer{})
-	dbCon.Postgres.AutoMigrate(&repository.StockProduct{})
-	dbCon.Postgres.AutoMigrate(&repository.Admin{})
+	//dbCon.Postgres.AutoMigrate(&repository.History_Transaction{})
+	//dbCon.Postgres.AutoMigrate(&repository.Store{})
+	//dbCon.Postgres.AutoMigrate(&repository.Customer{})
+	//dbCon.Postgres.AutoMigrate(&repository.StockProduct{})
+	//dbCon.Postgres.AutoMigrate(&repository.Admin{})
 
 	e := echo.New()
 	handleSwagger := echoSwagger.WrapHandler
