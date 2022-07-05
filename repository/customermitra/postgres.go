@@ -317,7 +317,7 @@ func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionB
 	}
 	hasil := tmpCustomer.Poin - emoney.Poin_redeem
 	tmpCustomer.Poin = hasil
-	err = repo.db.Model(tmpCustomer).Select("Poin").Updates(tmpCustomer).Error
+	err = repo.db.Model(&repository.Customer{}).Select("Poin").Updates(tmpCustomer).Error
 	if err != nil {
 		return nil, err
 	}
