@@ -151,8 +151,8 @@ type History struct {
 type RedeemPulsaData struct {
 	Customer_id   int    `json:"customer_id" validate:"required"`
 	Bank_Provider string `json:"bank_provider" validate:"required"`
-	Nomor         string `json:"nomor" validate:"required"`
-	Poin_account  int    `json:"poin_account" validate:"required"`
+	Nomor         string `json:"nomor" validate:"required,numeric"`
+	Poin_account  int    `json:"poin_account" validate:"required,numeric"`
 	Poin_redeem   int    `json:"poin_redeem" validate:"required"`
 	Amount        int    `json:"amount" validate:"required"`
 }
@@ -194,12 +194,12 @@ type TransactionBank struct {
 }
 
 type InputTransactionBankEmoney struct {
-	Customer_id   int    `json:"customer_id" validate:"required"`
+	Customer_id   int    `json:"customer_id" validate:"required,numeric"`
 	Bank_Provider string `json:"bank_provider" validate:"required"`
 	AN_Rekening   string `json:"an_rekening" validate:"required"`
-	Nomor         string `json:"nomor" validate:"required"`
-	Amount        int    `json:"amount" validate:"required"`
-	Poin_redeem   int    `json:"poin_redeem" validate:"required"`
+	Nomor         string `json:"nomor" validate:"required,numeric"`
+	Amount        int    `json:"amount" validate:"required,numeric"`
+	Poin_redeem   int    `json:"poin_redeem" validate:"required,numeric"`
 }
 
 type InputPoin struct {
