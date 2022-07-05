@@ -5,6 +5,7 @@ import (
 	"api-redeem-point/business/customermitra"
 	"api-redeem-point/utils"
 	"errors"
+	"fmt"
 	"os"
 	"reflect"
 	"testing"
@@ -13,11 +14,13 @@ import (
 var service admin.Service
 var admin1, admin2, admin3, updateadmin admin.Admin
 var customer1, customer2, customer3 customermitra.Customers
+var history1, history2, history3 customermitra.History_Transaction
 var InsertAdmin admin.Admin
 var insertSpec, updateSpec, failedSpec, errorspec admin.RegisterAdmin
 var stockProduct1, stockProduct2 admin.StockProduct
 var TransactionMonth1, TransactionMonth2 admin.TransactionMonth
 var pagination utils.Pagination
+var loginadmin admin.AuthLogin
 
 var errorFindID int
 
@@ -92,6 +95,66 @@ func TestGetCustomers(t *testing.T) {
 	})
 }
 
+func TestDeleteCustomers(t *testing.T) {
+	t.Run("Expect delete customer2", func(t *testing.T) {
+		err := service.DeleteCustomer(int(customer2.ID))
+		if err != nil {
+			t.Error("error delete")
+		}
+		result, _ := service.FindCustomers(pagination)
+		fmt.Println(result)
+		if len(result) != 2 {
+			t.Error("len customer must be 3")
+		}
+	})
+}
+
+func TestGetHistoryCustomers(t *testing.T) {
+	t.Run("Expect get result history", func(t *testing.T) {
+		result, _ := service.FindHistoryCustomers(pagination)
+		if len(result) != 3 {
+			t.Error("len history must be 3")
+		}
+		if result[1].Status_Transaction != history2.Status_Transaction {
+			t.Error("Expect get description history 2")
+		}
+	})
+}
+
+func TestGetTransactionPending(t *testing.T) {
+	t.Run("Expect get transaction pending", func(t *testing.T) {
+		result, _ := service.TransactionPending(pagination)
+		if len(result) != 2 {
+			t.Error("len transaction pending must be 2")
+		}
+	})
+}
+
+func TestAcceptTransaction(t *testing.T) {
+	t.Run("Expect can accept transaction pending", func(t *testing.T) {
+		err := service.ApproveTransaction(history2.ID_Transaction)
+		if err != nil {
+			t.Error("error ", err)
+		}
+		result, _ := service.TransactionPending(pagination)
+		if len(result) != 1 {
+			t.Error("transaction not updated to completed")
+		}
+	})
+}
+
+func TestLoginAdmin(t *testing.T) {
+	t.Run("Expect can login admin", func(t *testing.T) {
+		result, _ := service.LoginAdmin(&loginadmin)
+		if result == nil {
+			t.Error("cannot login because no data")
+		}
+		if result.Email != loginadmin.Email {
+			t.Error("error")
+		}
+	})
+}
+
 func setup() {
 	admin1.ID = 1
 	admin1.Email = "testemail@gmail.com"
@@ -129,16 +192,61 @@ func setup() {
 	customer1.Email = "testcustomer1@gmail.com"
 	customer1.Fullname = "testcustomer1"
 	customer1.Password = "testpassword1"
+	customer1.Pin = 1234
+	customer1.Poin = 500000
 
 	customer2.ID = 2
 	customer2.Email = "testcustomer2@gmail.com"
 	customer2.Fullname = "testcustomer2"
 	customer2.Password = "testpassword2"
+	customer2.Pin = 9876
+	customer2.Poin = 30000
 
 	customer3.ID = 3
 	customer3.Email = "testcustomer3@gmail.com"
 	customer3.Fullname = "testcustomer3"
 	customer3.Password = "testpassword3"
+	customer3.Pin = 6366
+	customer3.Poin = 1000
+
+	history1.ID = 1
+	history1.ID_Transaction = "T12345"
+	history1.Customer_id = 1
+	history1.Transaction_type = "Redeem Pulsa"
+	history1.Bank_Provider = "TELKOMSEL"
+	history1.Nomor = "085696865698"
+	history1.Poin_Account = 10000
+	history1.Poin_Redeem = 10000
+	history1.Amount = 10000
+	history1.Description = "TELKOMSEL - 10000"
+	history1.Status_Transaction = "COMPLETE"
+	history1.Status_Poin = "OUT"
+
+	history2.ID = 2
+	history2.ID_Transaction = "T123565"
+	history2.Customer_id = 1
+	history2.Transaction_type = "Redeem Pulsa"
+	history2.Bank_Provider = "TELKOMSEL"
+	history2.Nomor = "08569686546"
+	history2.Poin_Account = 10000
+	history2.Poin_Redeem = 10000
+	history2.Amount = 10000
+	history2.Description = "TELKOMSEL - 10000"
+	history2.Status_Transaction = "PENDING"
+	history2.Status_Poin = "OUT"
+
+	history3.ID = 3
+	history3.ID_Transaction = "T136768"
+	history3.Customer_id = 1
+	history3.Transaction_type = "Redeem Pulsa"
+	history3.Bank_Provider = "TELKOMSEL"
+	history3.Nomor = "08569686546"
+	history3.Poin_Account = 10000
+	history3.Poin_Redeem = 10000
+	history3.Amount = 10000
+	history3.Description = "TELKOMSEL - 10000"
+	history3.Status_Transaction = "PENDING"
+	history3.Status_Poin = "OUT"
 
 	pagination.Limit = 1000
 	pagination.Page = 1
@@ -150,6 +258,9 @@ func setup() {
 	insertSpec.Fullname = "insertfullname"
 	insertSpec.No_hp = "0854696963"
 	insertSpec.Password = "insertpassword"
+
+	loginadmin.Email = customer1.Email
+	loginadmin.Password = customer1.Password
 }
 
 type inMemoryRepository struct {
@@ -160,6 +271,8 @@ type inMemoryRepository struct {
 	TransactionMonth []admin.TransactionMonth
 	Customer         map[int]customermitra.Customers
 	AllCustomer      []customermitra.Customers
+	History          map[string]customermitra.History_Transaction
+	AllHistory       []customermitra.History_Transaction
 }
 
 func newInMemoryRepository() inMemoryRepository {
@@ -191,9 +304,20 @@ func newInMemoryRepository() inMemoryRepository {
 	repo.Customer[int(customer2.ID)] = customer2
 	repo.Customer[int(customer3.ID)] = customer3
 
+	repo.AllCustomer = []customermitra.Customers{}
 	repo.AllCustomer = append(repo.AllCustomer, customer1)
 	repo.AllCustomer = append(repo.AllCustomer, customer2)
 	repo.AllCustomer = append(repo.AllCustomer, customer3)
+
+	repo.History = make(map[string]customermitra.History_Transaction)
+	repo.History[history1.ID_Transaction] = history1
+	repo.History[history2.ID_Transaction] = history2
+	repo.History[history3.ID_Transaction] = history3
+
+	repo.AllHistory = []customermitra.History_Transaction{}
+	repo.AllHistory = append(repo.AllHistory, history1)
+	repo.AllHistory = append(repo.AllHistory, history2)
+	repo.AllHistory = append(repo.AllHistory, history3)
 
 	return repo
 }
@@ -227,7 +351,7 @@ func (repo *inMemoryRepository) InsertAdmin(admins *admin.RegisterAdmin) (*admin
 }
 
 func (repo *inMemoryRepository) Dashboard() (*int, error) {
-	today := 4
+	today := len(repo.AllHistory)
 	return &today, nil
 }
 
@@ -242,14 +366,54 @@ func (repo *inMemoryRepository) GetTransactionMonthDay() ([]admin.TransactionMon
 }
 
 func (repo *inMemoryRepository) TransactionPending(pagination utils.Pagination) ([]*admin.TransactionPending, error) {
-	return nil, nil
+	data := repo.AllHistory
+	var history []*admin.TransactionPending
+	for _, v := range data {
+		if v.Status_Transaction == "PENDING" {
+			var tmpHistory admin.TransactionPending
+			tmpHistory.ID_Transaction = v.ID_Transaction
+			tmpHistory.Nomor = v.Nomor
+			tmpHistory.Customer_id = v.Customer_id
+			tmpHistory.Description = v.Description
+			tmpHistory.Status_transaction = v.Status_Transaction
+			history = append(history, &tmpHistory)
+		}
+	}
+	return history, nil
 }
 
 func (repo *inMemoryRepository) AcceptTransaction(idtransaction string) error {
-	return nil
+	if repo.History[idtransaction].Status_Transaction == "PENDING" {
+		if history, ok := repo.History[idtransaction]; ok {
+			history.Status_Transaction = "COMPLETED"
+			repo.History[idtransaction] = history
+			for _, v := range repo.AllHistory {
+				if v.ID_Transaction == idtransaction {
+					repo.AllHistory[v.ID-1].Status_Transaction = "COMPLETED"
+				}
+			}
+			return nil
+		}
+	}
+	return errors.New("status transaction not pending")
 }
 func (repo *inMemoryRepository) LoginAdmin(Auth *admin.AuthLogin) (*admin.ResponseLogin, error) {
-	return nil, nil
+	var data admin.ResponseLogin
+	for _, v := range repo.AllCustomer {
+		if v.Email == Auth.Email {
+			if v.Password == Auth.Password {
+				data.ID = int(v.ID)
+				data.Email = v.Email
+				data.Fullname = v.Fullname
+				data.No_hp = v.No_hp
+				data.Password = v.Password
+				data.Token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6MywiRW1haWwiOiJ0ZXN0MUBnbWFpbC5jb20iLCJDdXN0b21lciI6dHJ1ZSwiZXhwIjoxNjU2ODcxMzEzfQ.a9O_RMxG7iJR4tMdBZmL6JY2lZKsiQv3rSegnhv1C00"
+			}
+		}
+	}
+	var dataFix *admin.ResponseLogin
+	dataFix = &data
+	return dataFix, nil
 }
 func (repo *inMemoryRepository) RenewAdmin(id int, admin *admin.Admin) (*admin.Admin, error) {
 	return nil, nil
@@ -265,9 +429,22 @@ func (repo *inMemoryRepository) GetCustomers(pagination utils.Pagination) ([]*cu
 	return tmpcustomer, nil
 }
 func (repo *inMemoryRepository) GetHistoryCustomers(pagination utils.Pagination) ([]admin.CustomerHistory, error) {
-	return nil, nil
+	history := repo.AllHistory
+	var data []admin.CustomerHistory
+	for _, v := range history {
+		var tmpHistory admin.CustomerHistory
+		tmpHistory.Customer_id = v.Customer_id
+		tmpHistory.Description = v.Description
+		tmpHistory.Nomor = v.Nomor
+		tmpHistory.Status_Transaction = v.Status_Transaction
+		tmpHistory.Poin_redeem = v.Poin_Redeem
+		data = append(data, tmpHistory)
+	}
+	return data, nil
 }
 func (repo *inMemoryRepository) DeleteCustomer(id int) error {
+	id = id - 1
+	repo.AllCustomer = append(repo.AllCustomer[:id], repo.AllCustomer[id+1:]...)
 	return nil
 }
 func (repo *inMemoryRepository) TransactionDate() ([]admin.TransactionDate, error) {
