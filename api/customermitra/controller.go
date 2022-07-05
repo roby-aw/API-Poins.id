@@ -48,6 +48,22 @@ func (Controller *Controller) Login(c echo.Context) error {
 	})
 }
 
+func (Controller *Controller) FindCustomersByID(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	result, err := Controller.service.FindCustomersByID(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"code":     400,
+			"messages": err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"code":     200,
+		"messages": "success get customer by id",
+		"result":   result,
+	})
+}
+
 // Create godoc
 // @Summary Register
 // @description Register customer

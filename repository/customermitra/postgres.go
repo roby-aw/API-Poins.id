@@ -37,7 +37,7 @@ func VerifyPassword(hashedPassword, password string) error {
 
 func (repo *PosgresRepository) GetCustomersByID(id int) (*customermitra.Customers, error) {
 	var data customermitra.Customers
-	err := repo.db.Model(&customermitra.Customers{}).Where("id = ?", id).First(&data).Error
+	err := repo.db.Model(&repository.Customer{}).Where("id = ?", id).First(&data).Error
 	if err != nil {
 		return nil, err
 	}

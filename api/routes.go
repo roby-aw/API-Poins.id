@@ -20,6 +20,7 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	c.POST("/customer/register", controller.CustomerMitraController.Register)
 	c.POST("/customer", controller.CustomerMitraController.Login)
 	c.PUT("/customer", controller.CustomerMitraController.UpdateCustomer)
+	c.GET("/customer/:id", controller.CustomerMitraController.FindCustomersByID)
 	c.GET("/history", controller.CustomerMitraController.HistoryCustomer, middleware.CustomerSetupAuthenticationJWT())
 	c.GET("/dethistory/:idtransaction", controller.CustomerMitraController.DetailHistoryCustomer, middleware.CustomerSetupAuthenticationJWT())
 	c.POST("/pulsa", controller.CustomerMitraController.OrderPulsa, middleware.CustomerSetupAuthenticationJWT())
