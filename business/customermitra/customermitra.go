@@ -199,7 +199,6 @@ type InputTransactionBankEmoney struct {
 	AN_Rekening   string `json:"an_rekening" validate:"required"`
 	Nomor         string `json:"nomor" validate:"required"`
 	Amount        int    `json:"amount" validate:"required"`
-	Poin_account  int    `json:"poin_account" validate:"required"`
 	Poin_redeem   int    `json:"poin_redeem" validate:"required"`
 }
 
