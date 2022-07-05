@@ -262,7 +262,7 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 	}
 	hasil := tmpCustomer.Poin - emoney.Poin_redeem
 	tmpCustomer.Poin = hasil
-	err = repo.db.Model(tmpCustomer).Select("Poin").Updates(tmpCustomer).Error
+	err = repo.db.Model(&repository.Customer{}).Select("Poin").Where("id = ?", emoney.Customer_id).Updates(tmpCustomer).Error
 	if err != nil {
 		return nil, err
 	}
@@ -317,7 +317,7 @@ func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionB
 	}
 	hasil := tmpCustomer.Poin - emoney.Poin_redeem
 	tmpCustomer.Poin = hasil
-	err = repo.db.Model(&repository.Customer{}).Select("Poin").Updates(tmpCustomer).Error
+	err = repo.db.Model(&repository.Customer{}).Where("id = ?", emoney.Customer_id).Select("Poin").Updates(tmpCustomer).Error
 	if err != nil {
 		return nil, err
 	}
