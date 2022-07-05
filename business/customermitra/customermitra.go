@@ -152,7 +152,6 @@ type RedeemPulsaData struct {
 	Customer_id   int    `json:"customer_id" validate:"required"`
 	Bank_Provider string `json:"bank_provider" validate:"required"`
 	Nomor         string `json:"nomor" validate:"required,numeric"`
-	Poin_account  int    `json:"poin_account" validate:"required,numeric"`
 	Poin_redeem   int    `json:"poin_redeem" validate:"required"`
 	Amount        int    `json:"amount" validate:"required"`
 }
