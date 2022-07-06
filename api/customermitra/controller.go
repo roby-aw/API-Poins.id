@@ -48,6 +48,16 @@ func (Controller *Controller) Login(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary Find Customers By ID
+// @description FindCustomersByID
+// @tags Customer
+// @Accept json
+// @Produce json
+// @Param id path int true "id customer"
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /customer/{id} [GET]
 func (Controller *Controller) FindCustomersByID(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	result, err := Controller.service.FindCustomersByID(id)

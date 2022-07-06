@@ -17,33 +17,6 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/admin": {
-            "get": {
-                "description": "Dashboard for admin",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Admin"
-                ],
-                "summary": "Dashboard Admin",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Result"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.Error"
-                        }
-                    }
-                }
-            },
             "post": {
                 "description": "create admin with data",
                 "consumes": [
@@ -597,6 +570,35 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/{id}": {
+            "get": {
+                "description": "Dashboard for admin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Dashboard Admin",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Result"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/cashout": {
             "post": {
                 "description": "Redeem Cashout customer",
@@ -739,6 +741,44 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/customermitra.RegisterCustomer"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Result"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/{id}": {
+            "get": {
+                "description": "FindCustomersByID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Find Customers By ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id customer",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1250,7 +1290,6 @@ const docTemplate = `{
                 "bank_provider",
                 "customer_id",
                 "nomor",
-                "poin_account",
                 "poin_redeem"
             ],
             "properties": {
@@ -1269,9 +1308,6 @@ const docTemplate = `{
                 "nomor": {
                     "type": "string"
                 },
-                "poin_account": {
-                    "type": "integer"
-                },
                 "poin_redeem": {
                     "type": "integer"
                 }
@@ -1284,7 +1320,6 @@ const docTemplate = `{
                 "bank_provider",
                 "customer_id",
                 "nomor",
-                "poin_account",
                 "poin_redeem"
             ],
             "properties": {
@@ -1299,9 +1334,6 @@ const docTemplate = `{
                 },
                 "nomor": {
                     "type": "string"
-                },
-                "poin_account": {
-                    "type": "integer"
                 },
                 "poin_redeem": {
                     "type": "integer"

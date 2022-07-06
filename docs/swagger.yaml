@@ -90,8 +90,6 @@ definitions:
         type: integer
       nomor:
         type: string
-      poin_account:
-        type: integer
       poin_redeem:
         type: integer
     required:
@@ -100,7 +98,6 @@ definitions:
     - bank_provider
     - customer_id
     - nomor
-    - poin_account
     - poin_redeem
     type: object
   customermitra.RedeemPulsaData:
@@ -113,8 +110,6 @@ definitions:
         type: integer
       nomor:
         type: string
-      poin_account:
-        type: integer
       poin_redeem:
         type: integer
     required:
@@ -122,7 +117,6 @@ definitions:
     - bank_provider
     - customer_id
     - nomor
-    - poin_account
     - poin_redeem
     type: object
   customermitra.RegisterCustomer:
@@ -196,24 +190,6 @@ info:
   version: "1.0"
 paths:
   /admin:
-    get:
-      consumes:
-      - application/json
-      description: Dashboard for admin
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Result'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.Error'
-      summary: Dashboard Admin
-      tags:
-      - Admin
     post:
       consumes:
       - application/json
@@ -237,6 +213,25 @@ paths:
           schema:
             $ref: '#/definitions/response.Error'
       summary: Create admin
+      tags:
+      - Admin
+  /admin/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Dashboard for admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Dashboard Admin
       tags:
       - Admin
   /admin/approve/{transactionid}:
@@ -656,6 +651,31 @@ paths:
           schema:
             $ref: '#/definitions/customermitra.UpdateCustomer'
       summary: Updatecustomer
+      tags:
+      - Customer
+  /customer/{id}:
+    get:
+      consumes:
+      - application/json
+      description: FindCustomersByID
+      parameters:
+      - description: id customer
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Find Customers By ID
       tags:
       - Customer
   /customer/register:
