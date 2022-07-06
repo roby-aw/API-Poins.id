@@ -17,6 +17,33 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/admin": {
+            "get": {
+                "description": "Dashboard for admin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Dashboard Admin",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Result"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Error"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "create admin with data",
                 "consumes": [

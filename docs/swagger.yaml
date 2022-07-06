@@ -190,6 +190,24 @@ info:
   version: "1.0"
 paths:
   /admin:
+    get:
+      consumes:
+      - application/json
+      description: Dashboard for admin
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Result'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Error'
+      summary: Dashboard Admin
+      tags:
+      - Admin
     post:
       consumes:
       - application/json

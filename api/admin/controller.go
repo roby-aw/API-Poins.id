@@ -22,8 +22,8 @@ func NewController(service adminBusiness.Service) *Controller {
 }
 
 // Create godoc
-// @Summary Dashboard Admin
-// @description Dashboard for admin
+// @Summary Find Admin By ID
+// @description FindAdminByID
 // @tags Admin
 // @Accept json
 // @Produce json
@@ -46,6 +46,15 @@ func (Controller *Controller) FindAdminByID(c echo.Context) error {
 	})
 }
 
+// Create godoc
+// @Summary Dashboard Admin
+// @description Dashboard for admin
+// @tags Admin
+// @Accept json
+// @Produce json
+// @Success 200	{object} response.Result
+// @Failure 400 {object} response.Error
+// @Router /admin [get]
 func (Controller *Controller) Dashboard(c echo.Context) error {
 	result, err := Controller.service.Dashboard()
 	if err != nil {
