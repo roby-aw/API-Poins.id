@@ -50,7 +50,7 @@ func (repo *PosgresRepository) TransactionPending(pagination utils.Pagination) (
 	var Pending []*admin.TransactionPending
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
-	err := queryBuider.Model(&customermitra.History_Transaction{}).Where("transaction_type LIKE ?", "%"+"Pulsa"+"%").Or("transaction_type LIKE ?", "%"+"Data"+"%").Where("Status_transaction = ?", "PENDING").Preload("Customers", func(db *gorm.DB) *gorm.DB {
+	err := queryBuider.Model(&customermitra.History_Transaction{}).Where("Status_transaction = ? AND transaction_type LIKE ?", "PENDING", "%"+"Pulsa"+"%").Or("Status_transaction = ? AND transaction_type LIKE ?", "PENDING", "%"+"Data"+"%").Preload("Customers", func(db *gorm.DB) *gorm.DB {
 		return db.Select("id", "email", "fullname")
 	}).Find(&Pending).Error
 	if err != nil {
