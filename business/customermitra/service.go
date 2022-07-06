@@ -3,6 +3,7 @@ package customermitra
 import (
 	"api-redeem-point/utils"
 	"errors"
+	"strconv"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -70,6 +71,10 @@ func (s *service) LoginCustomer(login *AuthLogin) (*ResponseLogin, error) {
 
 func (s *service) CreateCustomer(Data *RegisterCustomer) (*RegisterCustomer, error) {
 	err := s.validate.Struct(Data)
+	if err != nil {
+		return nil, err
+	}
+	err = s.validate.Var(strconv.Itoa(Data.Pin), "len=4")
 	if err != nil {
 		return nil, err
 	}
