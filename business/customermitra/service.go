@@ -132,6 +132,9 @@ func (s *service) RedeemPaketData(Data *RedeemPulsaData) error {
 		return err
 	}
 	result, err := s.repository.GetCustomersByID(Data.Customer_id)
+	if err != nil {
+		return err
+	}
 	if result.Poin < Data.Poin_redeem {
 		err := errors.New("Poin kurang")
 		return err
@@ -153,6 +156,9 @@ func (s *service) RedeemBank(Data *InputTransactionBankEmoney) (*InputTransactio
 		return nil, err
 	}
 	result, err := s.repository.GetCustomersByID(Data.Customer_id)
+	if err != nil {
+		return nil, err
+	}
 	if result.Poin < Data.Poin_redeem {
 		err := errors.New("Poin kurang")
 		return nil, err
@@ -178,6 +184,9 @@ func (s *service) ToOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTrans
 		return nil, err
 	}
 	result, err := s.repository.GetCustomersByID(emoney.Customer_id)
+	if err != nil {
+		return nil, err
+	}
 	if result.Poin < emoney.Poin_redeem {
 		err := errors.New("Poin kurang")
 		return nil, err
