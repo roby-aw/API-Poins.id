@@ -108,6 +108,9 @@ func (s *service) RedeemPulsa(Data *RedeemPulsaData) error {
 		return err
 	}
 	result, err := s.repository.GetCustomersByID(Data.Customer_id)
+	if err != nil {
+		return err
+	}
 	if result.Poin < Data.Poin_redeem {
 		err := errors.New("Poin kurang")
 		return err
