@@ -195,9 +195,12 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 
 func (repo *PosgresRepository) ClaimPaketData(Data *customermitra.RedeemPulsaData) error {
 	var tmpCustomer customermitra.Customers
-	err := repo.db.Where("ID = ?", Data.Customer_id).First(&tmpCustomer).Error
+	err := repo.db.Model(&repository.Customer{}).Where("ID = ?", Data.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
-		return err
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			err = errors.New("Wrong id customer")
+			return err
+		}
 	}
 	var stock customermitra.StockProduct
 	repo.db.Model(repository.StockProduct{}).Where("id = 2").First(&stock)
