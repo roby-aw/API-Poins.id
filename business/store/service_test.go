@@ -92,11 +92,11 @@ func newInMemoryRepository() InMemoryRepository {
 	return repo
 }
 
-func (repo *InMemoryRepository) SignStore(store *store.AuthStore) (*store.ResponseLoginStore, error) {
+func (repo *InMemoryRepository) SignStore(Auth *store.AuthStore) (*store.ResponseLoginStore, error) {
 	var Res store.ResponseLoginStore
 	for _, v := range repo.AllStore {
-		if v.Email == store.Email {
-			if v.Password == store.Password {
+		if v.Email == Auth.Email {
+			if v.Password == Auth.Password {
 				Res.Store.ID = v.ID
 				Res.Store.Email = v.Email
 				Res.Store.Store = v.Store
