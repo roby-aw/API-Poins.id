@@ -183,8 +183,8 @@ func (repo *PosgresRepository) GetHistoryCustomers(pagination utils.Pagination, 
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
 	if name != "" {
-		err := queryBuider.Where("Status_Poin = ?", "OUT").Preload("Customers", "LOWER(fullname) LIKE LOWER(?)", "%"+name+"%", func(db *gorm.DB) *gorm.DB {
-			return db.Select("id", "email", "fullname")
+		err := queryBuider.Where("Status_Poin = ?", "OUT").Preload("Customers", func(db *gorm.DB) *gorm.DB {
+			return db.Where("LOWER(fullname) LIKE LOWER(?)", "%"+name+"%").Select("id", "email", "fullname")
 		}).Find(&History_Transaction).Error
 		if err != nil {
 			return nil, err
