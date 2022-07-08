@@ -1,7 +1,7 @@
-package customermitra
+package customer
 
 import (
-	"api-redeem-point/business/customermitra"
+	customerBusiness "api-redeem-point/business/customer"
 	"api-redeem-point/repository"
 	"api-redeem-point/utils"
 	"errors"
@@ -35,8 +35,8 @@ func VerifyPassword(hashedPassword, password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
 
-func (repo *PosgresRepository) GetCustomersByID(id int) (*customermitra.Customers, error) {
-	var data customermitra.Customers
+func (repo *PosgresRepository) GetCustomersByID(id int) (*customerBusiness.Customers, error) {
+	var data customerBusiness.Customers
 	err := repo.db.Model(&repository.Customer{}).Where("id = ?", id).First(&data).Error
 	if err != nil {
 		return nil, err
@@ -44,9 +44,9 @@ func (repo *PosgresRepository) GetCustomersByID(id int) (*customermitra.Customer
 	return &data, nil
 }
 
-func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*customermitra.ResponseLogin, error) {
-	var Customer customermitra.ResponseLogin
-	err := repo.db.Model(&customermitra.Customers{}).Where("email = ?", login.Email).Select("ID", "email", "fullname", "password", "no_hp", "poin", "pin").First(&Customer).Error
+func (repo *PosgresRepository) SignCustomer(login *customerBusiness.AuthLogin) (*customerBusiness.ResponseLogin, error) {
+	var Customer customerBusiness.ResponseLogin
+	err := repo.db.Model(&customerBusiness.Customers{}).Where("email = ?", login.Email).Select("ID", "email", "fullname", "password", "no_hp", "poin", "pin").First(&Customer).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("Email salah")
@@ -61,7 +61,7 @@ func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*cu
 	}
 	expirationTime := time.Now().Add(24 * time.Hour)
 
-	claims := &customermitra.Claims{
+	claims := &customerBusiness.Claims{
 		ID:       int(Customer.ID),
 		Email:    Customer.Email,
 		Customer: true,
@@ -80,9 +80,9 @@ func (repo *PosgresRepository) SignCustomer(login *customermitra.AuthLogin) (*cu
 	return &Customer, err
 }
 
-func (repo *PosgresRepository) InsertCustomer(Data *customermitra.RegisterCustomer) (*customermitra.RegisterCustomer, error) {
+func (repo *PosgresRepository) InsertCustomer(Data *customerBusiness.RegisterCustomer) (*customerBusiness.RegisterCustomer, error) {
 	password, err := Hash(Data.Password)
-	var Customer customermitra.Customers
+	var Customer customerBusiness.Customers
 	Customer.Email = Data.Email
 	Customer.Fullname = Data.Fullname
 	Customer.Password = string(password)
@@ -99,25 +99,25 @@ func (repo *PosgresRepository) InsertCustomer(Data *customermitra.RegisterCustom
 	return Data, nil
 }
 
-func (repo *PosgresRepository) UpdateCustomer(Data *customermitra.UpdateCustomer) (*customermitra.UpdateCustomer, error) {
-	err := repo.db.Model(&customermitra.Customers{}).Where("ID = ?", Data.ID).Updates(customermitra.Customers{Email: Data.Email, Fullname: Data.Name, No_hp: Data.No_hp}).Error
+func (repo *PosgresRepository) UpdateCustomer(Data *customerBusiness.UpdateCustomer) (*customerBusiness.UpdateCustomer, error) {
+	err := repo.db.Model(&customerBusiness.Customers{}).Where("ID = ?", Data.ID).Updates(customerBusiness.Customers{Email: Data.Email, Fullname: Data.Name, No_hp: Data.No_hp}).Error
 	if err != nil {
 		return nil, err
 	}
 	return Data, nil
 }
 
-func (repo *PosgresRepository) HistoryCustomer(id int, pagination utils.Pagination) ([]customermitra.History, error) {
-	var DataHistory []customermitra.History_Transaction
+func (repo *PosgresRepository) HistoryCustomer(id int, pagination utils.Pagination) ([]customerBusiness.History, error) {
+	var DataHistory []customerBusiness.History_Transaction
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
 	err := queryBuider.Where("Customer_id = ? AND Status_Poin = ?", id, "OUT").Find(&DataHistory).Error
 	if err != nil {
 		return nil, err
 	}
-	var History []customermitra.History
+	var History []customerBusiness.History
 	for _, v := range DataHistory {
-		var tmpHistory customermitra.History
+		var tmpHistory customerBusiness.History
 		tmpHistory.ID = int(v.ID)
 		tmpHistory.ID_Transaction = v.ID_Transaction
 		tmpHistory.CreatedAt = v.CreatedAt
@@ -128,13 +128,13 @@ func (repo *PosgresRepository) HistoryCustomer(id int, pagination utils.Paginati
 	return History, nil
 }
 
-func (repo *PosgresRepository) DetailHistoryCustomer(idtransaction string) (*customermitra.DetailHistory, error) {
-	var transaction customermitra.History_Transaction
+func (repo *PosgresRepository) DetailHistoryCustomer(idtransaction string) (*customerBusiness.DetailHistory, error) {
+	var transaction customerBusiness.History_Transaction
 	err := repo.db.Where("ID_Transaction = ?", idtransaction).First(&transaction).Error
 	if err != nil {
 		return nil, err
 	}
-	DetailHistory := customermitra.DetailHistory{
+	DetailHistory := customerBusiness.DetailHistory{
 		ID_Transaction:     transaction.ID_Transaction,
 		Transaction_type:   transaction.Transaction_type,
 		CreatedAt:          transaction.CreatedAt,
@@ -149,8 +149,8 @@ func (repo *PosgresRepository) DetailHistoryCustomer(idtransaction string) (*cus
 	return &DetailHistory, nil
 }
 
-func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) error {
-	var tmpCustomer customermitra.Customers
+func (repo *PosgresRepository) ClaimPulsa(Data *customerBusiness.RedeemPulsaData) error {
+	var tmpCustomer customerBusiness.Customers
 	err := repo.db.Where("ID = ?", Data.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
 		return err
@@ -159,7 +159,7 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 		err = errors.New("wrong pin")
 		return err
 	}
-	var stock customermitra.StockProduct
+	var stock customerBusiness.StockProduct
 	repo.db.Model(repository.StockProduct{}).Where("id = 2").First(&stock)
 	if stock.Balance < Data.Amount {
 		err = errors.New("stock not available")
@@ -172,7 +172,7 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 		return err
 	}
 	random := utils.Randomstring()
-	var tmpHistory customermitra.History_Transaction
+	var tmpHistory customerBusiness.History_Transaction
 	repo.db.Where("ID_Transaction = ?", "P"+random).First(&tmpHistory)
 	if tmpHistory.ID_Transaction != "" {
 		inthasil, _ := strconv.Atoi(random)
@@ -180,7 +180,7 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 		random = strconv.Itoa(inthasil)
 	}
 	err = nil
-	transaction := customermitra.History_Transaction{
+	transaction := customerBusiness.History_Transaction{
 		Customer_id:        Data.Customer_id,
 		ID_Transaction:     "P" + random,
 		Transaction_type:   "Redeem Pulsa",
@@ -197,8 +197,8 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 	return err
 }
 
-func (repo *PosgresRepository) ClaimPaketData(Data *customermitra.RedeemPulsaData) error {
-	var tmpCustomer customermitra.Customers
+func (repo *PosgresRepository) ClaimPaketData(Data *customerBusiness.RedeemPulsaData) error {
+	var tmpCustomer customerBusiness.Customers
 	err := repo.db.Model(&repository.Customer{}).Where("ID = ?", Data.Customer_id).First(&tmpCustomer).Error
 	if tmpCustomer.Email == "" {
 		err = errors.New("Wrong id customer")
@@ -208,7 +208,7 @@ func (repo *PosgresRepository) ClaimPaketData(Data *customermitra.RedeemPulsaDat
 		err = errors.New("wrong pin")
 		return err
 	}
-	var stock customermitra.StockProduct
+	var stock customerBusiness.StockProduct
 	repo.db.Model(repository.StockProduct{}).Where("id = 2").First(&stock)
 	if stock.Balance < Data.Amount {
 		err = errors.New("stock not available")
@@ -221,7 +221,7 @@ func (repo *PosgresRepository) ClaimPaketData(Data *customermitra.RedeemPulsaDat
 		return err
 	}
 	random := utils.Randomstring()
-	var tmpHistory customermitra.History_Transaction
+	var tmpHistory customerBusiness.History_Transaction
 	repo.db.Where("ID_Transaction = ?", "P"+random).First(&tmpHistory)
 	if tmpHistory.ID_Transaction != "" {
 		inthasil, _ := strconv.Atoi(random)
@@ -229,7 +229,7 @@ func (repo *PosgresRepository) ClaimPaketData(Data *customermitra.RedeemPulsaDat
 		random = strconv.Itoa(inthasil)
 	}
 	err = nil
-	transaction := customermitra.History_Transaction{
+	transaction := customerBusiness.History_Transaction{
 		Customer_id:        Data.Customer_id,
 		ID_Transaction:     "PD" + random,
 		Transaction_type:   "Redeem Paket Data",
@@ -246,8 +246,8 @@ func (repo *PosgresRepository) ClaimPaketData(Data *customermitra.RedeemPulsaDat
 	return err
 }
 
-func (repo *PosgresRepository) TakeCallback(data *customermitra.Disbursement) (*customermitra.Disbursement, error) {
-	var TransactionBank customermitra.History_Transaction
+func (repo *PosgresRepository) TakeCallback(data *customerBusiness.Disbursement) (*customerBusiness.Disbursement, error) {
+	var TransactionBank customerBusiness.History_Transaction
 	TransactionBank.Status_Transaction = data.Status
 
 	err := repo.db.Model(TransactionBank).Where("ID_Transaction = ?", data.ExternalID).Updates(TransactionBank).Error
@@ -257,8 +257,8 @@ func (repo *PosgresRepository) TakeCallback(data *customermitra.Disbursement) (*
 	return data, nil
 }
 
-func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransactionBankEmoney) (*customermitra.InputTransactionBankEmoney, error) {
-	var tmpCustomer customermitra.Customers
+func (repo *PosgresRepository) GetOrderEmoney(emoney *customerBusiness.InputTransactionBankEmoney) (*customerBusiness.InputTransactionBankEmoney, error) {
+	var tmpCustomer customerBusiness.Customers
 	err := repo.db.Where("ID = ?", emoney.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
 		return nil, err
@@ -267,7 +267,7 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 		err = errors.New("wrong pin")
 		return nil, err
 	}
-	var stock customermitra.StockProduct
+	var stock customerBusiness.StockProduct
 	repo.db.Model(repository.StockProduct{}).Where("id = 2").First(&stock)
 	if stock.Balance < emoney.Amount {
 		err = errors.New("stock not available")
@@ -280,7 +280,7 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 		return nil, err
 	}
 	random := utils.Randomstring()
-	inputdata := customermitra.History_Transaction{
+	inputdata := customerBusiness.History_Transaction{
 		ID_Transaction:     "EM" + random,
 		Transaction_type:   "Redeem Emoney",
 		Customer_id:        emoney.Customer_id,
@@ -316,8 +316,8 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 	return emoney, nil
 }
 
-func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionBankEmoney) (*customermitra.InputTransactionBankEmoney, error) {
-	var tmpCustomer customermitra.Customers
+func (repo *PosgresRepository) ClaimBank(emoney *customerBusiness.InputTransactionBankEmoney) (*customerBusiness.InputTransactionBankEmoney, error) {
+	var tmpCustomer customerBusiness.Customers
 	err := repo.db.Where("ID = ?", emoney.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
 		return nil, err
@@ -325,7 +325,7 @@ func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionB
 	if emoney.Pin != tmpCustomer.Pin {
 		return nil, err
 	}
-	var stock customermitra.StockProduct
+	var stock customerBusiness.StockProduct
 	repo.db.Model(repository.StockProduct{}).Where("id = 2").First(&stock)
 	if stock.Balance < emoney.Amount {
 		err = errors.New("stock not available")
@@ -338,7 +338,7 @@ func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionB
 		return nil, err
 	}
 	random := utils.Randomstring()
-	inputdata := customermitra.History_Transaction{
+	inputdata := customerBusiness.History_Transaction{
 		ID_Transaction:     "EM" + random,
 		Transaction_type:   "Redeem Bank",
 		Customer_id:        emoney.Customer_id,
@@ -374,31 +374,31 @@ func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionB
 	return emoney, nil
 }
 
-func (repo *PosgresRepository) InsertStore(store *customermitra.RegisterStore) (*customermitra.RegisterStore, error) {
+func (repo *PosgresRepository) InsertStore(store *customerBusiness.RegisterStore) (*customerBusiness.RegisterStore, error) {
 	hash, _ := Hash(store.Password)
-	var tmpStore customermitra.Store
+	var tmpStore customerBusiness.Store
 	repo.db.Where("email = ?", store.Email).First(&tmpStore)
 	if tmpStore.Email != "" {
 		err := errors.New("Email already use")
 		return nil, err
 	}
-	err := repo.db.Create(&customermitra.Store{Email: store.Email, Password: string(hash), Store: store.Store, Alamat: store.Alamat}).Error
+	err := repo.db.Create(&customerBusiness.Store{Email: store.Email, Password: string(hash), Store: store.Store, Alamat: store.Alamat}).Error
 	if err != nil {
 		return nil, err
 	}
 	return store, nil
 }
 
-func (repo *PosgresRepository) InputPoin(input *customermitra.InputPoin) (*int, error) {
-	var tmpCustomer customermitra.Customers
-	err := repo.db.Model(customermitra.Customers{}).Where("ID = ?", input.Customer_id).First(&tmpCustomer).Error
+func (repo *PosgresRepository) InputPoin(input *customerBusiness.InputPoin) (*int, error) {
+	var tmpCustomer customerBusiness.Customers
+	err := repo.db.Model(customerBusiness.Customers{}).Where("ID = ?", input.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("wrong id customer")
 			return nil, err
 		}
 	}
-	var store customermitra.Store
+	var store customerBusiness.Store
 	err = repo.db.Model(repository.Store{}).Where("ID = ?", input.Store_id).First(&store).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -412,7 +412,7 @@ func (repo *PosgresRepository) InputPoin(input *customermitra.InputPoin) (*int, 
 		price = price - 100
 	}
 	random := utils.Randomstring()
-	transaction := customermitra.History_Transaction{
+	transaction := customerBusiness.History_Transaction{
 		ID_Transaction: "IP" + random,
 		Customer_id:    input.Customer_id,
 		Store_id:       input.Store_id,
@@ -434,7 +434,7 @@ func (repo *PosgresRepository) InputPoin(input *customermitra.InputPoin) (*int, 
 }
 
 func (repo *PosgresRepository) DecraseStock(id int, stock int) error {
-	var tmpStock customermitra.StockProduct
+	var tmpStock customerBusiness.StockProduct
 	repo.db.Model(&repository.StockProduct{}).Where("id = ?", id).First(&tmpStock)
 	if tmpStock.Balance < stock {
 		err := errors.New("out of stock")

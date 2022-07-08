@@ -1,7 +1,7 @@
-package customermitra
+package customer
 
 import (
-	customerBussiness "api-redeem-point/business/customermitra"
+	customerBussiness "api-redeem-point/business/customer"
 	"api-redeem-point/utils"
 	"encoding/json"
 	"net/http"

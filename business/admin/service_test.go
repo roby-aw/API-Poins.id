@@ -2,7 +2,7 @@ package admin_test
 
 import (
 	"api-redeem-point/business/admin"
-	"api-redeem-point/business/customermitra"
+	customerBusiness "api-redeem-point/business/customer"
 	"api-redeem-point/utils"
 	"errors"
 	"fmt"
@@ -14,9 +14,9 @@ import (
 
 var service admin.Service
 var admin1, admin2, admin3, updateadmin admin.Admin
-var customer1, customer2, customer3 customermitra.Customers
-var store1, store2, store3 customermitra.Store
-var history1, history2, history3 customermitra.History_Transaction
+var customer1, customer2, customer3 customerBusiness.Customers
+var store1, store2, store3 customerBusiness.Store
+var history1, history2, history3 customerBusiness.History_Transaction
 var InsertAdmin admin.Admin
 var insertSpec, updateSpec, failedSpec, errorspec admin.RegisterAdmin
 var stockProduct1, stockProduct2 admin.StockProduct
@@ -24,7 +24,7 @@ var TransactionMonth1, TransactionMonth2 admin.TransactionMonth
 var pagination utils.Pagination
 var loginadmin admin.AuthLogin
 var stock1, stock2 admin.StockProduct
-var historystore1, historystore2 customermitra.History_Transaction
+var historystore1, historystore2 customerBusiness.History_Transaction
 var insertFailAdmin admin.RegisterAdmin
 var loginFailAdmin admin.AuthLogin
 var errorFindID int
@@ -403,12 +403,12 @@ type inMemoryRepository struct {
 	Product          map[int]admin.StockProduct
 	AllProduct       []admin.StockProduct
 	TransactionMonth []admin.TransactionMonth
-	Customer         map[int]customermitra.Customers
-	AllCustomer      []customermitra.Customers
-	History          map[string]customermitra.History_Transaction
-	AllHistory       []customermitra.History_Transaction
-	Store            map[int]customermitra.Store
-	AllStore         []customermitra.Store
+	Customer         map[int]customerBusiness.Customers
+	AllCustomer      []customerBusiness.Customers
+	History          map[string]customerBusiness.History_Transaction
+	AllHistory       []customerBusiness.History_Transaction
+	Store            map[int]customerBusiness.Store
+	AllStore         []customerBusiness.Store
 }
 
 func newInMemoryRepository() inMemoryRepository {
@@ -435,32 +435,32 @@ func newInMemoryRepository() inMemoryRepository {
 	repo.TransactionMonth = append(repo.TransactionMonth, TransactionMonth1)
 	repo.TransactionMonth = append(repo.TransactionMonth, TransactionMonth2)
 
-	repo.Customer = make(map[int]customermitra.Customers)
+	repo.Customer = make(map[int]customerBusiness.Customers)
 	repo.Customer[int(customer1.ID)] = customer1
 	repo.Customer[int(customer2.ID)] = customer2
 	repo.Customer[int(customer3.ID)] = customer3
 
-	repo.AllCustomer = []customermitra.Customers{}
+	repo.AllCustomer = []customerBusiness.Customers{}
 	repo.AllCustomer = append(repo.AllCustomer, customer1)
 	repo.AllCustomer = append(repo.AllCustomer, customer2)
 	repo.AllCustomer = append(repo.AllCustomer, customer3)
 
-	repo.History = make(map[string]customermitra.History_Transaction)
+	repo.History = make(map[string]customerBusiness.History_Transaction)
 	repo.History[history1.ID_Transaction] = history1
 	repo.History[history2.ID_Transaction] = history2
 	repo.History[history3.ID_Transaction] = history3
 
-	repo.AllHistory = []customermitra.History_Transaction{}
+	repo.AllHistory = []customerBusiness.History_Transaction{}
 	repo.AllHistory = append(repo.AllHistory, history1)
 	repo.AllHistory = append(repo.AllHistory, history2)
 	repo.AllHistory = append(repo.AllHistory, history3)
 
-	repo.Store = make(map[int]customermitra.Store)
+	repo.Store = make(map[int]customerBusiness.Store)
 	repo.Store[int(store1.ID)] = store1
 	repo.Store[int(store2.ID)] = store2
 	repo.Store[int(store3.ID)] = store3
 
-	repo.AllStore = []customermitra.Store{}
+	repo.AllStore = []customerBusiness.Store{}
 	repo.AllStore = append(repo.AllStore, store1)
 	repo.AllStore = append(repo.AllStore, store2)
 	repo.AllStore = append(repo.AllStore, store3)
@@ -576,11 +576,11 @@ func (repo *inMemoryRepository) RenewAdmin(id int, admin *admin.Admin) (*admin.A
 	repo.Admin[id] = *admin
 	return admin, nil
 }
-func (repo *inMemoryRepository) GetCustomers(pagination utils.Pagination, name string) ([]*customermitra.Customers, error) {
+func (repo *inMemoryRepository) GetCustomers(pagination utils.Pagination, name string) ([]*customerBusiness.Customers, error) {
 	customers := repo.AllCustomer
-	var tmpcustomer []*customermitra.Customers
+	var tmpcustomer []*customerBusiness.Customers
 	for _, v := range customers {
-		var tmp customermitra.Customers
+		var tmp customerBusiness.Customers
 		tmp = v
 		tmpcustomer = append(tmpcustomer, &tmp)
 	}
@@ -625,11 +625,11 @@ func (repo *inMemoryRepository) DeleteStore(id int) error {
 	repo.AllStore = append(arr[:id], arr[id+1:]...)
 	return nil
 }
-func (repo *inMemoryRepository) GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error) {
+func (repo *inMemoryRepository) GetStore(pagination utils.Pagination, name string) ([]*customerBusiness.Store, error) {
 	data := repo.AllStore
-	var tmpStore []*customermitra.Store
+	var tmpStore []*customerBusiness.Store
 	for _, v := range data {
-		var tmpData customermitra.Store
+		var tmpData customerBusiness.Store
 		tmpData = v
 		tmpStore = append(tmpStore, &tmpData)
 	}

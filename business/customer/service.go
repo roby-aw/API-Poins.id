@@ -1,4 +1,4 @@
-package customermitra
+package customer
 
 import (
 	"api-redeem-point/utils"

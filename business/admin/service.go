@@ -1,7 +1,7 @@
 package admin
 
 import (
-	"api-redeem-point/business/customermitra"
+	customerBusiness "api-redeem-point/business/customer"
 	"api-redeem-point/utils"
 	"errors"
 
@@ -16,7 +16,7 @@ type Repository interface {
 	AcceptTransaction(idtransaction string) error
 	RenewAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
-	GetCustomers(pagination utils.Pagination, name string) ([]*customermitra.Customers, error)
+	GetCustomers(pagination utils.Pagination, name string) ([]*customerBusiness.Customers, error)
 	GetHistoryCustomers(pagination utils.Pagination, name string) ([]CustomerHistory, error)
 	DeleteCustomer(id int) error
 	UpdateCustomer(data UpdateCustomer) (*UpdateCustomer, error)
@@ -26,7 +26,7 @@ type Repository interface {
 	GetTransactionMonthDay() ([]TransactionMonth, error)
 	HistoryStore(pagination utils.Pagination, name string) ([]HistoryStore, error)
 	DeleteStore(id int) error
-	GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error)
+	GetStore(pagination utils.Pagination, name string) ([]*customerBusiness.Store, error)
 	UpdateStore(store UpdateStore) (*UpdateStore, error)
 }
 
@@ -38,7 +38,7 @@ type Service interface {
 	ApproveTransaction(idtransaction string) error
 	UpdateAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
-	FindCustomers(pagination utils.Pagination, name string) ([]*customermitra.Customers, error)
+	FindCustomers(pagination utils.Pagination, name string) ([]*customerBusiness.Customers, error)
 	FindHistoryCustomers(pagination utils.Pagination, name string) ([]CustomerHistory, error)
 	DeleteCustomer(id int) error
 	UpdateCustomer(data UpdateCustomer) (*UpdateCustomer, error)
@@ -48,7 +48,7 @@ type Service interface {
 	GetTransactionMonthDay() ([]TransactionMonth, error)
 	HistoryStore(pagination utils.Pagination, name string) ([]HistoryStore, error)
 	DeleteStore(id int) error
-	GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error)
+	GetStore(pagination utils.Pagination, name string) ([]*customerBusiness.Store, error)
 	UpdateStore(store UpdateStore) (*UpdateStore, error)
 }
 
@@ -110,7 +110,7 @@ func (s *service) LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error) {
 	return tokens, err
 }
 
-func (s *service) FindCustomers(pagination utils.Pagination, name string) ([]*customermitra.Customers, error) {
+func (s *service) FindCustomers(pagination utils.Pagination, name string) ([]*customerBusiness.Customers, error) {
 	return s.repository.GetCustomers(pagination, name)
 }
 
@@ -162,7 +162,7 @@ func (s *service) DeleteStore(id int) error {
 	return s.repository.DeleteStore(id)
 }
 
-func (s *service) GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error) {
+func (s *service) GetStore(pagination utils.Pagination, name string) ([]*customerBusiness.Store, error) {
 	return s.repository.GetStore(pagination, name)
 }
 

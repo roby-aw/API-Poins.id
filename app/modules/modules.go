@@ -3,14 +3,14 @@ package modules
 import (
 	"api-redeem-point/api"
 	adminApi "api-redeem-point/api/admin"
-	customermitraApi "api-redeem-point/api/customermitra"
+	customerApi "api-redeem-point/api/customer"
 	mitraApi "api-redeem-point/api/mitra"
 	adminBusiness "api-redeem-point/business/admin"
-	customermitraBusiness "api-redeem-point/business/customermitra"
+	customerBusiness "api-redeem-point/business/customer"
 	mitraBusiness "api-redeem-point/business/mitra"
 	"api-redeem-point/config"
 	adminRepo "api-redeem-point/repository/admin"
-	customermitraRepo "api-redeem-point/repository/customermitra"
+	customerRepo "api-redeem-point/repository/customer"
 	mitraRepo "api-redeem-point/repository/mitra"
 	"api-redeem-point/utils"
 )
@@ -21,9 +21,9 @@ func RegistrationModules(dbCon *utils.DatabaseConnection, config *config.AppConf
 	adminPermitService := adminBusiness.NewService(adminPermitRepository)
 	adminPermitController := adminApi.NewController(adminPermitService)
 
-	customermitraPermitRepository := customermitraRepo.RepositoryFactory(dbCon)
-	customermitraPermitService := customermitraBusiness.NewService(customermitraPermitRepository)
-	customermitraPermitController := customermitraApi.NewController(customermitraPermitService)
+	customerPermitRepository := customerRepo.RepositoryFactory(dbCon)
+	customerPermitService := customerBusiness.NewService(customerPermitRepository)
+	customerPermitController := customerApi.NewController(customerPermitService)
 
 	mitraPermitRepository := mitraRepo.RepositoryFactory(dbCon)
 	mitraPermitService := mitraBusiness.NewService(mitraPermitRepository)
@@ -31,7 +31,7 @@ func RegistrationModules(dbCon *utils.DatabaseConnection, config *config.AppConf
 
 	controller := api.Controller{
 		AdminControlller:        adminPermitController,
-		CustomerMitraController: customermitraPermitController,
+		CustomerMitraController: customerPermitController,
 		MitraController:         mitraPermitController,
 	}
 	return controller

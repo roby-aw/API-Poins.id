@@ -2,7 +2,7 @@ package api
 
 import (
 	"api-redeem-point/api/admin"
-	"api-redeem-point/api/customermitra"
+	"api-redeem-point/api/customer"
 	"api-redeem-point/api/middleware"
 	"api-redeem-point/api/mitra"
 
@@ -13,7 +13,7 @@ import (
 
 type Controller struct {
 	AdminControlller        *admin.Controller
-	CustomerMitraController *customermitra.Controller
+	CustomerMitraController *customer.Controller
 	MitraController         *mitra.Controller
 }
 

@@ -1,4 +1,4 @@
-package customermitra
+package customer
 
 import (
 	"time"

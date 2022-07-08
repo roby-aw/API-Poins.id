@@ -2,7 +2,7 @@ package admin
 
 import (
 	"api-redeem-point/business/admin"
-	"api-redeem-point/business/customermitra"
+	customerBusiness "api-redeem-point/business/customer"
 	"api-redeem-point/config"
 	"api-redeem-point/repository"
 	"api-redeem-point/utils"
@@ -37,7 +37,7 @@ func (repo *PosgresRepository) GetAdminByID(id int) (*admin.Admin, error) {
 func (repo *PosgresRepository) Dashboard() (*int, error) {
 	var today64 int64
 	now := time.Now().Format("2006-01-02")
-	err := repo.db.Model(&customermitra.History_Transaction{}).Where("created_at > ?", now+" 00:00:00").Where("status_poin = ?", "OUT").Count(&today64).Error
+	err := repo.db.Model(&customerBusiness.History_Transaction{}).Where("created_at > ?", now+" 00:00:00").Where("status_poin = ?", "OUT").Count(&today64).Error
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func (repo *PosgresRepository) TransactionPending(pagination utils.Pagination) (
 	var Pending []*admin.TransactionPending
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
-	err := queryBuider.Model(&customermitra.History_Transaction{}).Where("Status_transaction = ? AND transaction_type LIKE ?", "PENDING", "%"+"Pulsa"+"%").Or("Status_transaction = ? AND transaction_type LIKE ?", "PENDING", "%"+"Data"+"%").Preload("Customers", func(db *gorm.DB) *gorm.DB {
+	err := queryBuider.Model(&customerBusiness.History_Transaction{}).Where("Status_transaction = ? AND transaction_type LIKE ?", "PENDING", "%"+"Pulsa"+"%").Or("Status_transaction = ? AND transaction_type LIKE ?", "PENDING", "%"+"Data"+"%").Preload("Customers", func(db *gorm.DB) *gorm.DB {
 		return db.Select("id", "email", "fullname")
 	}).Find(&Pending).Error
 	if err != nil {
@@ -139,7 +139,7 @@ func (repo PosgresRepository) RenewAdmin(id int, admin *admin.Admin) (*admin.Adm
 }
 
 func (repo *PosgresRepository) AcceptTransaction(idtransaction string) error {
-	var transaction *customermitra.History_Transaction
+	var transaction *customerBusiness.History_Transaction
 	err := repo.db.Where("ID_Transaction = ?", idtransaction).Take(&transaction).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -159,8 +159,8 @@ func (repo *PosgresRepository) AcceptTransaction(idtransaction string) error {
 	return nil
 }
 
-func (repo *PosgresRepository) GetCustomers(pagination utils.Pagination, name string) ([]*customermitra.Customers, error) {
-	var customers []*customermitra.Customers
+func (repo *PosgresRepository) GetCustomers(pagination utils.Pagination, name string) ([]*customerBusiness.Customers, error) {
+	var customers []*customerBusiness.Customers
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
 	if name != "" {
@@ -179,7 +179,7 @@ func (repo *PosgresRepository) GetCustomers(pagination utils.Pagination, name st
 
 func (repo *PosgresRepository) GetHistoryCustomers(pagination utils.Pagination, name string) ([]admin.CustomerHistory, error) {
 	var CustomerHistory []admin.CustomerHistory
-	var History_Transaction []*customermitra.History_Transaction
+	var History_Transaction []*customerBusiness.History_Transaction
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
 	if name != "" {
@@ -246,7 +246,7 @@ func (repo *PosgresRepository) DeleteCustomer(id int) error {
 
 func (repo *PosgresRepository) UpdateCustomer(data admin.UpdateCustomer) (*admin.UpdateCustomer, error) {
 	var tmpCustomer admin.UpdateCustomer
-	err := repo.db.Model(&customermitra.Customers{}).Where("ID = ?", data.ID).First(&tmpCustomer).Error
+	err := repo.db.Model(&customerBusiness.Customers{}).Where("ID = ?", data.ID).First(&tmpCustomer).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("wrong id customer")
@@ -271,23 +271,23 @@ func (repo *PosgresRepository) UpdateCustomer(data admin.UpdateCustomer) (*admin
 		password, _ := Hash(data.Password)
 		data.Password = string(password)
 	}
-	err = repo.db.Model(&customermitra.Customers{}).Where("ID = ?", data.ID).Updates(&customermitra.Customers{Email: data.Email, Fullname: data.Fullname, No_hp: data.No_hp, Pin: data.Pin}).Error
+	err = repo.db.Model(&customerBusiness.Customers{}).Where("ID = ?", data.ID).Updates(&customerBusiness.Customers{Email: data.Email, Fullname: data.Fullname, No_hp: data.No_hp, Pin: data.Pin}).Error
 	if err != nil {
 		return nil, err
 	}
-	repo.db.Model(&customermitra.Customers{}).Where("ID = ?", data.ID).First(&tmpCustomer)
+	repo.db.Model(&customerBusiness.Customers{}).Where("ID = ?", data.ID).First(&tmpCustomer)
 	return &tmpCustomer, err
 }
 
 func (repo *PosgresRepository) UpdateCustomerPoint(id int, point int) (*int, error) {
-	var data customermitra.Customers
-	err := repo.db.Model(&customermitra.Customers{}).Where("id = ?", id).First(&data).Error
+	var data customerBusiness.Customers
+	err := repo.db.Model(&customerBusiness.Customers{}).Where("id = ?", id).First(&data).Error
 	if err != nil {
 		return nil, err
 	}
 	hasil := data.Poin + point
 	data.Poin = hasil
-	err = repo.db.Model(&customermitra.Customers{}).Where("id = ?", id).Updates(&data).Error
+	err = repo.db.Model(&customerBusiness.Customers{}).Where("id = ?", id).Updates(&data).Error
 	if err != nil {
 		return nil, err
 	}
@@ -302,7 +302,7 @@ func (repo *PosgresRepository) GetProduct() ([]admin.StockProduct, error) {
 
 func (repo *PosgresRepository) UpdateStock(id int, stock int) (*admin.StockProduct, error) {
 	var product admin.StockProduct
-	err := repo.db.Model(&customermitra.StockProduct{}).Where("id = ?", id).First(&product).Error
+	err := repo.db.Model(&customerBusiness.StockProduct{}).Where("id = ?", id).First(&product).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("wrong id product")
@@ -311,7 +311,7 @@ func (repo *PosgresRepository) UpdateStock(id int, stock int) (*admin.StockProdu
 	}
 	sum := product.Balance + stock
 	product.Balance = sum
-	repo.db.Model(&customermitra.StockProduct{}).Where("id = ?", id).Updates(customermitra.StockProduct{Balance: sum})
+	repo.db.Model(&customerBusiness.StockProduct{}).Where("id = ?", id).Updates(customerBusiness.StockProduct{Balance: sum})
 	return &product, nil
 }
 
@@ -339,7 +339,7 @@ func (repo *PosgresRepository) HistoryStore(pagination utils.Pagination, name st
 		}
 		return tmpHistory, nil
 	}
-	err := queryBuider.Model(&customermitra.History_Transaction{}).Where("Status_Poin = ?", "IN").Preload("Customers", func(db *gorm.DB) *gorm.DB {
+	err := queryBuider.Model(&customerBusiness.History_Transaction{}).Where("Status_Poin = ?", "IN").Preload("Customers", func(db *gorm.DB) *gorm.DB {
 		return db.Select("id", "email", "fullname")
 	}).Preload("Store").Find(&tmpHistory).Error
 	if err != nil {
@@ -349,7 +349,7 @@ func (repo *PosgresRepository) HistoryStore(pagination utils.Pagination, name st
 }
 
 func (repo *PosgresRepository) DeleteStore(id int) error {
-	var store *customermitra.Store
+	var store *customerBusiness.Store
 	err := repo.db.Model(&repository.Store{}).Where("ID = ?", id).First(&store).Error
 	if err != nil {
 		return err
@@ -361,8 +361,8 @@ func (repo *PosgresRepository) DeleteStore(id int) error {
 	return nil
 }
 
-func (repo *PosgresRepository) GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error) {
-	var store []*customermitra.Store
+func (repo *PosgresRepository) GetStore(pagination utils.Pagination, name string) ([]*customerBusiness.Store, error) {
+	var store []*customerBusiness.Store
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
 	if name != "" {

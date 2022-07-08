@@ -1,9 +1,9 @@
 package response
 
-import "api-redeem-point/business/customermitra"
+import "api-redeem-point/business/customer"
 
 type Login struct {
 	Code     string `json:"code"`
 	Messages string `json:"messages"`
-	Results  customermitra.ResponseLogin
+	Results  customer.ResponseLogin
 }
