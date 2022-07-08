@@ -9,7 +9,7 @@ import (
 )
 
 type Controller struct {
-	service mitra.Service
+	service mitraBussiness.Service
 }
 
 func NewController(service mitra.Service) *Controller {
