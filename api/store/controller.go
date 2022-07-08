@@ -1,18 +1,17 @@
-package mitra
+package store
 
 import (
-	"api-redeem-point/business/mitra"
-	mitraBussiness "api-redeem-point/business/mitra"
+	storeBussiness "api-redeem-point/business/store"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
 
 type Controller struct {
-	service mitraBussiness.Service
+	service storeBussiness.Service
 }
 
-func NewController(service mitra.Service) *Controller {
+func NewController(service storeBussiness.Service) *Controller {
 	return &Controller{
 		service: service,
 	}
@@ -29,7 +28,7 @@ func NewController(service mitra.Service) *Controller {
 // @Failure 400 {object} response.Error
 // @Router /store/login [post]
 func (Controller *Controller) LoginStore(c echo.Context) error {
-	var req mitraBussiness.AuthStore
+	var req storeBussiness.AuthStore
 	c.Bind(&req)
 	result, err := Controller.service.LoginStore(&req)
 	if err != nil {
@@ -56,7 +55,7 @@ func (Controller *Controller) LoginStore(c echo.Context) error {
 // @Failure 400 {object} response.Error
 // @Router /store/poin [post]
 func (Controller *Controller) InputPoinStore(c echo.Context) error {
-	var req mitraBussiness.InputPoin
+	var req storeBussiness.InputPoin
 	c.Bind(&req)
 	result, err := Controller.service.InputPoin(&req)
 	if err != nil {

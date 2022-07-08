@@ -1,7 +1,7 @@
-package mitra
+package store
 
 import (
-	"api-redeem-point/business/mitra"
+	"api-redeem-point/business/store"
 	"api-redeem-point/repository"
 	"api-redeem-point/utils"
 	"errors"
@@ -23,23 +23,23 @@ func NewPostgresRepository(db *gorm.DB) *PosgresRepository {
 	}
 }
 
-func (repo *PosgresRepository) SignStore(store *mitra.AuthStore) (*mitra.ResponseLoginStore, error) {
-	var tmpStore *mitra.Store
-	err := repo.db.Where("email = ?", store.Email).First(&tmpStore).Error
+func (repo *PosgresRepository) SignStore(auth *store.AuthStore) (*store.ResponseLoginStore, error) {
+	var tmpStore *store.Store
+	err := repo.db.Where("email = ?", auth.Email).First(&tmpStore).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("Email salah")
 			return nil, err
 		}
 	}
-	err = VerifyPassword(tmpStore.Password, store.Password)
+	err = VerifyPassword(tmpStore.Password, auth.Password)
 	if err != nil {
 		err = errors.New("Password salah")
 		return nil, err
 	}
 	expirationTime := time.Now().Add(24 * time.Hour)
 
-	claims := &mitra.ClaimsMitra{
+	claims := &store.ClaimsMitra{
 		ID:    int(tmpStore.ID),
 		Email: tmpStore.Email,
 		Store: true,
@@ -54,24 +54,24 @@ func (repo *PosgresRepository) SignStore(store *mitra.AuthStore) (*mitra.Respons
 	if err != nil {
 		return nil, err
 	}
-	Response := mitra.ResponseLoginStore{
+	Response := store.ResponseLoginStore{
 		Store: *tmpStore,
 		Token: token_jwt,
 	}
 	return &Response, nil
 }
 
-func (repo *PosgresRepository) InputPoin(input *mitra.InputPoin) (*int, error) {
-	var tmpCustomer mitra.Customers
-	err := repo.db.Model(mitra.Customers{}).Where("ID = ?", input.Customer_id).First(&tmpCustomer).Error
+func (repo *PosgresRepository) InputPoin(input *store.InputPoin) (*int, error) {
+	var tmpCustomer store.Customers
+	err := repo.db.Model(store.Customers{}).Where("ID = ?", input.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("wrong id customer")
 			return nil, err
 		}
 	}
-	var store mitra.Store
-	err = repo.db.Model(repository.Store{}).Where("ID = ?", input.Store_id).First(&store).Error
+	var tmpStore store.Store
+	err = repo.db.Model(repository.Store{}).Where("ID = ?", input.Store_id).First(&tmpStore).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("wrong id store")
@@ -84,7 +84,7 @@ func (repo *PosgresRepository) InputPoin(input *mitra.InputPoin) (*int, error) {
 		price = price - 100
 	}
 	random := utils.Randomstring()
-	transaction := mitra.History_Transaction{
+	transaction := store.History_Transaction{
 		ID_Transaction: "IP" + random,
 		Customer_id:    input.Customer_id,
 		Store_id:       input.Store_id,

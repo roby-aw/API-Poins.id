@@ -1,4 +1,4 @@
-package mitra
+package store
 
 import (
 	"time"

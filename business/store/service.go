@@ -1,14 +1,14 @@
-package mitra
+package store
 
 import "github.com/go-playground/validator/v10"
 
 type Repository interface {
-	SignStore(store *AuthStore) (*ResponseLoginStore, error)
+	SignStore(auth *AuthStore) (*ResponseLoginStore, error)
 	InputPoin(input *InputPoin) (*int, error)
 }
 
 type Service interface {
-	LoginStore(store *AuthStore) (*ResponseLoginStore, error)
+	LoginStore(auth *AuthStore) (*ResponseLoginStore, error)
 	InputPoin(input *InputPoin) (*int, error)
 }
 
@@ -24,8 +24,8 @@ func NewService(repository Repository) Service {
 	}
 }
 
-func (s *service) LoginStore(store *AuthStore) (*ResponseLoginStore, error) {
-	return s.repository.SignStore(store)
+func (s *service) LoginStore(auth *AuthStore) (*ResponseLoginStore, error) {
+	return s.repository.SignStore(auth)
 }
 
 func (s *service) InputPoin(input *InputPoin) (*int, error) {
