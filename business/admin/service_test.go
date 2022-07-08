@@ -9,6 +9,7 @@ import (
 	"os"
 	"reflect"
 	"testing"
+	"time"
 )
 
 var service admin.Service
@@ -98,20 +99,6 @@ func TestGetCustomers(t *testing.T) {
 	})
 }
 
-func TestDeleteCustomers(t *testing.T) {
-	t.Run("Expect delete customer2", func(t *testing.T) {
-		err := service.DeleteCustomer(int(customer2.ID))
-		if err != nil {
-			t.Error("error delete")
-		}
-		result, _ := service.FindCustomers(pagination)
-		fmt.Println(result)
-		if len(result) != 2 {
-			t.Error("len customer must be 3")
-		}
-	})
-}
-
 func TestGetHistoryCustomers(t *testing.T) {
 	t.Run("Expect get result history", func(t *testing.T) {
 		result, _ := service.FindHistoryCustomers(pagination)
@@ -166,6 +153,49 @@ func TestGetStore(t *testing.T) {
 		}
 		if result[store2.ID-1].Email != store2.Email {
 			t.Error("Expect email store 2")
+		}
+	})
+}
+
+func TestRenewAdmin(t *testing.T) {
+	t.Run("Expect found the result", func(t *testing.T) {
+		result, _ := service.UpdateAdmin(int(updateadmin.ID), &updateadmin)
+		if result.Email != updateadmin.Email {
+			t.Error("Expect result.email is updateadmin.email")
+		}
+		admin, _ := service.FindAdminByID(2)
+		fmt.Println(admin)
+		if admin.Email != updateadmin.Email {
+			t.Error("Expect admin id 2 is updated")
+		}
+	})
+}
+
+func TestDeleteStore(t *testing.T) {
+	t.Run("Expect delete store2", func(t *testing.T) {
+		err := service.DeleteStore(int(store2.ID))
+		if err != nil {
+			t.Error("error delete")
+		}
+		result, _ := service.GetStore(pagination, "")
+		fmt.Println(result)
+		if len(result) != 2 {
+			t.Error("len store must be 2")
+		}
+	})
+}
+
+func TestDeleteCustomers(t *testing.T) {
+	t.Run("Expect delete customer2", func(t *testing.T) {
+		err := service.DeleteCustomer(int(customer2.ID))
+		if err != nil {
+			t.Error("error delete")
+		}
+		result, _ := service.FindCustomers(pagination)
+		fmt.Println(result[0].ID)
+		fmt.Println(result[1].ID)
+		if len(result) != 2 {
+			t.Error("len customer must be 3")
 		}
 	})
 }
@@ -294,6 +324,14 @@ func setup() {
 
 	loginadmin.Email = customer1.Email
 	loginadmin.Password = customer1.Password
+
+	updateadmin.ID = 2
+	updateadmin.CreatedAt = time.Now()
+	updateadmin.UpdatedAt = time.Now()
+	updateadmin.Email = "updateadmin@gmail.com"
+	updateadmin.Fullname = "update admin"
+	updateadmin.Password = "updatepassword"
+	updateadmin.No_hp = "056856585"
 }
 
 type inMemoryRepository struct {
@@ -461,7 +499,19 @@ func (repo *inMemoryRepository) LoginAdmin(Auth *admin.AuthLogin) (*admin.Respon
 	return dataFix, nil
 }
 func (repo *inMemoryRepository) RenewAdmin(id int, admin *admin.Admin) (*admin.Admin, error) {
-	return nil, nil
+	for i := 0; i < len(repo.AllAdmin); i++ {
+		if repo.AllAdmin[i].ID == admin.ID {
+			repo.AllAdmin[i].ID = admin.ID
+			repo.AllAdmin[i].CreatedAt = admin.CreatedAt
+			repo.AllAdmin[i].UpdatedAt = time.Now()
+			repo.AllAdmin[i].Email = admin.Fullname
+			repo.AllAdmin[i].Fullname = admin.Fullname
+			repo.AllAdmin[i].Password = admin.Password
+			repo.AllAdmin[i].No_hp = admin.No_hp
+		}
+	}
+	repo.Admin[id] = *admin
+	return admin, nil
 }
 func (repo *inMemoryRepository) GetCustomers(pagination utils.Pagination) ([]*customermitra.Customers, error) {
 	customers := repo.AllCustomer
@@ -488,8 +538,7 @@ func (repo *inMemoryRepository) GetHistoryCustomers(pagination utils.Pagination)
 	return data, nil
 }
 func (repo *inMemoryRepository) DeleteCustomer(id int) error {
-	id = id - 1
-	repo.AllCustomer = append(repo.AllCustomer[:id], repo.AllCustomer[id+1:]...)
+	repo.AllCustomer = RemoveIndex(repo.AllCustomer, id)
 	return nil
 }
 func (repo *inMemoryRepository) TransactionDate() ([]admin.TransactionDate, error) {
@@ -511,6 +560,12 @@ func (repo *inMemoryRepository) HistoryStore(pagination utils.Pagination, name s
 	return nil, nil
 }
 func (repo *inMemoryRepository) DeleteStore(id int) error {
+	for i := 0; i < len(repo.AllCustomer); i++ {
+		if repo.AllCustomer[i].ID == uint(id) {
+			repo.AllCustomer = append(repo.AllCustomer[:i], repo.AllCustomer[i+1:]...)
+			i--
+		}
+	}
 	return nil
 }
 func (repo *inMemoryRepository) GetStore(pagination utils.Pagination, name string) ([]*customermitra.Store, error) {
@@ -525,4 +580,9 @@ func (repo *inMemoryRepository) GetStore(pagination utils.Pagination, name strin
 }
 func (repo *inMemoryRepository) UpdateStore(store admin.UpdateStore) (*admin.UpdateStore, error) {
 	return nil, nil
+}
+
+func RemoveIndex(s []customermitra.Customers, index int) []customermitra.Customers {
+	index = index - 1
+	return append(s[:index], s[index+1:]...)
 }
