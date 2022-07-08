@@ -159,11 +159,18 @@ func (repo *PosgresRepository) AcceptTransaction(idtransaction string) error {
 	return nil
 }
 
-func (repo *PosgresRepository) GetCustomers(pagination utils.Pagination) ([]*customermitra.Customers, error) {
+func (repo *PosgresRepository) GetCustomers(pagination utils.Pagination, name string) ([]*customermitra.Customers, error) {
 	var customers []*customermitra.Customers
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
-	err := queryBuider.Find(&customers).Error
+	if name != "" {
+		err := queryBuider.Model(&repository.Customer{}).Where("LOWER(fullname) LIKE LOWER(?)", "%"+name+"%").Find(&customers).Error
+		if err != nil {
+			return nil, err
+		}
+		return customers, nil
+	}
+	err := queryBuider.Model(&repository.Customer{}).Find(&customers).Error
 	if err != nil {
 		return nil, err
 	}

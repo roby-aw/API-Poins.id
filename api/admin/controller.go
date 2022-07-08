@@ -206,8 +206,9 @@ func (Controller *Controller) ApproveTransaction(c echo.Context) error {
 // @Failure 400 {object} response.Error
 // @Router /admin/customer [get]
 func (Controller *Controller) FindCustomers(c echo.Context) error {
+	name := c.QueryParam("name")
 	pagination := utils.GeneratePagination(c.Request().URL.Query())
-	result, err := Controller.service.FindCustomers(pagination)
+	result, err := Controller.service.FindCustomers(pagination, name)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 	}

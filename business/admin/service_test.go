@@ -89,7 +89,7 @@ func TestDashboard(t *testing.T) {
 
 func TestGetCustomers(t *testing.T) {
 	t.Run("Expect found the result", func(t *testing.T) {
-		result, _ := service.FindCustomers(pagination)
+		result, _ := service.FindCustomers(pagination, "")
 		if len(result) != 3 {
 			t.Error("Expect found lenght customers is 3")
 		}
@@ -191,7 +191,7 @@ func TestDeleteCustomers(t *testing.T) {
 		if err != nil {
 			t.Error("error delete")
 		}
-		result, _ := service.FindCustomers(pagination)
+		result, _ := service.FindCustomers(pagination, "")
 		fmt.Println(result[0].ID)
 		fmt.Println(result[1].ID)
 		if len(result) != 2 {
@@ -513,7 +513,7 @@ func (repo *inMemoryRepository) RenewAdmin(id int, admin *admin.Admin) (*admin.A
 	repo.Admin[id] = *admin
 	return admin, nil
 }
-func (repo *inMemoryRepository) GetCustomers(pagination utils.Pagination) ([]*customermitra.Customers, error) {
+func (repo *inMemoryRepository) GetCustomers(pagination utils.Pagination, name string) ([]*customermitra.Customers, error) {
 	customers := repo.AllCustomer
 	var tmpcustomer []*customermitra.Customers
 	for _, v := range customers {
