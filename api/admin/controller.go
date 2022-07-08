@@ -6,7 +6,6 @@ import (
 	"api-redeem-point/utils"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -272,40 +271,6 @@ func (Controller *Controller) DeleteCustomer(c echo.Context) error {
 		"code":     200,
 		"messages": "success delete customers",
 		"result":   id,
-	})
-}
-
-// Create godoc
-// @Summary Transaction By Date
-// @description Transaction By Date for admin
-// @tags Admin
-// @Accept json
-// @Produce json
-// @Param start query string false "2022-01-01"
-// @Param end query string false "2022-12-31"
-// @Success 200	{object} response.Result
-// @Failure 400 {object} response.Error
-// @Router /admin/transaction [get]
-func (Controller *Controller) TransactionByDate(c echo.Context) error {
-	start := c.QueryParam("start")
-	end := c.QueryParam("end")
-	if start == "" {
-		start = "2022-01-01"
-	}
-	if end == "" {
-		end = time.Now().Format("2006-01-02")
-	}
-	result, err := Controller.service.TransactionByDate(start, end)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"code":     400,
-			"messages": err.Error(),
-		})
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"code":     200,
-		"messages": "success get transaction by date",
-		"result":   result,
 	})
 }
 

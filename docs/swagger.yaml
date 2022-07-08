@@ -90,6 +90,8 @@ definitions:
         type: integer
       nomor:
         type: string
+      pin:
+        type: integer
       poin_redeem:
         type: integer
     required:
@@ -98,6 +100,7 @@ definitions:
     - bank_provider
     - customer_id
     - nomor
+    - pin
     - poin_redeem
     type: object
   customermitra.RedeemPulsaData:
@@ -110,6 +113,8 @@ definitions:
         type: integer
       nomor:
         type: string
+      pin:
+        type: integer
       poin_redeem:
         type: integer
     required:
@@ -117,6 +122,7 @@ definitions:
     - bank_provider
     - customer_id
     - nomor
+    - pin
     - poin_redeem
     type: object
   customermitra.RegisterCustomer:
@@ -237,7 +243,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Dashboard for admin
+      description: FindAdminByID
       produces:
       - application/json
       responses:
@@ -249,7 +255,7 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Error'
-      summary: Dashboard Admin
+      summary: Find Admin By ID
       tags:
       - Admin
   /admin/approve/{transactionid}:
@@ -543,34 +549,6 @@ paths:
           schema:
             $ref: '#/definitions/response.Error'
       summary: Delete Store
-      tags:
-      - Admin
-  /admin/transaction:
-    get:
-      consumes:
-      - application/json
-      description: Transaction By Date for admin
-      parameters:
-      - description: "2022-01-01"
-        in: query
-        name: start
-        type: string
-      - description: "2022-12-31"
-        in: query
-        name: end
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/response.Result'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/response.Error'
-      summary: Transaction By Date
       tags:
       - Admin
   /admin/transaction/pending:

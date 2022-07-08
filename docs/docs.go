@@ -525,49 +525,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/admin/transaction": {
-            "get": {
-                "description": "Transaction By Date for admin",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Admin"
-                ],
-                "summary": "Transaction By Date",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "2022-01-01",
-                        "name": "start",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "2022-12-31",
-                        "name": "end",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/response.Result"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/response.Error"
-                        }
-                    }
-                }
-            }
-        },
         "/admin/transaction/pending": {
             "get": {
                 "description": "Transaction Pending for Admin",
@@ -599,7 +556,7 @@ const docTemplate = `{
         },
         "/admin/{id}": {
             "get": {
-                "description": "Dashboard for admin",
+                "description": "FindAdminByID",
                 "consumes": [
                     "application/json"
                 ],
@@ -609,7 +566,7 @@ const docTemplate = `{
                 "tags": [
                     "Admin"
                 ],
-                "summary": "Dashboard Admin",
+                "summary": "Find Admin By ID",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1317,6 +1274,7 @@ const docTemplate = `{
                 "bank_provider",
                 "customer_id",
                 "nomor",
+                "pin",
                 "poin_redeem"
             ],
             "properties": {
@@ -1335,6 +1293,9 @@ const docTemplate = `{
                 "nomor": {
                     "type": "string"
                 },
+                "pin": {
+                    "type": "integer"
+                },
                 "poin_redeem": {
                     "type": "integer"
                 }
@@ -1347,6 +1308,7 @@ const docTemplate = `{
                 "bank_provider",
                 "customer_id",
                 "nomor",
+                "pin",
                 "poin_redeem"
             ],
             "properties": {
@@ -1361,6 +1323,9 @@ const docTemplate = `{
                 },
                 "nomor": {
                     "type": "string"
+                },
+                "pin": {
+                    "type": "integer"
                 },
                 "poin_redeem": {
                     "type": "integer"

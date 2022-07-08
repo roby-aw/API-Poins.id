@@ -19,8 +19,6 @@ type Repository interface {
 	GetCustomers(pagination utils.Pagination, name string) ([]*customermitra.Customers, error)
 	GetHistoryCustomers(pagination utils.Pagination, name string) ([]CustomerHistory, error)
 	DeleteCustomer(id int) error
-	TransactionDate() ([]TransactionDate, error)
-	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
 	UpdateCustomer(data UpdateCustomer) (*UpdateCustomer, error)
 	UpdateCustomerPoint(id int, point int) (*int, error)
 	GetProduct() ([]StockProduct, error)
@@ -43,8 +41,6 @@ type Service interface {
 	FindCustomers(pagination utils.Pagination, name string) ([]*customermitra.Customers, error)
 	FindHistoryCustomers(pagination utils.Pagination, name string) ([]CustomerHistory, error)
 	DeleteCustomer(id int) error
-	TransactionDate() ([]TransactionDate, error)
-	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
 	UpdateCustomer(data UpdateCustomer) (*UpdateCustomer, error)
 	UpdateCustomerPoint(id int, point int) (*int, error)
 	FindProduct() ([]StockProduct, error)
@@ -131,14 +127,6 @@ func (s *service) DeleteCustomer(id int) error {
 		return err
 	}
 	return s.repository.DeleteCustomer(id)
-}
-
-func (s *service) TransactionDate() ([]TransactionDate, error) {
-	return s.repository.TransactionDate()
-}
-
-func (s *service) TransactionByDate(startdate string, enddate string) ([]TransactionDate, error) {
-	return s.repository.TransactionByDate(startdate, enddate)
 }
 
 func (s *service) UpdateCustomer(data UpdateCustomer) (*UpdateCustomer, error) {

@@ -244,18 +244,6 @@ func (repo *PosgresRepository) DeleteCustomer(id int) error {
 	return nil
 }
 
-func (repo *PosgresRepository) TransactionDate() ([]admin.TransactionDate, error) {
-	var transaction []admin.TransactionDate
-	repo.db.Model(&customermitra.History_Transaction{}).Where("created_at > ?", "2022-01-01").Where("created_at < ?", "2023-01-01").Order("created_at asc").Find(&transaction)
-	return transaction, nil
-}
-
-func (repo *PosgresRepository) TransactionByDate(startdate string, enddate string) ([]admin.TransactionDate, error) {
-	var transaction []admin.TransactionDate
-	repo.db.Raw("select * from history_transactions where status_poin = ? AND created_at BETWEEN ? AND ?", "OUT", startdate+" 00:00:00", enddate+" 23:59:59").Find(&transaction)
-	return transaction, nil
-}
-
 func (repo *PosgresRepository) UpdateCustomer(data admin.UpdateCustomer) (*admin.UpdateCustomer, error) {
 	var tmpCustomer admin.UpdateCustomer
 	err := repo.db.Model(&customermitra.Customers{}).Where("ID = ?", data.ID).First(&tmpCustomer).Error
