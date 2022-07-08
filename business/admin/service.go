@@ -17,7 +17,7 @@ type Repository interface {
 	RenewAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 	GetCustomers(pagination utils.Pagination, name string) ([]*customermitra.Customers, error)
-	GetHistoryCustomers(pagination utils.Pagination) ([]CustomerHistory, error)
+	GetHistoryCustomers(pagination utils.Pagination, name string) ([]CustomerHistory, error)
 	DeleteCustomer(id int) error
 	TransactionDate() ([]TransactionDate, error)
 	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
@@ -41,7 +41,7 @@ type Service interface {
 	UpdateAdmin(id int, admin *Admin) (*Admin, error)
 	LoginAdmin(Auth *AuthLogin) (*ResponseLogin, error)
 	FindCustomers(pagination utils.Pagination, name string) ([]*customermitra.Customers, error)
-	FindHistoryCustomers(pagination utils.Pagination) ([]CustomerHistory, error)
+	FindHistoryCustomers(pagination utils.Pagination, name string) ([]CustomerHistory, error)
 	DeleteCustomer(id int) error
 	TransactionDate() ([]TransactionDate, error)
 	TransactionByDate(startdate string, enddate string) ([]TransactionDate, error)
@@ -121,8 +121,8 @@ func (s *service) FindCustomers(pagination utils.Pagination, name string) ([]*cu
 	return s.repository.GetCustomers(pagination, name)
 }
 
-func (s *service) FindHistoryCustomers(pagination utils.Pagination) ([]CustomerHistory, error) {
-	return s.repository.GetHistoryCustomers(pagination)
+func (s *service) FindHistoryCustomers(pagination utils.Pagination, name string) ([]CustomerHistory, error) {
+	return s.repository.GetHistoryCustomers(pagination, name)
 }
 
 func (s *service) DeleteCustomer(id int) error {

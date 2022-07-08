@@ -232,8 +232,9 @@ func (Controller *Controller) FindCustomers(c echo.Context) error {
 // @Failure 400 {object} response.Error
 // @Router /admin/history [get]
 func (Controller *Controller) FindHistoryCustomers(c echo.Context) error {
+	name := c.QueryParam("name")
 	pagination := utils.GeneratePagination(c.Request().URL.Query())
-	result, err := Controller.service.FindHistoryCustomers(pagination)
+	result, err := Controller.service.FindHistoryCustomers(pagination, name)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"code":     400,

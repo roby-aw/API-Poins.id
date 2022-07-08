@@ -177,11 +177,35 @@ func (repo *PosgresRepository) GetCustomers(pagination utils.Pagination, name st
 	return customers, nil
 }
 
-func (repo *PosgresRepository) GetHistoryCustomers(pagination utils.Pagination) ([]admin.CustomerHistory, error) {
+func (repo *PosgresRepository) GetHistoryCustomers(pagination utils.Pagination, name string) ([]admin.CustomerHistory, error) {
 	var CustomerHistory []admin.CustomerHistory
 	var History_Transaction []*customermitra.History_Transaction
 	offset := (pagination.Page - 1) * pagination.Limit
 	queryBuider := repo.db.Limit(pagination.Limit).Offset(offset).Order(pagination.Sort)
+	if name != "" {
+		err := queryBuider.Where("Status_Poin = ?", "OUT").Preload("Customers", "LOWER(fullname) LIKE LOWER(?)", "%"+name+"%", func(db *gorm.DB) *gorm.DB {
+			return db.Select("id", "email", "fullname")
+		}).Find(&History_Transaction).Error
+		if err != nil {
+			return nil, err
+		}
+		for _, v := range History_Transaction {
+			var tmpHistory admin.CustomerHistory
+			tmpHistory.Customer_id = v.Customer_id
+			tmpHistory.Customers.ID = v.Customers.ID
+			tmpHistory.Customers.Email = v.Customers.Email
+			tmpHistory.Customers.Fullname = v.Customers.Fullname
+			tmpHistory.Description = v.Description
+			tmpHistory.Nomor = v.Nomor
+			tmpHistory.CreatedAt = v.CreatedAt
+			tmpHistory.Status_Transaction = v.Status_Transaction
+			tmpHistory.Poin_redeem = v.Poin_Redeem
+
+			CustomerHistory = append(CustomerHistory, tmpHistory)
+		}
+
+		return CustomerHistory, nil
+	}
 	err := queryBuider.Where("Status_Poin = ?", "OUT").Preload("Customers", func(db *gorm.DB) *gorm.DB {
 		return db.Select("id", "email", "fullname")
 	}).Find(&History_Transaction).Error
