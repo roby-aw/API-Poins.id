@@ -190,20 +190,21 @@ func (repo *PosgresRepository) GetHistoryCustomers(pagination utils.Pagination, 
 			return nil, err
 		}
 		for _, v := range History_Transaction {
-			var tmpHistory admin.CustomerHistory
-			tmpHistory.Customer_id = v.Customer_id
-			tmpHistory.Customers.ID = v.Customers.ID
-			tmpHistory.Customers.Email = v.Customers.Email
-			tmpHistory.Customers.Fullname = v.Customers.Fullname
-			tmpHistory.Description = v.Description
-			tmpHistory.Nomor = v.Nomor
-			tmpHistory.CreatedAt = v.CreatedAt
-			tmpHistory.Status_Transaction = v.Status_Transaction
-			tmpHistory.Poin_redeem = v.Poin_Redeem
+			if v.Customers.Fullname != "" {
+				var tmpHistory admin.CustomerHistory
+				tmpHistory.Customer_id = v.Customer_id
+				tmpHistory.Customers.ID = v.Customers.ID
+				tmpHistory.Customers.Email = v.Customers.Email
+				tmpHistory.Customers.Fullname = v.Customers.Fullname
+				tmpHistory.Description = v.Description
+				tmpHistory.Nomor = v.Nomor
+				tmpHistory.CreatedAt = v.CreatedAt
+				tmpHistory.Status_Transaction = v.Status_Transaction
+				tmpHistory.Poin_redeem = v.Poin_Redeem
 
-			CustomerHistory = append(CustomerHistory, tmpHistory)
+				CustomerHistory = append(CustomerHistory, tmpHistory)
+			}
 		}
-
 		return CustomerHistory, nil
 	}
 	err := queryBuider.Where("Status_Poin = ?", "OUT").Preload("Customers", func(db *gorm.DB) *gorm.DB {
