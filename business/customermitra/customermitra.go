@@ -46,11 +46,6 @@ type AuthStore struct {
 	Password string `json:"password" validate:"required"`
 }
 
-type ResponseLoginStore struct {
-	Store Store  `json:"store"`
-	Token string `json:"token"`
-}
-
 type Customers struct {
 	ID        uint `gorm:"primary_key"`
 	CreatedAt time.Time

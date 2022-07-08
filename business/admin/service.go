@@ -69,12 +69,9 @@ func (s *service) FindAdminByID(id int) (*Admin, error) {
 }
 
 func (s *service) Dashboard() (*Dashboard, error) {
-	transMonts, err := s.repository.GetTransactionMonthDay()
-	if err != nil {
-		return nil, err
-	}
-	Stock, err := s.repository.GetProduct()
-	today, err := s.repository.Dashboard()
+	transMonts, _ := s.repository.GetTransactionMonthDay()
+	Stock, _ := s.repository.GetProduct()
+	today, _ := s.repository.Dashboard()
 	Dashboard := Dashboard{
 		Today: *today,
 		Stock: Stock,

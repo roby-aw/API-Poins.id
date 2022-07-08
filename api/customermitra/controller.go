@@ -1,7 +1,7 @@
 package customermitra
 
 import (
-	customermitraBussiness "api-redeem-point/business/customermitra"
+	customerBussiness "api-redeem-point/business/customermitra"
 	"api-redeem-point/utils"
 	"encoding/json"
 	"net/http"
@@ -11,10 +11,10 @@ import (
 )
 
 type Controller struct {
-	service customermitraBussiness.Service
+	service customerBussiness.Service
 }
 
-func NewController(service customermitraBussiness.Service) *Controller {
+func NewController(service customerBussiness.Service) *Controller {
 	return &Controller{
 		service: service,
 	}
@@ -31,7 +31,7 @@ func NewController(service customermitraBussiness.Service) *Controller {
 // @Failure 400 {object} response.Error
 // @Router /customer [post]
 func (Controller *Controller) Login(c echo.Context) error {
-	var req customermitraBussiness.AuthLogin
+	var req customerBussiness.AuthLogin
 	var err error
 	c.Bind(&req)
 	result, err := Controller.service.LoginCustomer(&req)
@@ -85,7 +85,7 @@ func (Controller *Controller) FindCustomersByID(c echo.Context) error {
 // @Failure 400 {object} response.Error
 // @Router /customer/register [post]
 func (Controller *Controller) Register(c echo.Context) error {
-	var req customermitraBussiness.RegisterCustomer
+	var req customerBussiness.RegisterCustomer
 	c.Bind(&req)
 	result, err := Controller.service.CreateCustomer(&req)
 	if err != nil {
@@ -112,7 +112,7 @@ func (Controller *Controller) Register(c echo.Context) error {
 // @Success 200 {object} customermitra.UpdateCustomer
 // @Router /customer [put]
 func (Controller *Controller) UpdateCustomer(c echo.Context) error {
-	var req customermitraBussiness.UpdateCustomer
+	var req customerBussiness.UpdateCustomer
 	c.Bind(&req)
 	result, err := Controller.service.UpdateCustomer(&req)
 	if err != nil {
@@ -197,7 +197,7 @@ func (Controller *Controller) DetailHistoryCustomer(c echo.Context) error {
 // @Failure 400 {object} response.Error
 // @Router /emoney [post]
 func (Controller *Controller) OrderEmoney(c echo.Context) error {
-	emoney := customermitraBussiness.InputTransactionBankEmoney{}
+	emoney := customerBussiness.InputTransactionBankEmoney{}
 	c.Bind(&emoney)
 	_, err := Controller.service.ToOrderEmoney(&emoney)
 	if err != nil {
@@ -223,7 +223,7 @@ func (Controller *Controller) OrderEmoney(c echo.Context) error {
 // @Failure 400 {object} response.Error
 // @Router /cashout [post]
 func (Controller *Controller) OrderCashout(c echo.Context) error {
-	req := customermitraBussiness.InputTransactionBankEmoney{}
+	req := customerBussiness.InputTransactionBankEmoney{}
 	c.Bind(&req)
 	_, err := Controller.service.RedeemBank(&req)
 	if err != nil {
@@ -250,7 +250,7 @@ func (Controller *Controller) OrderCashout(c echo.Context) error {
 // @Failure 400 {object} response.Error
 // @Router /pulsa [post]
 func (Controller *Controller) OrderPulsa(c echo.Context) error {
-	var req customermitraBussiness.RedeemPulsaData
+	var req customerBussiness.RedeemPulsaData
 	c.Bind(&req)
 	err := Controller.service.RedeemPulsa(&req)
 	if err != nil {
@@ -277,7 +277,7 @@ func (Controller *Controller) OrderPulsa(c echo.Context) error {
 // @Failure 400 {object} response.Error
 // @Router /paketdata [post]
 func (Controller *Controller) OrderPaketData(c echo.Context) error {
-	var req customermitraBussiness.RedeemPulsaData
+	var req customerBussiness.RedeemPulsaData
 	c.Bind(&req)
 	err := Controller.service.RedeemPaketData(&req)
 	if err != nil {
@@ -295,7 +295,7 @@ func (Controller *Controller) OrderPaketData(c echo.Context) error {
 func (Controller *Controller) CallbackXendit(c echo.Context) error {
 	req := c.Request()
 	decoder := json.NewDecoder(req.Body)
-	disbursermentData := customermitraBussiness.Disbursement{}
+	disbursermentData := customerBussiness.Disbursement{}
 	err := decoder.Decode(&disbursermentData)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
@@ -303,7 +303,7 @@ func (Controller *Controller) CallbackXendit(c echo.Context) error {
 
 	defer req.Body.Close()
 	disbursement, _ := json.Marshal(disbursermentData)
-	var resbank customermitraBussiness.Disbursement
+	var resbank customerBussiness.Disbursement
 	json.Unmarshal(disbursement, &resbank)
 	responseWriter := c.Response().Writer
 	responseWriter.Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
@@ -334,7 +334,7 @@ func (Controller *Controller) CallbackXendit(c echo.Context) error {
 // @Failure 400 {object} response.Error
 // @Router /store [post]
 func (Controller *Controller) RegisterStore(c echo.Context) error {
-	var req customermitraBussiness.RegisterStore
+	var req customerBussiness.RegisterStore
 	c.Bind(&req)
 	result, err := Controller.service.CreateStore(&req)
 	if err != nil {
@@ -347,59 +347,5 @@ func (Controller *Controller) RegisterStore(c echo.Context) error {
 		"code":     200,
 		"messages": "success create store",
 		"result":   result,
-	})
-}
-
-// Create godoc
-// @Summary Login Store
-// @description Register Store for Admin
-// @tags Store
-// @Accept json
-// @Produce json
-// @Param LoginStore body customermitra.AuthStore true "LoginStore"
-// @Success 200	{object} response.Result
-// @Failure 400 {object} response.Error
-// @Router /store/login [post]
-func (Controller *Controller) LoginStore(c echo.Context) error {
-	var req customermitraBussiness.AuthStore
-	c.Bind(&req)
-	result, err := Controller.service.LoginStore(&req)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"code":     400,
-			"messages": err.Error(),
-		})
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"code":     200,
-		"messages": "success login store",
-		"result":   result,
-	})
-}
-
-// Create godoc
-// @Summary Input Poin Store
-// @description Input Poin Customer for Store
-// @tags Store
-// @Accept json
-// @Produce json
-// @Param InputPoinStore body customermitra.InputPoin true "InputPoinStore"
-// @Success 200	{object} response.Result
-// @Failure 400 {object} response.Error
-// @Router /store/poin [post]
-func (Controller *Controller) InputPoinStore(c echo.Context) error {
-	var req customermitraBussiness.InputPoin
-	c.Bind(&req)
-	result, err := Controller.service.InputPoin(&req)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"code":     400,
-			"messages": err.Error(),
-		})
-	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"code":     200,
-		"messages": "success input poin",
-		"Add poin": result,
 	})
 }

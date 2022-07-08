@@ -25,11 +25,15 @@ var pagination utils.Pagination
 var loginadmin admin.AuthLogin
 var stock1, stock2 admin.StockProduct
 var historystore1, historystore2 customermitra.History_Transaction
-
+var insertFailAdmin admin.RegisterAdmin
+var loginFailAdmin admin.AuthLogin
 var errorFindID int
+var UpdateCustomer, failUpdateCustomer admin.UpdateCustomer
+var UpdateStore, failUpdateStore admin.UpdateStore
 
 var errorInsert error = errors.New("error on insert")
 var errorFind error = errors.New("error on find")
+var failID = 0
 
 func TestMain(m *testing.M) {
 	setup()
@@ -65,6 +69,12 @@ func TestInsertAdmin(t *testing.T) {
 		if NewAdmin == nil {
 			t.Error("expect admins is not nil after inserted")
 			t.FailNow()
+		}
+	})
+	t.Run("Expect error validation", func(t *testing.T) {
+		_, err := service.CreateAdmin(&insertFailAdmin)
+		if err == nil {
+			t.Error("expect found result")
 		}
 	})
 }
@@ -143,6 +153,12 @@ func TestLoginAdmin(t *testing.T) {
 			t.Error("error")
 		}
 	})
+	t.Run("Expect error validation", func(t *testing.T) {
+		_, err := service.LoginAdmin(&loginFailAdmin)
+		if err == nil {
+			t.Error("expect found result")
+		}
+	})
 }
 
 func TestGetStore(t *testing.T) {
@@ -171,6 +187,36 @@ func TestRenewAdmin(t *testing.T) {
 	})
 }
 
+func TestUpdateCustomers(t *testing.T) {
+	t.Run("Expect success update customer", func(t *testing.T) {
+		result, _ := service.UpdateCustomer(UpdateCustomer)
+		if result == nil {
+			t.Error("data not updated")
+		}
+	})
+	t.Run("Expect error validation", func(t *testing.T) {
+		_, err := service.UpdateCustomer(failUpdateCustomer)
+		if err == nil {
+			t.Error("expect got error is not nil")
+		}
+	})
+}
+
+func TestUpdateStore(t *testing.T) {
+	t.Run("Expect success update store", func(t *testing.T) {
+		result, _ := service.UpdateStore(UpdateStore)
+		if result == nil {
+			t.Error("data not updated")
+		}
+	})
+	t.Run("Expect error validation", func(t *testing.T) {
+		_, err := service.UpdateStore(failUpdateStore)
+		if err == nil {
+			t.Error("expect got error is not nil")
+		}
+	})
+}
+
 func TestDeleteCustomers(t *testing.T) {
 	t.Run("Expect delete customer2", func(t *testing.T) {
 		err := service.DeleteCustomer(int(customer1.ID))
@@ -180,6 +226,12 @@ func TestDeleteCustomers(t *testing.T) {
 		result, _ := service.FindCustomers(pagination, "")
 		if len(result) != 2 {
 			t.Error("len customer must be 2")
+		}
+	})
+	t.Run("Expect error on delete", func(t *testing.T) {
+		err := service.DeleteCustomer(failID)
+		if err == nil {
+			t.Error("Expect got error")
 		}
 	})
 }
@@ -330,6 +382,19 @@ func setup() {
 	updateadmin.Fullname = "update admin"
 	updateadmin.Password = "updatepassword"
 	updateadmin.No_hp = "056856585"
+
+	UpdateCustomer.ID = 2
+	UpdateCustomer.Email = "updatecustomer@gmail.com"
+	UpdateCustomer.Fullname = "updatecustomer"
+	UpdateCustomer.Password = "updatepassword"
+	UpdateCustomer.No_hp = "085623569898"
+	UpdateCustomer.Pin = 9656
+
+	UpdateStore.ID = 2
+	UpdateStore.Email = "UpdateStore@gmail.com"
+	UpdateStore.Store = "updateStore"
+	UpdateStore.Password = "updatepassword"
+	UpdateStore.Alamat = "jl. store update"
 }
 
 type inMemoryRepository struct {
@@ -541,14 +606,9 @@ func (repo *inMemoryRepository) DeleteCustomer(id int) error {
 	repo.AllCustomer = append(arr[:id], arr[id+1:]...)
 	return nil
 }
-func (repo *inMemoryRepository) TransactionDate() ([]admin.TransactionDate, error) {
-	return nil, nil
-}
-func (repo *inMemoryRepository) TransactionByDate(startdate string, enddate string) ([]admin.TransactionDate, error) {
-	return nil, nil
-}
+
 func (repo *inMemoryRepository) UpdateCustomer(data admin.UpdateCustomer) (*admin.UpdateCustomer, error) {
-	return nil, nil
+	return &data, nil
 }
 func (repo *inMemoryRepository) UpdateCustomerPoint(id int, point int) (*int, error) {
 	return nil, nil
@@ -576,5 +636,5 @@ func (repo *inMemoryRepository) GetStore(pagination utils.Pagination, name strin
 	return tmpStore, nil
 }
 func (repo *inMemoryRepository) UpdateStore(store admin.UpdateStore) (*admin.UpdateStore, error) {
-	return nil, nil
+	return &store, nil
 }

@@ -4,6 +4,7 @@ import (
 	"api-redeem-point/api/admin"
 	"api-redeem-point/api/customermitra"
 	"api-redeem-point/api/middleware"
+	"api-redeem-point/api/mitra"
 
 	//auth "api-redeem-point/api/middleware"
 
@@ -13,6 +14,7 @@ import (
 type Controller struct {
 	AdminControlller        *admin.Controller
 	CustomerMitraController *customermitra.Controller
+	MitraController         *mitra.Controller
 }
 
 func RegistrationPath(e *echo.Echo, controller Controller) {
@@ -49,6 +51,6 @@ func RegistrationPath(e *echo.Echo, controller Controller) {
 	g.PUT("/store", controller.AdminControlller.UpdateStore)
 	s := c.Group("/store")
 	s.POST("", controller.CustomerMitraController.RegisterStore)
-	s.POST("/login", controller.CustomerMitraController.LoginStore)
-	s.POST("/poin", controller.CustomerMitraController.InputPoinStore, middleware.StoreSetupAuthenticationJWT())
+	s.POST("/login", controller.MitraController.LoginStore)
+	s.POST("/poin", controller.MitraController.InputPoinStore, middleware.StoreSetupAuthenticationJWT())
 }

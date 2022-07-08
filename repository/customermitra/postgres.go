@@ -389,44 +389,6 @@ func (repo *PosgresRepository) InsertStore(store *customermitra.RegisterStore) (
 	return store, nil
 }
 
-func (repo *PosgresRepository) SignStore(store *customermitra.AuthStore) (*customermitra.ResponseLoginStore, error) {
-	var tmpStore *customermitra.Store
-	err := repo.db.Where("email = ?", store.Email).First(&tmpStore).Error
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			err = errors.New("Email salah")
-			return nil, err
-		}
-	}
-	err = VerifyPassword(tmpStore.Password, store.Password)
-	if err != nil {
-		err = errors.New("Password salah")
-		return nil, err
-	}
-	expirationTime := time.Now().Add(24 * time.Hour)
-
-	claims := &customermitra.ClaimsMitra{
-		ID:    int(tmpStore.ID),
-		Email: tmpStore.Email,
-		Store: true,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
-		},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	SECRET_KEY := os.Getenv("SECRET_JWT")
-	token_jwt, err := token.SignedString([]byte(SECRET_KEY))
-	if err != nil {
-		return nil, err
-	}
-	Response := customermitra.ResponseLoginStore{
-		Store: *tmpStore,
-		Token: token_jwt,
-	}
-	return &Response, nil
-}
-
 func (repo *PosgresRepository) InputPoin(input *customermitra.InputPoin) (*int, error) {
 	var tmpCustomer customermitra.Customers
 	err := repo.db.Model(customermitra.Customers{}).Where("ID = ?", input.Customer_id).First(&tmpCustomer).Error

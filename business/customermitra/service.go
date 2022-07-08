@@ -21,8 +21,6 @@ type Repository interface {
 	TakeCallback(data *Disbursement) (*Disbursement, error)
 	GetOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
 	InsertStore(store *RegisterStore) (*RegisterStore, error)
-	SignStore(store *AuthStore) (*ResponseLoginStore, error)
-	InputPoin(input *InputPoin) (*int, error)
 	DecraseStock(id int, stock int) error
 }
 
@@ -38,10 +36,8 @@ type Service interface {
 	RedeemBank(Data *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
 	GetCallback(data *Disbursement) (*Disbursement, error)
 	ToOrderEmoney(emoney *InputTransactionBankEmoney) (*InputTransactionBankEmoney, error)
-	CreateStore(store *RegisterStore) (*RegisterStore, error)
-	LoginStore(store *AuthStore) (*ResponseLoginStore, error)
-	InputPoin(input *InputPoin) (*int, error)
 	DecraseStock(id int, stock int) error
+	CreateStore(store *RegisterStore) (*RegisterStore, error)
 }
 
 type service struct {
@@ -208,17 +204,6 @@ func (s *service) CreateStore(store *RegisterStore) (*RegisterStore, error) {
 		return nil, err
 	}
 	return s.repository.InsertStore(store)
-}
-func (s *service) LoginStore(store *AuthStore) (*ResponseLoginStore, error) {
-	return s.repository.SignStore(store)
-}
-
-func (s *service) InputPoin(input *InputPoin) (*int, error) {
-	err := s.validate.Struct(input)
-	if err != nil {
-		return nil, err
-	}
-	return s.repository.InputPoin(input)
 }
 
 func (s *service) DecraseStock(id int, stock int) error {
