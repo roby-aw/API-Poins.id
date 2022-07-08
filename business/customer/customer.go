@@ -210,10 +210,3 @@ type Claims struct {
 	Customer bool
 	jwt.StandardClaims
 }
-
-type ClaimsMitra struct {
-	ID    int
-	Email string
-	Store bool
-	jwt.StandardClaims
-}

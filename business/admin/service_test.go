@@ -248,6 +248,12 @@ func TestDeleteStore(t *testing.T) {
 			t.Error("len store must be 2")
 		}
 	})
+	t.Run("Expect error validation", func(t *testing.T) {
+		err := service.DeleteStore(failID)
+		if err == nil {
+			t.Error("Expect got error")
+		}
+	})
 }
 
 func setup() {
