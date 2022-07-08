@@ -150,9 +150,13 @@ func (repo *PosgresRepository) DetailHistoryCustomer(idtransaction string) (*cus
 }
 
 func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) error {
-	var Customers customermitra.Customers
-	err := repo.db.Where("ID = ?", Data.Customer_id).First(&Customers).Error
+	var tmpCustomer customermitra.Customers
+	err := repo.db.Where("ID = ?", Data.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
+		return err
+	}
+	if Data.Pin != tmpCustomer.Pin {
+		err = errors.New("wrong pin")
 		return err
 	}
 	var stock customermitra.StockProduct
@@ -161,9 +165,9 @@ func (repo *PosgresRepository) ClaimPulsa(Data *customermitra.RedeemPulsaData) e
 		err = errors.New("stock not available")
 		return err
 	}
-	hasil := Customers.Poin - Data.Poin_redeem
-	Customers.Poin = hasil
-	err = repo.db.Model(Customers).Select("Poin").Updates(Customers).Error
+	hasil := tmpCustomer.Poin - Data.Poin_redeem
+	tmpCustomer.Poin = hasil
+	err = repo.db.Model(tmpCustomer).Select("Poin").Updates(tmpCustomer).Error
 	if err != nil {
 		return err
 	}
@@ -198,6 +202,10 @@ func (repo *PosgresRepository) ClaimPaketData(Data *customermitra.RedeemPulsaDat
 	err := repo.db.Model(&repository.Customer{}).Where("ID = ?", Data.Customer_id).First(&tmpCustomer).Error
 	if tmpCustomer.Email == "" {
 		err = errors.New("Wrong id customer")
+		return err
+	}
+	if Data.Pin != tmpCustomer.Pin {
+		err = errors.New("wrong pin")
 		return err
 	}
 	var stock customermitra.StockProduct
@@ -255,6 +263,10 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customermitra.InputTransac
 	if err != nil {
 		return nil, err
 	}
+	if emoney.Pin != tmpCustomer.Pin {
+		err = errors.New("wrong pin")
+		return nil, err
+	}
 	var stock customermitra.StockProduct
 	repo.db.Model(repository.StockProduct{}).Where("id = 2").First(&stock)
 	if stock.Balance < emoney.Amount {
@@ -308,6 +320,9 @@ func (repo *PosgresRepository) ClaimBank(emoney *customermitra.InputTransactionB
 	var tmpCustomer customermitra.Customers
 	err := repo.db.Where("ID = ?", emoney.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
+		return nil, err
+	}
+	if emoney.Pin != tmpCustomer.Pin {
 		return nil, err
 	}
 	var stock customermitra.StockProduct
