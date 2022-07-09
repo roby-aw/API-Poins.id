@@ -323,6 +323,7 @@ func (repo *PosgresRepository) ClaimBank(emoney *customerBusiness.InputTransacti
 		return nil, err
 	}
 	if emoney.Pin != tmpCustomer.Pin {
+		err = errors.New("wrong pin")
 		return nil, err
 	}
 	var stock customerBusiness.StockProduct
