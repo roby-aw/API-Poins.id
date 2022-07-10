@@ -154,7 +154,6 @@ type RedeemPulsaData struct {
 
 type UpdateCustomer struct {
 	ID       int    `json:"id" validate:"required"`
-	Name     string `json:"name"`
 	Fullname string `json:"fullname"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
