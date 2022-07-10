@@ -93,13 +93,16 @@ func (repo *PosgresRepository) InsertCustomer(Data *customerBusiness.RegisterCus
 		err = errors.New("email sudah digunakan")
 		return nil, err
 	}
-	fmt.Println(Customer)
 	repo.db.Create(&Customer)
 
 	return Data, nil
 }
 
 func (repo *PosgresRepository) UpdateCustomer(Data *customerBusiness.UpdateCustomer) (*customerBusiness.UpdateCustomer, error) {
+	if Data.Password != "" {
+		password, _ := Hash(Data.Password)
+		Data.Password = string(password)
+	}
 	err := repo.db.Model(&customerBusiness.Customers{}).Where("ID = ?", Data.ID).Updates(customerBusiness.Customers{Email: Data.Email, Fullname: Data.Name, No_hp: Data.No_hp}).Error
 	if err != nil {
 		return nil, err
