@@ -158,6 +158,7 @@ type UpdateCustomer struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 	No_hp    string `json:"no_hp"`
+	Pin      int    `json:"pin"`
 }
 
 type Bank struct {
