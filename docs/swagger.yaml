@@ -45,7 +45,7 @@ definitions:
     - fullname
     - id
     type: object
-  customermitra.AuthLogin:
+  customer.AuthLogin:
     properties:
       email:
         type: string
@@ -55,30 +55,7 @@ definitions:
     - email
     - password
     type: object
-  customermitra.AuthStore:
-    properties:
-      email:
-        type: string
-      password:
-        type: string
-    required:
-    - email
-    - password
-    type: object
-  customermitra.InputPoin:
-    properties:
-      amount:
-        type: integer
-      customer_id:
-        type: integer
-      store_id:
-        type: integer
-    required:
-    - amount
-    - customer_id
-    - store_id
-    type: object
-  customermitra.InputTransactionBankEmoney:
+  customer.InputTransactionBankEmoney:
     properties:
       amount:
         type: integer
@@ -103,7 +80,7 @@ definitions:
     - pin
     - poin_redeem
     type: object
-  customermitra.RedeemPulsaData:
+  customer.RedeemPulsaData:
     properties:
       amount:
         type: integer
@@ -125,7 +102,7 @@ definitions:
     - pin
     - poin_redeem
     type: object
-  customermitra.RegisterCustomer:
+  customer.RegisterCustomer:
     properties:
       email:
         type: string
@@ -144,7 +121,7 @@ definitions:
     - password
     - pin
     type: object
-  customermitra.RegisterStore:
+  customer.RegisterStore:
     properties:
       alamat:
         type: string
@@ -160,16 +137,20 @@ definitions:
     - password
     - store
     type: object
-  customermitra.UpdateCustomer:
+  customer.UpdateCustomer:
     properties:
       email:
         type: string
+      fullname:
+        type: string
       id:
         type: integer
-      name:
-        type: string
       no_hp:
         type: string
+      password:
+        type: string
+      pin:
+        type: integer
     required:
     - id
     type: object
@@ -187,6 +168,29 @@ definitions:
       messages:
         type: string
       result: {}
+    type: object
+  store.AuthStore:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  store.InputPoin:
+    properties:
+      amount:
+        type: integer
+      customer_id:
+        type: integer
+      store_id:
+        type: integer
+    required:
+    - amount
+    - customer_id
+    - store_id
     type: object
 host: api-poins-id.herokuapp.com/v1
 info:
@@ -581,7 +585,7 @@ paths:
         name: InputDataCashout
         required: true
         schema:
-          $ref: '#/definitions/customermitra.InputTransactionBankEmoney'
+          $ref: '#/definitions/customer.InputTransactionBankEmoney'
       produces:
       - application/json
       responses:
@@ -607,7 +611,7 @@ paths:
         name: Customer
         required: true
         schema:
-          $ref: '#/definitions/customermitra.AuthLogin'
+          $ref: '#/definitions/customer.AuthLogin'
       produces:
       - application/json
       responses:
@@ -638,14 +642,14 @@ paths:
         name: Registercustomer
         required: true
         schema:
-          $ref: '#/definitions/customermitra.UpdateCustomer'
+          $ref: '#/definitions/customer.UpdateCustomer'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/customermitra.UpdateCustomer'
+            $ref: '#/definitions/customer.UpdateCustomer'
       summary: Updatecustomer
       tags:
       - Customer
@@ -685,7 +689,7 @@ paths:
         name: Registercustomer
         required: true
         schema:
-          $ref: '#/definitions/customermitra.RegisterCustomer'
+          $ref: '#/definitions/customer.RegisterCustomer'
       produces:
       - application/json
       responses:
@@ -742,7 +746,7 @@ paths:
         name: InputDataCashout
         required: true
         schema:
-          $ref: '#/definitions/customermitra.InputTransactionBankEmoney'
+          $ref: '#/definitions/customer.InputTransactionBankEmoney'
       produces:
       - application/json
       responses:
@@ -813,7 +817,7 @@ paths:
         name: InputDataPaketData
         required: true
         schema:
-          $ref: '#/definitions/customermitra.RedeemPulsaData'
+          $ref: '#/definitions/customer.RedeemPulsaData'
       produces:
       - application/json
       responses:
@@ -845,7 +849,7 @@ paths:
         name: InputDataPulsa
         required: true
         schema:
-          $ref: '#/definitions/customermitra.RedeemPulsaData'
+          $ref: '#/definitions/customer.RedeemPulsaData'
       produces:
       - application/json
       responses:
@@ -877,7 +881,7 @@ paths:
         name: RegisterStore
         required: true
         schema:
-          $ref: '#/definitions/customermitra.RegisterStore'
+          $ref: '#/definitions/customer.RegisterStore'
       produces:
       - application/json
       responses:
@@ -903,7 +907,7 @@ paths:
         name: LoginStore
         required: true
         schema:
-          $ref: '#/definitions/customermitra.AuthStore'
+          $ref: '#/definitions/store.AuthStore'
       produces:
       - application/json
       responses:
@@ -929,7 +933,7 @@ paths:
         name: InputPoinStore
         required: true
         schema:
-          $ref: '#/definitions/customermitra.InputPoin'
+          $ref: '#/definitions/store.InputPoin'
       produces:
       - application/json
       responses:

@@ -596,7 +596,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
+                            "$ref": "#/definitions/customer.InputTransactionBankEmoney"
                         }
                     }
                 ],
@@ -644,7 +644,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.UpdateCustomer"
+                            "$ref": "#/definitions/customer.UpdateCustomer"
                         }
                     }
                 ],
@@ -652,7 +652,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/customermitra.UpdateCustomer"
+                            "$ref": "#/definitions/customer.UpdateCustomer"
                         }
                     }
                 }
@@ -676,7 +676,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.AuthLogin"
+                            "$ref": "#/definitions/customer.AuthLogin"
                         }
                     }
                 ],
@@ -716,7 +716,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.RegisterCustomer"
+                            "$ref": "#/definitions/customer.RegisterCustomer"
                         }
                     }
                 ],
@@ -840,7 +840,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
+                            "$ref": "#/definitions/customer.InputTransactionBankEmoney"
                         }
                     }
                 ],
@@ -946,7 +946,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.RedeemPulsaData"
+                            "$ref": "#/definitions/customer.RedeemPulsaData"
                         }
                     }
                 ],
@@ -994,7 +994,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.RedeemPulsaData"
+                            "$ref": "#/definitions/customer.RedeemPulsaData"
                         }
                     }
                 ],
@@ -1042,7 +1042,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.RegisterStore"
+                            "$ref": "#/definitions/customer.RegisterStore"
                         }
                     }
                 ],
@@ -1082,7 +1082,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.AuthStore"
+                            "$ref": "#/definitions/store.AuthStore"
                         }
                     }
                 ],
@@ -1122,7 +1122,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.InputPoin"
+                            "$ref": "#/definitions/store.InputPoin"
                         }
                     }
                 ],
@@ -1210,7 +1210,7 @@
                 }
             }
         },
-        "customermitra.AuthLogin": {
+        "customer.AuthLogin": {
             "type": "object",
             "required": [
                 "email",
@@ -1225,41 +1225,7 @@
                 }
             }
         },
-        "customermitra.AuthStore": {
-            "type": "object",
-            "required": [
-                "email",
-                "password"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "customermitra.InputPoin": {
-            "type": "object",
-            "required": [
-                "amount",
-                "customer_id",
-                "store_id"
-            ],
-            "properties": {
-                "amount": {
-                    "type": "integer"
-                },
-                "customer_id": {
-                    "type": "integer"
-                },
-                "store_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "customermitra.InputTransactionBankEmoney": {
+        "customer.InputTransactionBankEmoney": {
             "type": "object",
             "required": [
                 "amount",
@@ -1294,7 +1260,7 @@
                 }
             }
         },
-        "customermitra.RedeemPulsaData": {
+        "customer.RedeemPulsaData": {
             "type": "object",
             "required": [
                 "amount",
@@ -1325,7 +1291,7 @@
                 }
             }
         },
-        "customermitra.RegisterCustomer": {
+        "customer.RegisterCustomer": {
             "type": "object",
             "required": [
                 "email",
@@ -1352,7 +1318,7 @@
                 }
             }
         },
-        "customermitra.RegisterStore": {
+        "customer.RegisterStore": {
             "type": "object",
             "required": [
                 "alamat",
@@ -1375,7 +1341,7 @@
                 }
             }
         },
-        "customermitra.UpdateCustomer": {
+        "customer.UpdateCustomer": {
             "type": "object",
             "required": [
                 "id"
@@ -1384,14 +1350,20 @@
                 "email": {
                     "type": "string"
                 },
+                "fullname": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
-                "name": {
-                    "type": "string"
-                },
                 "no_hp": {
                     "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "pin": {
+                    "type": "integer"
                 }
             }
         },
@@ -1416,6 +1388,40 @@
                     "type": "string"
                 },
                 "result": {}
+            }
+        },
+        "store.AuthStore": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "store.InputPoin": {
+            "type": "object",
+            "required": [
+                "amount",
+                "customer_id",
+                "store_id"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "customer_id": {
+                    "type": "integer"
+                },
+                "store_id": {
+                    "type": "integer"
+                }
             }
         }
     }
