@@ -26,7 +26,7 @@ func NewController(service customerBussiness.Service) *Controller {
 // @tags Customer
 // @Accept json
 // @Produce json
-// @Param Customer body customermitra.AuthLogin true "Customer"
+// @Param Customer body customer.AuthLogin true "Customer"
 // @Success 200	{object} response.Result
 // @Failure 400 {object} response.Error
 // @Router /customer [post]
@@ -80,7 +80,7 @@ func (Controller *Controller) FindCustomersByID(c echo.Context) error {
 // @tags Customer
 // @Accept json
 // @Produce json
-// @Param Registercustomer body customermitra.RegisterCustomer true "Register"
+// @Param Registercustomer body customer.RegisterCustomer true "Register"
 // @Success 200	{object} response.Result
 // @Failure 400 {object} response.Error
 // @Router /customer/register [post]
@@ -108,8 +108,8 @@ func (Controller *Controller) Register(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
-// @Param Registercustomer body customermitra.UpdateCustomer true "customer"
-// @Success 200 {object} customermitra.UpdateCustomer
+// @Param Registercustomer body customer.UpdateCustomer true "customer"
+// @Success 200 {object} customer.UpdateCustomer
 // @Router /customer [put]
 func (Controller *Controller) UpdateCustomer(c echo.Context) error {
 	var req customerBussiness.UpdateCustomer
@@ -192,7 +192,7 @@ func (Controller *Controller) DetailHistoryCustomer(c echo.Context) error {
 // @tags Redeem
 // @Accept json
 // @Produce json
-// @Param InputDataCashout body customermitra.InputTransactionBankEmoney true "inputdataemoney"
+// @Param InputDataCashout body customer.InputTransactionBankEmoney true "inputdataemoney"
 // @Success 200	{object} response.Result
 // @Failure 400 {object} response.Error
 // @Router /emoney [post]
@@ -218,7 +218,7 @@ func (Controller *Controller) OrderEmoney(c echo.Context) error {
 // @tags Redeem
 // @Accept json
 // @Produce json
-// @Param InputDataCashout body customermitra.InputTransactionBankEmoney true "inputdataemoney"
+// @Param InputDataCashout body customer.InputTransactionBankEmoney true "inputdataemoney"
 // @Success 200	{object} response.Result
 // @Failure 400 {object} response.Error
 // @Router /cashout [post]
@@ -245,7 +245,7 @@ func (Controller *Controller) OrderCashout(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
-// @Param InputDataPulsa body customermitra.RedeemPulsaData true "Input data pulsa"
+// @Param InputDataPulsa body customer.RedeemPulsaData true "Input data pulsa"
 // @Success 200	{object} response.Result
 // @Failure 400 {object} response.Error
 // @Router /pulsa [post]
@@ -272,7 +272,7 @@ func (Controller *Controller) OrderPulsa(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
-// @Param InputDataPaketData body customermitra.RedeemPulsaData true "Input data paket data"
+// @Param InputDataPaketData body customer.RedeemPulsaData true "Input data paket data"
 // @Success 200	{object} response.Result
 // @Failure 400 {object} response.Error
 // @Router /paketdata [post]
@@ -329,7 +329,7 @@ func (Controller *Controller) CallbackXendit(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param Authorization header string true "Insert your access token" default(Bearer <Add access token here>)
-// @Param RegisterStore body customermitra.RegisterStore true "Register Store"
+// @Param RegisterStore body customer.RegisterStore true "Register Store"
 // @Success 200	{object} response.Result
 // @Failure 400 {object} response.Error
 // @Router /store [post]

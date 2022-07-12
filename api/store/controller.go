@@ -23,7 +23,7 @@ func NewController(service storeBussiness.Service) *Controller {
 // @tags Store
 // @Accept json
 // @Produce json
-// @Param LoginStore body customermitra.AuthStore true "LoginStore"
+// @Param LoginStore body store.AuthStore true "LoginStore"
 // @Success 200	{object} response.Result
 // @Failure 400 {object} response.Error
 // @Router /store/login [post]
@@ -50,7 +50,7 @@ func (Controller *Controller) LoginStore(c echo.Context) error {
 // @tags Store
 // @Accept json
 // @Produce json
-// @Param InputPoinStore body customermitra.InputPoin true "InputPoinStore"
+// @Param InputPoinStore body store.InputPoin true "InputPoinStore"
 // @Success 200	{object} response.Result
 // @Failure 400 {object} response.Error
 // @Router /store/poin [post]
