@@ -103,7 +103,22 @@ func (repo *PosgresRepository) UpdateCustomer(Data *customerBusiness.UpdateCusto
 		password, _ := Hash(Data.Password)
 		Data.Password = string(password)
 	}
-	err := repo.db.Model(&customerBusiness.Customers{}).Where("ID = ?", Data.ID).Updates(customerBusiness.Customers{Email: Data.Email, Fullname: Data.Fullname, Password: Data.Password, No_hp: Data.No_hp, Pin: Data.Pin}).Error
+	var account customerBusiness.Customers
+	repo.db.Model(&repository.Customer{}).Where("email = ?", Data.Email).First(&account)
+	var err error
+	if account.Email != "" {
+		func() {
+			if Data.Email == account.Email {
+				return
+			}
+			err = errors.New("Email already used")
+			return
+		}()
+		if err != nil {
+			return nil, err
+		}
+	}
+	err = repo.db.Model(&customerBusiness.Customers{}).Where("ID = ?", Data.ID).Updates(customerBusiness.Customers{Email: Data.Email, Fullname: Data.Fullname, Password: Data.Password, No_hp: Data.No_hp, Pin: Data.Pin}).Error
 	if err != nil {
 		return nil, err
 	}
