@@ -25,7 +25,7 @@ func NewPostgresRepository(db *gorm.DB) *PosgresRepository {
 
 func (repo *PosgresRepository) SignStore(auth *store.AuthStore) (*store.ResponseLoginStore, error) {
 	var tmpStore *store.Store
-	err := repo.db.Where("email = ?", auth.Email).First(&tmpStore).Error
+	err := repo.db.Model(&repository.Store{}).Where("email = ?", auth.Email).Take(&tmpStore).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("Email salah")
