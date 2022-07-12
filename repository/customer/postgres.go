@@ -401,7 +401,7 @@ func (repo *PosgresRepository) InsertStore(store *customerBusiness.RegisterStore
 		err := errors.New("Email already use")
 		return nil, err
 	}
-	err := repo.db.Create(&customerBusiness.Store{Email: store.Email, Password: string(hash), Store: store.Store, Alamat: store.Alamat}).Error
+	err := repo.db.Model(&repository.Customer{}).Create(&customerBusiness.Store{Email: store.Email, Password: string(hash), Store: store.Store, Alamat: store.Alamat}).Error
 	if err != nil {
 		return nil, err
 	}
