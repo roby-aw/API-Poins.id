@@ -349,7 +349,7 @@ func (repo *PosgresRepository) HistoryStore(pagination utils.Pagination, name st
 }
 
 func (repo *PosgresRepository) DeleteStore(id int) error {
-	var store *customerBusiness.Store
+	var store *repository.Store
 	err := repo.db.Model(&repository.Store{}).Where("ID = ?", id).First(&store).Error
 	if err != nil {
 		return err
