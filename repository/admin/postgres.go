@@ -232,7 +232,7 @@ func (repo *PosgresRepository) GetHistoryCustomers(pagination utils.Pagination, 
 }
 
 func (repo *PosgresRepository) DeleteCustomer(id int) error {
-	var customer *admin.Customers
+	var customer *repository.Customer
 	err := repo.db.Model(&repository.Customer{}).Where("ID = ?", id).First(&customer).Error
 	if err != nil {
 		return err
