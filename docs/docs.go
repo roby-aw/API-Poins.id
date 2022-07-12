@@ -603,7 +603,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
+                            "$ref": "#/definitions/customer.InputTransactionBankEmoney"
                         }
                     }
                 ],
@@ -651,7 +651,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.UpdateCustomer"
+                            "$ref": "#/definitions/customer.UpdateCustomer"
                         }
                     }
                 ],
@@ -659,7 +659,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/customermitra.UpdateCustomer"
+                            "$ref": "#/definitions/customer.UpdateCustomer"
                         }
                     }
                 }
@@ -683,7 +683,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.AuthLogin"
+                            "$ref": "#/definitions/customer.AuthLogin"
                         }
                     }
                 ],
@@ -723,7 +723,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.RegisterCustomer"
+                            "$ref": "#/definitions/customer.RegisterCustomer"
                         }
                     }
                 ],
@@ -847,7 +847,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.InputTransactionBankEmoney"
+                            "$ref": "#/definitions/customer.InputTransactionBankEmoney"
                         }
                     }
                 ],
@@ -953,7 +953,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.RedeemPulsaData"
+                            "$ref": "#/definitions/customer.RedeemPulsaData"
                         }
                     }
                 ],
@@ -1001,7 +1001,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.RedeemPulsaData"
+                            "$ref": "#/definitions/customer.RedeemPulsaData"
                         }
                     }
                 ],
@@ -1049,7 +1049,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.RegisterStore"
+                            "$ref": "#/definitions/customer.RegisterStore"
                         }
                     }
                 ],
@@ -1089,7 +1089,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.AuthStore"
+                            "$ref": "#/definitions/store.AuthStore"
                         }
                     }
                 ],
@@ -1129,7 +1129,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/customermitra.InputPoin"
+                            "$ref": "#/definitions/store.InputPoin"
                         }
                     }
                 ],
@@ -1217,7 +1217,7 @@ const docTemplate = `{
                 }
             }
         },
-        "customermitra.AuthLogin": {
+        "customer.AuthLogin": {
             "type": "object",
             "required": [
                 "email",
@@ -1232,41 +1232,7 @@ const docTemplate = `{
                 }
             }
         },
-        "customermitra.AuthStore": {
-            "type": "object",
-            "required": [
-                "email",
-                "password"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "customermitra.InputPoin": {
-            "type": "object",
-            "required": [
-                "amount",
-                "customer_id",
-                "store_id"
-            ],
-            "properties": {
-                "amount": {
-                    "type": "integer"
-                },
-                "customer_id": {
-                    "type": "integer"
-                },
-                "store_id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "customermitra.InputTransactionBankEmoney": {
+        "customer.InputTransactionBankEmoney": {
             "type": "object",
             "required": [
                 "amount",
@@ -1301,7 +1267,7 @@ const docTemplate = `{
                 }
             }
         },
-        "customermitra.RedeemPulsaData": {
+        "customer.RedeemPulsaData": {
             "type": "object",
             "required": [
                 "amount",
@@ -1332,7 +1298,7 @@ const docTemplate = `{
                 }
             }
         },
-        "customermitra.RegisterCustomer": {
+        "customer.RegisterCustomer": {
             "type": "object",
             "required": [
                 "email",
@@ -1359,7 +1325,7 @@ const docTemplate = `{
                 }
             }
         },
-        "customermitra.RegisterStore": {
+        "customer.RegisterStore": {
             "type": "object",
             "required": [
                 "alamat",
@@ -1382,7 +1348,7 @@ const docTemplate = `{
                 }
             }
         },
-        "customermitra.UpdateCustomer": {
+        "customer.UpdateCustomer": {
             "type": "object",
             "required": [
                 "id"
@@ -1391,14 +1357,20 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
+                "fullname": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
-                "name": {
-                    "type": "string"
-                },
                 "no_hp": {
                     "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "pin": {
+                    "type": "integer"
                 }
             }
         },
@@ -1423,6 +1395,40 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "result": {}
+            }
+        },
+        "store.AuthStore": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "store.InputPoin": {
+            "type": "object",
+            "required": [
+                "amount",
+                "customer_id",
+                "store_id"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "customer_id": {
+                    "type": "integer"
+                },
+                "store_id": {
+                    "type": "integer"
+                }
             }
         }
     }
