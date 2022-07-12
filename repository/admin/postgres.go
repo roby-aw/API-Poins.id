@@ -237,7 +237,7 @@ func (repo *PosgresRepository) DeleteCustomer(id int) error {
 	if err != nil {
 		return err
 	}
-	err = repo.db.Delete(customer, id).Error
+	err = repo.db.Where("ID = ?", id).Delete(&customer).Error
 	if err != nil {
 		return err
 	}
