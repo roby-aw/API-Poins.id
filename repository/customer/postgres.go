@@ -46,7 +46,7 @@ func (repo *PosgresRepository) GetCustomersByID(id int) (*customerBusiness.Custo
 
 func (repo *PosgresRepository) SignCustomer(login *customerBusiness.AuthLogin) (*customerBusiness.ResponseLogin, error) {
 	var Customer customerBusiness.ResponseLogin
-	err := repo.db.Model(&customerBusiness.Customers{}).Where("email = ?", login.Email).Select("ID", "email", "fullname", "password", "no_hp", "poin", "pin").First(&Customer).Error
+	err := repo.db.Model(&repository.Customer{}).Where("email = ?", login.Email).Select("ID", "email", "fullname", "password", "no_hp", "poin", "pin").First(&Customer).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("Email salah")
