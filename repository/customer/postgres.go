@@ -5,7 +5,6 @@ import (
 	"api-redeem-point/repository"
 	"api-redeem-point/utils"
 	"errors"
-	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -53,7 +52,6 @@ func (repo *PosgresRepository) SignCustomer(login *customerBusiness.AuthLogin) (
 			return nil, err
 		}
 	}
-	fmt.Println(Customer)
 	err = VerifyPassword(Customer.Password, login.Password)
 	if err != nil {
 		err = errors.New("Password salah")
@@ -169,7 +167,7 @@ func (repo *PosgresRepository) DetailHistoryCustomer(idtransaction string) (*cus
 
 func (repo *PosgresRepository) ClaimPulsa(Data *customerBusiness.RedeemPulsaData) error {
 	var tmpCustomer customerBusiness.Customers
-	err := repo.db.Where("ID = ?", Data.Customer_id).First(&tmpCustomer).Error
+	err := repo.db.Model(&repository.Customer{}).Where("ID = ?", Data.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
 		return err
 	}
@@ -277,7 +275,7 @@ func (repo *PosgresRepository) TakeCallback(data *customerBusiness.Disbursement)
 
 func (repo *PosgresRepository) GetOrderEmoney(emoney *customerBusiness.InputTransactionBankEmoney) (*customerBusiness.InputTransactionBankEmoney, error) {
 	var tmpCustomer customerBusiness.Customers
-	err := repo.db.Where("ID = ?", emoney.Customer_id).First(&tmpCustomer).Error
+	err := repo.db.Model(&repository.Customer{}).Where("ID = ?", emoney.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
 		return nil, err
 	}
@@ -336,7 +334,7 @@ func (repo *PosgresRepository) GetOrderEmoney(emoney *customerBusiness.InputTran
 
 func (repo *PosgresRepository) ClaimBank(emoney *customerBusiness.InputTransactionBankEmoney) (*customerBusiness.InputTransactionBankEmoney, error) {
 	var tmpCustomer customerBusiness.Customers
-	err := repo.db.Where("ID = ?", emoney.Customer_id).First(&tmpCustomer).Error
+	err := repo.db.Model(&repository.Customer{}).Where("ID = ?", emoney.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
 		return nil, err
 	}
@@ -396,7 +394,7 @@ func (repo *PosgresRepository) ClaimBank(emoney *customerBusiness.InputTransacti
 func (repo *PosgresRepository) InsertStore(store *customerBusiness.RegisterStore) (*customerBusiness.RegisterStore, error) {
 	hash, _ := Hash(store.Password)
 	var tmpStore customerBusiness.Store
-	repo.db.Where("email = ?", store.Email).First(&tmpStore)
+	repo.db.Model(&repository.Store{}).Where("email = ?", store.Email).First(&tmpStore)
 	if tmpStore.Email != "" {
 		err := errors.New("Email already use")
 		return nil, err
@@ -410,7 +408,7 @@ func (repo *PosgresRepository) InsertStore(store *customerBusiness.RegisterStore
 
 func (repo *PosgresRepository) InputPoin(input *customerBusiness.InputPoin) (*int, error) {
 	var tmpCustomer customerBusiness.Customers
-	err := repo.db.Model(customerBusiness.Customers{}).Where("ID = ?", input.Customer_id).First(&tmpCustomer).Error
+	err := repo.db.Model(&repository.Customer{}).Where("ID = ?", input.Customer_id).First(&tmpCustomer).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("wrong id customer")
