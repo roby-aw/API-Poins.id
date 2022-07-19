@@ -7,7 +7,6 @@ import (
 	"api-redeem-point/repository"
 	"api-redeem-point/utils"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -65,7 +64,6 @@ func (repo *PosgresRepository) RemoveAdmin(id int) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(admin)
 	err = repo.db.Delete(admin, id).Error
 	if err != nil {
 		return err
@@ -77,7 +75,7 @@ func (repo *PosgresRepository) InsertAdmin(Admins *admin.RegisterAdmin) (*admin.
 	var admin = admin.Admin{Email: Admins.Email, Password: string(password), Fullname: Admins.Fullname, No_hp: Admins.No_hp}
 	err := repo.db.Create(&admin).Error
 	if err != nil {
-		return nil, fmt.Errorf("failed insert data")
+		return nil, errors.New("failed insert data")
 	}
 	return Admins, nil
 }

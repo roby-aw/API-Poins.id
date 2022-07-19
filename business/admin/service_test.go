@@ -5,7 +5,6 @@ import (
 	customerBusiness "api-redeem-point/business/customer"
 	"api-redeem-point/utils"
 	"errors"
-	"fmt"
 	"os"
 	"reflect"
 	"testing"
@@ -180,7 +179,6 @@ func TestRenewAdmin(t *testing.T) {
 			t.Error("Expect result.email is updateadmin.email")
 		}
 		admin, _ := service.FindAdminByID(2)
-		fmt.Println(admin)
 		if admin.Email != updateadmin.Email {
 			t.Error("Expect admin id 2 is updated")
 		}
@@ -243,7 +241,6 @@ func TestDeleteStore(t *testing.T) {
 			t.Error("error delete")
 		}
 		result, _ := service.GetStore(pagination, "")
-		fmt.Println(result)
 		if len(result) != 2 {
 			t.Error("len store must be 2")
 		}

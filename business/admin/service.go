@@ -133,7 +133,9 @@ func (s *service) UpdateCustomer(data UpdateCustomer) (*UpdateCustomer, error) {
 	}
 	if data.Email != "" {
 		err = s.validate.Var(data.Email, "email")
-		return nil, err
+		if err != nil {
+			return nil, err
+		}
 	}
 	return s.repository.UpdateCustomer(data)
 }

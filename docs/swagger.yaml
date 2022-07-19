@@ -41,8 +41,6 @@ definitions:
       pin:
         type: integer
     required:
-    - email
-    - fullname
     - id
     type: object
   customer.AuthLogin:

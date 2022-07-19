@@ -1192,8 +1192,6 @@ const docTemplate = `{
         "admin.UpdateCustomer": {
             "type": "object",
             "required": [
-                "email",
-                "fullname",
                 "id"
             ],
             "properties": {
