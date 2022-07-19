@@ -136,8 +136,8 @@ type Store struct {
 
 type UpdateCustomer struct {
 	ID       int    `json:"id" validate:"required"`
-	Email    string `json:"email" validate:"required,email"`
-	Fullname string `json:"fullname" validate:"required"`
+	Email    string `json:"email"`
+	Fullname string `json:"fullname"`
 	Password string `json:"password"`
 	No_hp    string `json:"no_hp"`
 	Pin      int    `json:"pin"`

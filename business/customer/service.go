@@ -82,6 +82,9 @@ func (s *service) UpdateCustomer(Data *UpdateCustomer) (*UpdateCustomer, error) 
 	if err != nil {
 		return nil, err
 	}
+	if Data.Email != "" {
+		err = s.validate.Var(Data.Email, "email")
+	}
 	return s.repository.UpdateCustomer(Data)
 }
 
